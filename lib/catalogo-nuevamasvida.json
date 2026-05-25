@@ -1,0 +1,7518 @@
+{
+ "isapre": "nuevamasvida",
+ "ges_uf": 0.854,
+ "fuente": "tu7.cl",
+ "generado": "2026-05-01T21:07:06.882Z",
+ "total": 208,
+ "planes": [
+  {
+   "codigo": "PS251000",
+   "serie": "PS",
+   "nombre": "PLAN PLENO SALUD 251000",
+   "tipo": "Preferente",
+   "uf_base": 1.18,
+   "hosp_pct": 50,
+   "amb_pct": 50,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Hospital del Profesor",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Hospital del Profesor",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Hospital Clínico Universidad de Chile"
+   ]
+  },
+  {
+   "codigo": "PS251001",
+   "serie": "PS",
+   "nombre": "PLAN PLENO SALUD 251001",
+   "tipo": "Preferente",
+   "uf_base": 1.25,
+   "hosp_pct": 50,
+   "amb_pct": 50,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Hospital del Profesor",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Hospital del Profesor",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Hospital Clínico Universidad de Chile"
+   ]
+  },
+  {
+   "codigo": "PS251002",
+   "serie": "PS",
+   "nombre": "PLAN PLENO SALUD 251002",
+   "tipo": "Preferente",
+   "uf_base": 1.29,
+   "hosp_pct": 50,
+   "amb_pct": 50,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Hospital del Profesor",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Hospital del Profesor",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Hospital Clínico Universidad de Chile"
+   ]
+  },
+  {
+   "codigo": "PS251003",
+   "serie": "PS",
+   "nombre": "PLAN PLENO SALUD 251003",
+   "tipo": "Preferente",
+   "uf_base": 1.34,
+   "hosp_pct": 50,
+   "amb_pct": 50,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Hospital del Profesor",
+    "Integramédica",
+    "Clínica Indisa",
+    "Clínica MEDS"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Hospital del Profesor",
+    "Integramédica",
+    "Clínica Indisa",
+    "Clínica MEDS"
+   ],
+   "prest_derivados": [
+    "Hospital Clínico Universidad de Chile"
+   ]
+  },
+  {
+   "codigo": "PS251004",
+   "serie": "PS",
+   "nombre": "PLAN PLENO SALUD 251004",
+   "tipo": "Preferente",
+   "uf_base": 1.37,
+   "hosp_pct": 50,
+   "amb_pct": 50,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Hospital del Profesor",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Hospital del Profesor",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Hospital Clínico Universidad de Chile"
+   ]
+  },
+  {
+   "codigo": "PS251005",
+   "serie": "PS",
+   "nombre": "PLAN PLENO SALUD 251005",
+   "tipo": "Preferente",
+   "uf_base": 1.41,
+   "hosp_pct": 50,
+   "amb_pct": 50,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Hospital del Profesor",
+    "Integramédica",
+    "Clínica Indisa",
+    "Clínica MEDS"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Hospital del Profesor",
+    "Integramédica",
+    "Clínica Indisa",
+    "Clínica MEDS"
+   ],
+   "prest_derivados": [
+    "Hospital Clínico Universidad de Chile"
+   ]
+  },
+  {
+   "codigo": "PM260301",
+   "serie": "PM",
+   "nombre": "PLAN PLENO MAX 260301",
+   "tipo": "Preferente",
+   "uf_base": 1.42,
+   "hosp_pct": 50,
+   "amb_pct": 50,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Hospital del Profesor",
+    "Clínica Indisa",
+    "Clínica MEDS"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Hospital del Profesor",
+    "Clínica Indisa",
+    "Clínica MEDS"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera"
+   ]
+  },
+  {
+   "codigo": "PS251006",
+   "serie": "PS",
+   "nombre": "PLAN PLENO SALUD 251006",
+   "tipo": "Preferente",
+   "uf_base": 1.45,
+   "hosp_pct": 50,
+   "amb_pct": 50,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Hospital del Profesor",
+    "Clínica Indisa",
+    "Clínica MEDS"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Hospital del Profesor",
+    "Clínica Indisa",
+    "Clínica MEDS"
+   ],
+   "prest_derivados": [
+    "Hospital Clínico Universidad de Chile"
+   ]
+  },
+  {
+   "codigo": "PM260302",
+   "serie": "PM",
+   "nombre": "PLAN PLENO MAX 260302",
+   "tipo": "Preferente",
+   "uf_base": 1.5,
+   "hosp_pct": 50,
+   "amb_pct": 50,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Hospital del Profesor",
+    "Clínica Indisa",
+    "Clínica MEDS"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Hospital del Profesor",
+    "Clínica Indisa",
+    "Clínica MEDS"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera"
+   ]
+  },
+  {
+   "codigo": "PS251007",
+   "serie": "PS",
+   "nombre": "PLAN PLENO SALUD 251007",
+   "tipo": "Preferente",
+   "uf_base": 1.53,
+   "hosp_pct": 60,
+   "amb_pct": 50,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Hospital del Profesor",
+    "Clínica Indisa",
+    "Clínica MEDS"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Hospital del Profesor",
+    "Clínica Indisa",
+    "Clínica MEDS"
+   ],
+   "prest_derivados": [
+    "Hospital Clínico Universidad de Chile"
+   ]
+  },
+  {
+   "codigo": "PS251008",
+   "serie": "PS",
+   "nombre": "PLAN PLENO SALUD 251008",
+   "tipo": "Preferente",
+   "uf_base": 1.55,
+   "hosp_pct": 50,
+   "amb_pct": 50,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Hospital del Profesor",
+    "Integramédica",
+    "Clínica Indisa",
+    "Clínica MEDS"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Hospital del Profesor",
+    "Integramédica",
+    "Clínica Indisa",
+    "Clínica MEDS"
+   ],
+   "prest_derivados": [
+    "Hospital Clínico Universidad de Chile"
+   ]
+  },
+  {
+   "codigo": "PM260303",
+   "serie": "PM",
+   "nombre": "PLAN PLENO MAX 260303",
+   "tipo": "Preferente",
+   "uf_base": 1.58,
+   "hosp_pct": 60,
+   "amb_pct": 50,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Hospital del Profesor",
+    "Clínica Indisa",
+    "Clínica MEDS"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Hospital del Profesor",
+    "Clínica Indisa",
+    "Clínica MEDS"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera"
+   ]
+  },
+  {
+   "codigo": "PPL23270",
+   "serie": "PPL",
+   "nombre": "PLENO PLUS 23270",
+   "tipo": "Preferente",
+   "uf_base": 1.61,
+   "hosp_pct": 50,
+   "amb_pct": 50,
+   "prest_hosp": [
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio"
+   ],
+   "prest_amb": [
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio"
+   ],
+   "prest_derivados": [
+    "Clínica Cordillera",
+    "Clínica Dávila Vespucio",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PS251009",
+   "serie": "PS",
+   "nombre": "PLAN PLENO SALUD 251009",
+   "tipo": "Preferente",
+   "uf_base": 1.62,
+   "hosp_pct": 60,
+   "amb_pct": 60,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Hospital del Profesor",
+    "Integramédica",
+    "Clínica Indisa",
+    "Clínica MEDS"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Hospital del Profesor",
+    "Integramédica",
+    "Clínica Indisa",
+    "Clínica MEDS"
+   ],
+   "prest_derivados": [
+    "Hospital Clínico Universidad de Chile"
+   ]
+  },
+  {
+   "codigo": "PM260304",
+   "serie": "PM",
+   "nombre": "PLAN PLENO MAX 260304",
+   "tipo": "Preferente",
+   "uf_base": 1.65,
+   "hosp_pct": 50,
+   "amb_pct": 50,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Hospital del Profesor",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Hospital del Profesor",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera"
+   ]
+  },
+  {
+   "codigo": "PS251010",
+   "serie": "PS",
+   "nombre": "PLAN PLENO SALUD 251010",
+   "tipo": "Preferente",
+   "uf_base": 1.65,
+   "hosp_pct": 50,
+   "amb_pct": 50,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Hospital del Profesor",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Integramédica",
+    "Hospital Clínico UC Christus"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Hospital del Profesor",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Integramédica",
+    "Hospital Clínico UC Christus"
+   ],
+   "prest_derivados": [
+    "Hospital Clínico Universidad de Chile"
+   ]
+  },
+  {
+   "codigo": "PPL24271",
+   "serie": "PPL",
+   "nombre": "PLAN PLENO PLUS 24271",
+   "tipo": "Preferente",
+   "uf_base": 1.71,
+   "hosp_pct": 60,
+   "amb_pct": 60,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila Recoleta",
+    "Clínica Dávila Vespucio",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila Recoleta",
+    "Clínica Dávila Vespucio",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Clínica Cordillera",
+    "Clínica Dávila Vespucio",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PM260305",
+   "serie": "PM",
+   "nombre": "PLAN PLENO MAX 260305",
+   "tipo": "Preferente",
+   "uf_base": 1.72,
+   "hosp_pct": 50,
+   "amb_pct": 50,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Hospital del Profesor",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Integramédica",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Hospital del Profesor",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Integramédica",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera"
+   ]
+  },
+  {
+   "codigo": "PPV25100",
+   "serie": "PPV",
+   "nombre": "PLAN PLENO PLUS QUINTA 25100",
+   "tipo": "Preferente",
+   "uf_base": 1.72,
+   "hosp_pct": 60,
+   "amb_pct": 50,
+   "prest_hosp": [
+    "Clínica Los Carrera (Quillota)",
+    "Clínica Los Leones",
+    "Hospital Clínico Viña del Mar",
+    "Clínica Bupa Reñaca",
+    "Clínica Bupa Santiago",
+    "Clínica Ciudad del Mar",
+    "Clínica Dávila",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica Los Carrera (Quillota)",
+    "Clínica Los Leones",
+    "Hospital Clínico Viña del Mar",
+    "Clínica Bupa Reñaca",
+    "Clínica Bupa Santiago",
+    "Clínica Ciudad del Mar",
+    "Clínica Dávila",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PPS23110",
+   "serie": "PPS",
+   "nombre": "PLENO PLUS SUR 23110",
+   "tipo": "Preferente",
+   "uf_base": 1.73,
+   "hosp_pct": 50,
+   "amb_pct": 50,
+   "prest_hosp": [
+    "Clínica Alemana de Osorno",
+    "Clínica BíoBío (Concepción)",
+    "Clínica Isamédica (Rancagua)",
+    "Clínica Los Andes (Los Ángeles)",
+    "Clínica Puerto Montt",
+    "Clínica Regional Lircay (Talca)",
+    "Hospital Clínico del Sur (Concepción)",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica Alemana de Osorno",
+    "Clínica BíoBío (Concepción)",
+    "Clínica Isamédica (Rancagua)",
+    "Clínica Los Andes (Los Ángeles)",
+    "Clínica Puerto Montt",
+    "Clínica Regional Lircay (Talca)",
+    "Hospital Clínico del Sur (Concepción)",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PS251011",
+   "serie": "PS",
+   "nombre": "PLAN PLENO SALUD 251011",
+   "tipo": "Preferente",
+   "uf_base": 1.73,
+   "hosp_pct": 50,
+   "amb_pct": 50,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Hospital del Profesor",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Integramédica",
+    "Hospital Clínico UC Christus"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Hospital del Profesor",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Integramédica",
+    "Hospital Clínico UC Christus"
+   ],
+   "prest_derivados": [
+    "Hospital Clínico Universidad de Chile"
+   ]
+  },
+  {
+   "codigo": "PPR25100",
+   "serie": "PPR",
+   "nombre": "PLENO PLUS NORTE 25100",
+   "tipo": "Preferente",
+   "uf_base": 1.74,
+   "hosp_pct": 60,
+   "amb_pct": 50,
+   "prest_hosp": [
+    "Clínica San José (Arica)",
+    "Clínica Tarapacá (Iquique)",
+    "Clínica La Portada (Antofagasta)",
+    "Clínica Atacama",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica San José (Arica)",
+    "Clínica Tarapacá (Iquique)",
+    "Clínica La Portada (Antofagasta)",
+    "Clínica Atacama",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PPS23120",
+   "serie": "PPS",
+   "nombre": "PLENO PLUS SUR 23120",
+   "tipo": "Preferente",
+   "uf_base": 1.79,
+   "hosp_pct": 60,
+   "amb_pct": 50,
+   "prest_hosp": [
+    "Clínica Alemana de Osorno",
+    "Clínica BíoBío (Concepción)",
+    "Clínica Isamédica (Rancagua)",
+    "Clínica Los Andes (Los Ángeles)",
+    "Clínica Puerto Montt",
+    "Clínica Regional Lircay (Talca)",
+    "Hospital Clínico del Sur (Concepción)",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica Alemana de Osorno",
+    "Clínica BíoBío (Concepción)",
+    "Clínica Isamédica (Rancagua)",
+    "Clínica Los Andes (Los Ángeles)",
+    "Clínica Puerto Montt",
+    "Clínica Regional Lircay (Talca)",
+    "Hospital Clínico del Sur (Concepción)",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PM260306",
+   "serie": "PM",
+   "nombre": "PLAN PLENO MAX 260306",
+   "tipo": "Preferente",
+   "uf_base": 1.8,
+   "hosp_pct": 50,
+   "amb_pct": 50,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Hospital del Profesor",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Integramédica",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Hospital del Profesor",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Integramédica",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera"
+   ]
+  },
+  {
+   "codigo": "PS251012",
+   "serie": "PS",
+   "nombre": "PLAN PLENO SALUD 251012",
+   "tipo": "Preferente",
+   "uf_base": 1.8,
+   "hosp_pct": 50,
+   "amb_pct": 50,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Hospital del Profesor",
+    "Integramédica",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Hospital Clínico UC Christus"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Hospital del Profesor",
+    "Integramédica",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Hospital Clínico UC Christus"
+   ],
+   "prest_derivados": [
+    "Hospital Clínico Universidad de Chile"
+   ]
+  },
+  {
+   "codigo": "PPL23280",
+   "serie": "PPL",
+   "nombre": "PLENO PLUS 23280",
+   "tipo": "Preferente",
+   "uf_base": 1.82,
+   "hosp_pct": 60,
+   "amb_pct": 50,
+   "prest_hosp": [
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio"
+   ],
+   "prest_amb": [
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio"
+   ],
+   "prest_derivados": [
+    "Clínica Cordillera",
+    "Clínica Dávila Vespucio",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PPV25110",
+   "serie": "PPV",
+   "nombre": "PLAN PLENO PLUS QUINTA 25110",
+   "tipo": "Preferente",
+   "uf_base": 1.83,
+   "hosp_pct": 60,
+   "amb_pct": 50,
+   "prest_hosp": [
+    "Clínica Los Carrera (Quillota)",
+    "Clínica Los Leones",
+    "Hospital Clínico Viña del Mar",
+    "Clínica Bupa Reñaca",
+    "Clínica Bupa Santiago",
+    "Clínica Ciudad del Mar",
+    "Clínica Dávila",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica Los Carrera (Quillota)",
+    "Clínica Los Leones",
+    "Hospital Clínico Viña del Mar",
+    "Clínica Bupa Reñaca",
+    "Clínica Bupa Santiago",
+    "Clínica Ciudad del Mar",
+    "Clínica Dávila",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PPR25110",
+   "serie": "PPR",
+   "nombre": "PLENO PLUS NORTE 25110",
+   "tipo": "Preferente",
+   "uf_base": 1.85,
+   "hosp_pct": 60,
+   "amb_pct": 50,
+   "prest_hosp": [
+    "Clínica San José (Arica)",
+    "Clínica Tarapacá (Iquique)",
+    "Clínica La Portada (Antofagasta)",
+    "Clínica Atacama",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica San José (Arica)",
+    "Clínica Tarapacá (Iquique)",
+    "Clínica La Portada (Antofagasta)",
+    "Clínica Atacama",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PS251013",
+   "serie": "PS",
+   "nombre": "PLAN PLENO SALUD 251013",
+   "tipo": "Preferente",
+   "uf_base": 1.86,
+   "hosp_pct": 100,
+   "amb_pct": 50,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Hospital del Profesor",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Hospital Clínico UC Christus"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Hospital del Profesor",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Hospital Clínico UC Christus"
+   ],
+   "prest_derivados": [
+    "Hospital Clínico Universidad de Chile"
+   ]
+  },
+  {
+   "codigo": "PM260307",
+   "serie": "PM",
+   "nombre": "PLAN PLENO MAX 260307",
+   "tipo": "Preferente",
+   "uf_base": 1.89,
+   "hosp_pct": 100,
+   "amb_pct": 50,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Hospital del Profesor",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Integramédica",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Hospital del Profesor",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Integramédica",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera"
+   ]
+  },
+  {
+   "codigo": "PPS23130",
+   "serie": "PPS",
+   "nombre": "PLENO PLUS SUR 23130",
+   "tipo": "Preferente",
+   "uf_base": 1.89,
+   "hosp_pct": 60,
+   "amb_pct": 60,
+   "prest_hosp": [
+    "Clínica Alemana de Osorno",
+    "Clínica BíoBío (Concepción)",
+    "Clínica Isamédica (Rancagua)",
+    "Clínica Los Andes (Los Ángeles)",
+    "Clínica Puerto Montt",
+    "Clínica Regional Lircay (Talca)",
+    "Hospital Clínico del Sur (Concepción)",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica Alemana de Osorno",
+    "Clínica BíoBío (Concepción)",
+    "Clínica Isamédica (Rancagua)",
+    "Clínica Los Andes (Los Ángeles)",
+    "Clínica Puerto Montt",
+    "Clínica Regional Lircay (Talca)",
+    "Hospital Clínico del Sur (Concepción)",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PPL23290",
+   "serie": "PPL",
+   "nombre": "PLENO PLUS 23290",
+   "tipo": "Preferente",
+   "uf_base": 1.9,
+   "hosp_pct": 60,
+   "amb_pct": 60,
+   "prest_hosp": [
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio"
+   ],
+   "prest_amb": [
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio"
+   ],
+   "prest_derivados": [
+    "Clínica Cordillera",
+    "Clínica Dávila Vespucio",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PLEN249",
+   "serie": "PLEN",
+   "nombre": "PLENO 249",
+   "tipo": "Libre Elección",
+   "uf_base": 1.93,
+   "hosp_pct": 90,
+   "amb_pct": 70,
+   "prest_hosp": [],
+   "prest_amb": []
+  },
+  {
+   "codigo": "PPV25120",
+   "serie": "PPV",
+   "nombre": "PLAN PLENO PLUS QUINTA 25120",
+   "tipo": "Preferente",
+   "uf_base": 1.93,
+   "hosp_pct": 60,
+   "amb_pct": 50,
+   "prest_hosp": [
+    "Clínica Los Carrera (Quillota)",
+    "Clínica Los Leones",
+    "Hospital Clínico Viña del Mar",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica Bupa Reñaca",
+    "Clínica Ciudad del Mar",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica Los Carrera (Quillota)",
+    "Clínica Los Leones",
+    "Hospital Clínico Viña del Mar",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica Bupa Reñaca",
+    "Clínica Ciudad del Mar",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PS251014",
+   "serie": "PS",
+   "nombre": "PLAN PLENO SALUD 251014",
+   "tipo": "Preferente",
+   "uf_base": 1.94,
+   "hosp_pct": 100,
+   "amb_pct": 50,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Hospital del Profesor",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Clínica Las Condes",
+    "Hospital Clínico UC Christus"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Hospital del Profesor",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Clínica Las Condes",
+    "Hospital Clínico UC Christus"
+   ],
+   "prest_derivados": [
+    "Hospital Clínico Universidad de Chile"
+   ]
+  },
+  {
+   "codigo": "PPL23300",
+   "serie": "PPL",
+   "nombre": "PLENO PLUS 23300",
+   "tipo": "Preferente",
+   "uf_base": 1.95,
+   "hosp_pct": 70,
+   "amb_pct": 60,
+   "prest_hosp": [
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio"
+   ],
+   "prest_amb": [
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio"
+   ],
+   "prest_derivados": [
+    "Clínica Cordillera",
+    "Clínica Dávila Vespucio",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PPR25120",
+   "serie": "PPR",
+   "nombre": "PLENO PLUS NORTE 25120",
+   "tipo": "Preferente",
+   "uf_base": 1.95,
+   "hosp_pct": 60,
+   "amb_pct": 50,
+   "prest_hosp": [
+    "Clínica San José (Arica)",
+    "Clínica Tarapacá (Iquique)",
+    "Clínica La Portada (Antofagasta)",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Integramédica",
+    "Clínica Atacama"
+   ],
+   "prest_amb": [
+    "Clínica San José (Arica)",
+    "Clínica Tarapacá (Iquique)",
+    "Clínica La Portada (Antofagasta)",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Integramédica",
+    "Clínica Atacama"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PM260308",
+   "serie": "PM",
+   "nombre": "PLAN PLENO MAX 260308",
+   "tipo": "Preferente",
+   "uf_base": 1.97,
+   "hosp_pct": 100,
+   "amb_pct": 50,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Hospital del Profesor",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Clínica Santa María",
+    "Integramédica",
+    "Clínica Las Condes",
+    "Hospital Clínico UC Christus"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Hospital del Profesor",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Clínica Santa María",
+    "Integramédica",
+    "Clínica Las Condes",
+    "Hospital Clínico UC Christus"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera"
+   ]
+  },
+  {
+   "codigo": "PPL23310",
+   "serie": "PPL",
+   "nombre": "PLENO PLUS 23310",
+   "tipo": "Preferente",
+   "uf_base": 1.97,
+   "hosp_pct": 70,
+   "amb_pct": 70,
+   "prest_hosp": [
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio"
+   ],
+   "prest_amb": [
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio"
+   ],
+   "prest_derivados": [
+    "Clínica Cordillera",
+    "Clínica Dávila Vespucio",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PPL23320",
+   "serie": "PPL",
+   "nombre": "PLENO PLUS 23320",
+   "tipo": "Preferente",
+   "uf_base": 2.01,
+   "hosp_pct": 80,
+   "amb_pct": 60,
+   "prest_hosp": [
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio"
+   ],
+   "prest_amb": [
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio"
+   ],
+   "prest_derivados": [
+    "Clínica Cordillera",
+    "Clínica Dávila Vespucio",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PPS23140",
+   "serie": "PPS",
+   "nombre": "PLENO PLUS SUR 23140",
+   "tipo": "Preferente",
+   "uf_base": 2.03,
+   "hosp_pct": 70,
+   "amb_pct": 60,
+   "prest_hosp": [
+    "Clínica Alemana de Osorno",
+    "Clínica BíoBío (Concepción)",
+    "Clínica Isamédica (Rancagua)",
+    "Clínica Los Andes (Los Ángeles)",
+    "Clínica Puerto Montt",
+    "Clínica Regional Lircay (Talca)",
+    "Hospital Clínico del Sur (Concepción)",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica Alemana de Osorno",
+    "Clínica BíoBío (Concepción)",
+    "Clínica Isamédica (Rancagua)",
+    "Clínica Los Andes (Los Ángeles)",
+    "Clínica Puerto Montt",
+    "Clínica Regional Lircay (Talca)",
+    "Hospital Clínico del Sur (Concepción)",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PPV25130",
+   "serie": "PPV",
+   "nombre": "PLAN PLENO PLUS QUINTA 25130",
+   "tipo": "Preferente",
+   "uf_base": 2.03,
+   "hosp_pct": 70,
+   "amb_pct": 50,
+   "prest_hosp": [
+    "Clínica Los Carrera (Quillota)",
+    "Clínica Los Leones",
+    "Hospital Clínico Viña del Mar",
+    "Clínica Bupa Reñaca",
+    "Clínica Bupa Santiago",
+    "Clínica Ciudad del Mar",
+    "Clínica Dávila",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica Los Carrera (Quillota)",
+    "Clínica Los Leones",
+    "Hospital Clínico Viña del Mar",
+    "Clínica Bupa Reñaca",
+    "Clínica Bupa Santiago",
+    "Clínica Ciudad del Mar",
+    "Clínica Dávila",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PLEN250",
+   "serie": "PLEN",
+   "nombre": "PLENO 250",
+   "tipo": "Libre Elección",
+   "uf_base": 2.04,
+   "hosp_pct": 90,
+   "amb_pct": 70,
+   "prest_hosp": [],
+   "prest_amb": []
+  },
+  {
+   "codigo": "PPL23330",
+   "serie": "PPL",
+   "nombre": "PLENO PLUS 23330",
+   "tipo": "Preferente",
+   "uf_base": 2.05,
+   "hosp_pct": 50,
+   "amb_pct": 60,
+   "prest_hosp": [
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Bupa Santiago",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus"
+   ],
+   "prest_amb": [
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Bupa Santiago",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus"
+   ],
+   "prest_derivados": [
+    "Clínica Cordillera",
+    "Clínica Dávila Vespucio",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PPR25130",
+   "serie": "PPR",
+   "nombre": "PLENO PLUS NORTE 25130",
+   "tipo": "Preferente",
+   "uf_base": 2.05,
+   "hosp_pct": 70,
+   "amb_pct": 50,
+   "prest_hosp": [
+    "Clínica San José (Arica)",
+    "Clínica Tarapacá (Iquique)",
+    "Clínica La Portada (Antofagasta)",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Integramédica",
+    "Clínica Atacama"
+   ],
+   "prest_amb": [
+    "Clínica San José (Arica)",
+    "Clínica Tarapacá (Iquique)",
+    "Clínica La Portada (Antofagasta)",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Integramédica",
+    "Clínica Atacama"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PS251015",
+   "serie": "PS",
+   "nombre": "PLAN PLENO SALUD 251015",
+   "tipo": "Preferente",
+   "uf_base": 2.08,
+   "hosp_pct": 100,
+   "amb_pct": 50,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Hospital del Profesor",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Hospital Clínico UC Christus",
+    "Clínica Las Condes"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Hospital del Profesor",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Hospital Clínico UC Christus",
+    "Clínica Las Condes"
+   ],
+   "prest_derivados": [
+    "Hospital Clínico Universidad de Chile"
+   ]
+  },
+  {
+   "codigo": "PM260309",
+   "serie": "PM",
+   "nombre": "PLAN PLENO MAX 260309",
+   "tipo": "Preferente",
+   "uf_base": 2.09,
+   "hosp_pct": 100,
+   "amb_pct": 50,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Hospital del Profesor",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Clínica Santa María",
+    "Integramédica",
+    "Hospital Clínico UC Christus",
+    "Clínica Las Condes"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Hospital del Profesor",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Clínica Santa María",
+    "Integramédica",
+    "Hospital Clínico UC Christus",
+    "Clínica Las Condes"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera"
+   ]
+  },
+  {
+   "codigo": "PPV25140",
+   "serie": "PPV",
+   "nombre": "PLAN PLENO PLUS QUINTA 25140",
+   "tipo": "Preferente",
+   "uf_base": 2.13,
+   "hosp_pct": 100,
+   "amb_pct": 60,
+   "prest_hosp": [
+    "Clínica Los Carrera (Quillota)",
+    "Clínica Los Leones",
+    "Hospital Clínico Viña del Mar",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica Bupa Reñaca",
+    "Clínica Ciudad del Mar",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica Los Carrera (Quillota)",
+    "Clínica Los Leones",
+    "Hospital Clínico Viña del Mar",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica Bupa Reñaca",
+    "Clínica Ciudad del Mar",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PPS23150",
+   "serie": "PPS",
+   "nombre": "PLENO PLUS SUR 23150",
+   "tipo": "Preferente",
+   "uf_base": 2.14,
+   "hosp_pct": 70,
+   "amb_pct": 70,
+   "prest_hosp": [
+    "Clínica Alemana de Osorno",
+    "Clínica BíoBío (Concepción)",
+    "Clínica Isamédica (Rancagua)",
+    "Clínica Los Andes (Los Ángeles)",
+    "Clínica Puerto Montt",
+    "Clínica Regional Lircay (Talca)",
+    "Hospital Clínico del Sur (Concepción)",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica Alemana de Osorno",
+    "Clínica BíoBío (Concepción)",
+    "Clínica Isamédica (Rancagua)",
+    "Clínica Los Andes (Los Ángeles)",
+    "Clínica Puerto Montt",
+    "Clínica Regional Lircay (Talca)",
+    "Hospital Clínico del Sur (Concepción)",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PPL24331",
+   "serie": "PPL",
+   "nombre": "PLAN PLENO PLUS 24331",
+   "tipo": "Preferente",
+   "uf_base": 2.15,
+   "hosp_pct": 50,
+   "amb_pct": 60,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila Recoleta",
+    "Clínica Dávila Vespucio",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila Recoleta",
+    "Clínica Dávila Vespucio",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus"
+   ],
+   "prest_derivados": [
+    "Clínica Cordillera",
+    "Clínica Dávila Vespucio",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PPR25140",
+   "serie": "PPR",
+   "nombre": "PLENO PLUS NORTE 25140",
+   "tipo": "Preferente",
+   "uf_base": 2.15,
+   "hosp_pct": 100,
+   "amb_pct": 60,
+   "prest_hosp": [
+    "Clínica San José (Arica)",
+    "Clínica Tarapacá (Iquique)",
+    "Clínica La Portada (Antofagasta)",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica Atacama",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica San José (Arica)",
+    "Clínica Tarapacá (Iquique)",
+    "Clínica La Portada (Antofagasta)",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica Atacama",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PLEN251",
+   "serie": "PLEN",
+   "nombre": "PLENO 251",
+   "tipo": "Libre Elección",
+   "uf_base": 2.17,
+   "hosp_pct": 90,
+   "amb_pct": 70,
+   "prest_hosp": [],
+   "prest_amb": []
+  },
+  {
+   "codigo": "PM260310",
+   "serie": "PM",
+   "nombre": "PLAN PLENO MAX 260310",
+   "tipo": "Preferente",
+   "uf_base": 2.18,
+   "hosp_pct": 100,
+   "amb_pct": 50,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Hospital del Profesor",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Clínica Santa María",
+    "Integramédica",
+    "Hospital Clínico UC Christus",
+    "Clínica Las Condes"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Hospital del Profesor",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Clínica Santa María",
+    "Integramédica",
+    "Hospital Clínico UC Christus",
+    "Clínica Las Condes"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera"
+   ]
+  },
+  {
+   "codigo": "PPV25150",
+   "serie": "PPV",
+   "nombre": "PLAN PLENO PLUS QUINTA 25150",
+   "tipo": "Preferente",
+   "uf_base": 2.23,
+   "hosp_pct": 100,
+   "amb_pct": 60,
+   "prest_hosp": [
+    "Clínica Los Carrera (Quillota)",
+    "Clínica Los Leones",
+    "Hospital Clínico Viña del Mar",
+    "Clínica Bupa Reñaca",
+    "Clínica Bupa Santiago",
+    "Clínica Ciudad del Mar",
+    "Clínica Dávila",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica Los Carrera (Quillota)",
+    "Clínica Los Leones",
+    "Hospital Clínico Viña del Mar",
+    "Clínica Bupa Reñaca",
+    "Clínica Bupa Santiago",
+    "Clínica Ciudad del Mar",
+    "Clínica Dávila",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PM260311",
+   "serie": "PM",
+   "nombre": "PLAN PLENO MAX 260311",
+   "tipo": "Preferente",
+   "uf_base": 2.25,
+   "hosp_pct": 100,
+   "amb_pct": 50,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Hospital del Profesor",
+    "Clínica Santa María",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Hospital Clínico UC Christus",
+    "Clínica Las Condes",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Hospital del Profesor",
+    "Clínica Santa María",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Hospital Clínico UC Christus",
+    "Clínica Las Condes",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera"
+   ]
+  },
+  {
+   "codigo": "PPL24332",
+   "serie": "PPL",
+   "nombre": "PLAN PLENO PLUS 24332",
+   "tipo": "Preferente",
+   "uf_base": 2.25,
+   "hosp_pct": 50,
+   "amb_pct": 60,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila Recoleta",
+    "Clínica Dávila Vespucio",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila Recoleta",
+    "Clínica Dávila Vespucio",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus"
+   ],
+   "prest_derivados": [
+    "Clínica Cordillera",
+    "Clínica Dávila Vespucio",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PPR25150",
+   "serie": "PPR",
+   "nombre": "PLENO PLUS NORTE 25150",
+   "tipo": "Preferente",
+   "uf_base": 2.25,
+   "hosp_pct": 100,
+   "amb_pct": 60,
+   "prest_hosp": [
+    "Clínica San José (Arica)",
+    "Clínica Tarapacá (Iquique)",
+    "Clínica La Portada (Antofagasta)",
+    "Clínica Atacama",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica San José (Arica)",
+    "Clínica Tarapacá (Iquique)",
+    "Clínica La Portada (Antofagasta)",
+    "Clínica Atacama",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PPS23160",
+   "serie": "PPS",
+   "nombre": "PLENO PLUS SUR 23160",
+   "tipo": "Preferente",
+   "uf_base": 2.25,
+   "hosp_pct": 80,
+   "amb_pct": 60,
+   "prest_hosp": [
+    "Clínica Alemana de Osorno",
+    "Clínica BíoBío (Concepción)",
+    "Clínica Isamédica (Rancagua)",
+    "Clínica Los Andes (Los Ángeles)",
+    "Clínica Puerto Montt",
+    "Clínica Regional Lircay (Talca)",
+    "Hospital Clínico del Sur (Concepción)",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica Alemana de Osorno",
+    "Clínica BíoBío (Concepción)",
+    "Clínica Isamédica (Rancagua)",
+    "Clínica Los Andes (Los Ángeles)",
+    "Clínica Puerto Montt",
+    "Clínica Regional Lircay (Talca)",
+    "Hospital Clínico del Sur (Concepción)",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PLEN252",
+   "serie": "PLEN",
+   "nombre": "PLENO 252",
+   "tipo": "Libre Elección",
+   "uf_base": 2.26,
+   "hosp_pct": 100,
+   "amb_pct": 80,
+   "prest_hosp": [],
+   "prest_amb": []
+  },
+  {
+   "codigo": "PS251016",
+   "serie": "PS",
+   "nombre": "PLAN PLENO SALUD 251016",
+   "tipo": "Preferente",
+   "uf_base": 2.29,
+   "hosp_pct": 100,
+   "amb_pct": 50,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Hospital del Profesor",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Hospital Clínico UC Christus",
+    "Clínica Las Condes",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Hospital del Profesor",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Hospital Clínico UC Christus",
+    "Clínica Las Condes",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_derivados": [
+    "Hospital Clínico Universidad de Chile"
+   ]
+  },
+  {
+   "codigo": "PPS23170",
+   "serie": "PPS",
+   "nombre": "PLENO PLUS SUR 23170",
+   "tipo": "Preferente",
+   "uf_base": 2.32,
+   "hosp_pct": 50,
+   "amb_pct": 60,
+   "prest_hosp": [
+    "Clínica Alemana de Osorno",
+    "Clínica BíoBío (Concepción)",
+    "Clínica Isamédica (Rancagua)",
+    "Clínica Los Andes (Los Ángeles)",
+    "Clínica Puerto Montt",
+    "Clínica Regional Lircay (Talca)",
+    "Hospital Clínico del Sur (Concepción)",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Hospital Clínico UC Christus",
+    "Integramédica",
+    "Clínica Alemana de Temuco",
+    "Clínica Alemana de Valdivia"
+   ],
+   "prest_amb": [
+    "Clínica Alemana de Osorno",
+    "Clínica BíoBío (Concepción)",
+    "Clínica Isamédica (Rancagua)",
+    "Clínica Los Andes (Los Ángeles)",
+    "Clínica Puerto Montt",
+    "Clínica Regional Lircay (Talca)",
+    "Hospital Clínico del Sur (Concepción)",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Hospital Clínico UC Christus",
+    "Integramédica",
+    "Clínica Alemana de Temuco",
+    "Clínica Alemana de Valdivia"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PPV25160",
+   "serie": "PPV",
+   "nombre": "PLAN PLENO PLUS QUINTA 25160",
+   "tipo": "Preferente",
+   "uf_base": 2.33,
+   "hosp_pct": 100,
+   "amb_pct": 60,
+   "prest_hosp": [
+    "Clínica Los Carrera (Quillota)",
+    "Clínica Los Leones",
+    "Hospital Clínico Viña del Mar",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica Bupa Reñaca",
+    "Clínica Ciudad del Mar",
+    "Clínica Indisa",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica Los Carrera (Quillota)",
+    "Clínica Los Leones",
+    "Hospital Clínico Viña del Mar",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica Bupa Reñaca",
+    "Clínica Ciudad del Mar",
+    "Clínica Indisa",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PPL23340",
+   "serie": "PPL",
+   "nombre": "PLENO PLUS 23340",
+   "tipo": "Preferente",
+   "uf_base": 2.34,
+   "hosp_pct": 100,
+   "amb_pct": 60,
+   "prest_hosp": [
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Clínica Bupa Santiago",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus"
+   ],
+   "prest_amb": [
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Clínica Bupa Santiago",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus"
+   ],
+   "prest_derivados": [
+    "Clínica Cordillera",
+    "Clínica Dávila Vespucio",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PM260312",
+   "serie": "PM",
+   "nombre": "PLAN PLENO MAX 260312",
+   "tipo": "Preferente",
+   "uf_base": 2.35,
+   "hosp_pct": 100,
+   "amb_pct": 50,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Hospital del Profesor",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus",
+    "Clínica Las Condes",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Hospital del Profesor",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus",
+    "Clínica Las Condes",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera"
+   ]
+  },
+  {
+   "codigo": "PPR25160",
+   "serie": "PPR",
+   "nombre": "PLENO PLUS NORTE 25160",
+   "tipo": "Preferente",
+   "uf_base": 2.35,
+   "hosp_pct": 100,
+   "amb_pct": 60,
+   "prest_hosp": [
+    "Clínica La Portada (Antofagasta)",
+    "Clínica San José (Arica)",
+    "Clínica Tarapacá (Iquique)",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica Atacama",
+    "Clínica Bupa Antofagasta",
+    "Clínica Indisa",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica La Portada (Antofagasta)",
+    "Clínica San José (Arica)",
+    "Clínica Tarapacá (Iquique)",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica Atacama",
+    "Clínica Bupa Antofagasta",
+    "Clínica Indisa",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PLEN253",
+   "serie": "PLEN",
+   "nombre": "PLENO 253",
+   "tipo": "Libre Elección",
+   "uf_base": 2.39,
+   "hosp_pct": 100,
+   "amb_pct": 80,
+   "prest_hosp": [],
+   "prest_amb": []
+  },
+  {
+   "codigo": "PPL23350",
+   "serie": "PPL",
+   "nombre": "PLENO PLUS 23350",
+   "tipo": "Preferente",
+   "uf_base": 2.41,
+   "hosp_pct": 100,
+   "amb_pct": 60,
+   "prest_hosp": [
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Bupa Santiago",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus"
+   ],
+   "prest_amb": [
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Bupa Santiago",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus"
+   ],
+   "prest_derivados": [
+    "Clínica Cordillera",
+    "Clínica Dávila Vespucio",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PPS23180",
+   "serie": "PPS",
+   "nombre": "PLENO PLUS SUR 23180",
+   "tipo": "Preferente",
+   "uf_base": 2.41,
+   "hosp_pct": 100,
+   "amb_pct": 60,
+   "prest_hosp": [
+    "Clínica Alemana de Osorno",
+    "Clínica BíoBío (Concepción)",
+    "Clínica Isamédica (Rancagua)",
+    "Clínica Los Andes (Los Ángeles)",
+    "Clínica Puerto Montt",
+    "Clínica Regional Lircay (Talca)",
+    "Hospital Clínico del Sur (Concepción)",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Hospital Clínico UC Christus",
+    "Integramédica",
+    "Clínica Alemana de Temuco",
+    "Clínica Alemana de Valdivia"
+   ],
+   "prest_amb": [
+    "Clínica Alemana de Osorno",
+    "Clínica BíoBío (Concepción)",
+    "Clínica Isamédica (Rancagua)",
+    "Clínica Los Andes (Los Ángeles)",
+    "Clínica Puerto Montt",
+    "Clínica Regional Lircay (Talca)",
+    "Hospital Clínico del Sur (Concepción)",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Hospital Clínico UC Christus",
+    "Integramédica",
+    "Clínica Alemana de Temuco",
+    "Clínica Alemana de Valdivia"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PPV25170",
+   "serie": "PPV",
+   "nombre": "PLAN PLENO PLUS QUINTA 25170",
+   "tipo": "Preferente",
+   "uf_base": 2.43,
+   "hosp_pct": 100,
+   "amb_pct": 60,
+   "prest_hosp": [
+    "Clínica Los Carrera (Quillota)",
+    "Clínica Los Leones",
+    "Hospital Clínico Viña del Mar",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica Bupa Reñaca",
+    "Clínica Ciudad del Mar",
+    "Clínica Indisa",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica Los Carrera (Quillota)",
+    "Clínica Los Leones",
+    "Hospital Clínico Viña del Mar",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica Bupa Reñaca",
+    "Clínica Ciudad del Mar",
+    "Clínica Indisa",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PM260313",
+   "serie": "PM",
+   "nombre": "PLAN PLENO MAX 260313",
+   "tipo": "Preferente",
+   "uf_base": 2.44,
+   "hosp_pct": 100,
+   "amb_pct": 50,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Hospital del Profesor",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus",
+    "Clínica Las Condes",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Hospital del Profesor",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus",
+    "Clínica Las Condes",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera"
+   ]
+  },
+  {
+   "codigo": "PPR25170",
+   "serie": "PPR",
+   "nombre": "PLENO PLUS NORTE 25170",
+   "tipo": "Preferente",
+   "uf_base": 2.45,
+   "hosp_pct": 100,
+   "amb_pct": 60,
+   "prest_hosp": [
+    "Clínica La Portada (Antofagasta)",
+    "Clínica San José (Arica)",
+    "Clínica Tarapacá (Iquique)",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica Atacama",
+    "Clínica Bupa Antofagasta",
+    "Clínica Indisa",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica La Portada (Antofagasta)",
+    "Clínica San José (Arica)",
+    "Clínica Tarapacá (Iquique)",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica Atacama",
+    "Clínica Bupa Antofagasta",
+    "Clínica Indisa",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PS251017",
+   "serie": "PS",
+   "nombre": "PLAN PLENO SALUD 251017",
+   "tipo": "Preferente",
+   "uf_base": 2.45,
+   "hosp_pct": 100,
+   "amb_pct": 50,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Hospital del Profesor",
+    "Hospital Clínico UC Christus",
+    "Clínica Las Condes",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Hospital del Profesor",
+    "Hospital Clínico UC Christus",
+    "Clínica Las Condes",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_derivados": [
+    "Hospital Clínico Universidad de Chile"
+   ]
+  },
+  {
+   "codigo": "PM260314",
+   "serie": "PM",
+   "nombre": "PLAN PLENO MAX 260314",
+   "tipo": "Preferente",
+   "uf_base": 2.5,
+   "hosp_pct": 100,
+   "amb_pct": 50,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Hospital del Profesor",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus",
+    "Clínica Las Condes",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Hospital del Profesor",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus",
+    "Clínica Las Condes",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera"
+   ]
+  },
+  {
+   "codigo": "PPL23360",
+   "serie": "PPL",
+   "nombre": "PLENO PLUS 23360",
+   "tipo": "Preferente",
+   "uf_base": 2.51,
+   "hosp_pct": 100,
+   "amb_pct": 60,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus"
+   ],
+   "prest_derivados": [
+    "Clínica Cordillera",
+    "Clínica Dávila Vespucio",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PPS23190",
+   "serie": "PPS",
+   "nombre": "PLENO PLUS SUR 23190",
+   "tipo": "Preferente",
+   "uf_base": 2.51,
+   "hosp_pct": 100,
+   "amb_pct": 60,
+   "prest_hosp": [
+    "Clínica Alemana de Osorno",
+    "Clínica BíoBío (Concepción)",
+    "Clínica Isamédica (Rancagua)",
+    "Clínica Los Andes (Los Ángeles)",
+    "Clínica Puerto Montt",
+    "Clínica Regional Lircay (Talca)",
+    "Hospital Clínico del Sur (Concepción)",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Integramédica",
+    "Clínica Alemana de Temuco",
+    "Clínica Alemana de Valdivia",
+    "Hospital Clínico UC Christus"
+   ],
+   "prest_amb": [
+    "Clínica Alemana de Osorno",
+    "Clínica BíoBío (Concepción)",
+    "Clínica Isamédica (Rancagua)",
+    "Clínica Los Andes (Los Ángeles)",
+    "Clínica Puerto Montt",
+    "Clínica Regional Lircay (Talca)",
+    "Hospital Clínico del Sur (Concepción)",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Integramédica",
+    "Clínica Alemana de Temuco",
+    "Clínica Alemana de Valdivia",
+    "Hospital Clínico UC Christus"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PLEN254",
+   "serie": "PLEN",
+   "nombre": "PLENO 254",
+   "tipo": "Libre Elección",
+   "uf_base": 2.52,
+   "hosp_pct": 100,
+   "amb_pct": 80,
+   "prest_hosp": [],
+   "prest_amb": []
+  },
+  {
+   "codigo": "PPV24180",
+   "serie": "PPV",
+   "nombre": "PLENO PLUS QUINTA 24180",
+   "tipo": "Preferente",
+   "uf_base": 2.53,
+   "hosp_pct": 100,
+   "amb_pct": 70,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica Los Carrera (Quillota)",
+    "Clínica Los Leones",
+    "Hospital Clínico Viña del Mar",
+    "Clínica Indisa",
+    "Integramédica",
+    "Clínica Bupa Reñaca",
+    "Clínica Ciudad del Mar"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica Los Carrera (Quillota)",
+    "Clínica Los Leones",
+    "Hospital Clínico Viña del Mar",
+    "Clínica Indisa",
+    "Integramédica",
+    "Clínica Bupa Reñaca",
+    "Clínica Ciudad del Mar"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PM260315",
+   "serie": "PM",
+   "nombre": "PLAN PLENO MAX 260315",
+   "tipo": "Preferente",
+   "uf_base": 2.55,
+   "hosp_pct": 100,
+   "amb_pct": 50,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Hospital del Profesor",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus",
+    "Clínica Las Condes",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Hospital del Profesor",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus",
+    "Clínica Las Condes",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera"
+   ]
+  },
+  {
+   "codigo": "PPR24180",
+   "serie": "PPR",
+   "nombre": "PLENO PLUS NORTE 24180",
+   "tipo": "Preferente",
+   "uf_base": 2.55,
+   "hosp_pct": 100,
+   "amb_pct": 70,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica La Portada (Antofagasta)",
+    "Clínica San José (Arica)",
+    "Clínica Tarapacá (Iquique)",
+    "Clínica Atacama",
+    "Clínica Bupa Antofagasta",
+    "Clínica Indisa",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica La Portada (Antofagasta)",
+    "Clínica San José (Arica)",
+    "Clínica Tarapacá (Iquique)",
+    "Clínica Atacama",
+    "Clínica Bupa Antofagasta",
+    "Clínica Indisa",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PPL23370",
+   "serie": "PPL",
+   "nombre": "PLENO PLUS 23370",
+   "tipo": "Preferente",
+   "uf_base": 2.57,
+   "hosp_pct": 100,
+   "amb_pct": 60,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus"
+   ],
+   "prest_derivados": [
+    "Clínica Cordillera",
+    "Clínica Dávila Vespucio",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PS251018",
+   "serie": "PS",
+   "nombre": "PLAN PLENO SALUD 251018",
+   "tipo": "Preferente",
+   "uf_base": 2.59,
+   "hosp_pct": 100,
+   "amb_pct": 50,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Hospital del Profesor",
+    "Hospital Clínico UC Christus",
+    "Clínica Las Condes",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Hospital del Profesor",
+    "Hospital Clínico UC Christus",
+    "Clínica Las Condes",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_derivados": [
+    "Hospital Clínico Universidad de Chile"
+   ]
+  },
+  {
+   "codigo": "PM260316",
+   "serie": "PM",
+   "nombre": "PLAN PLENO MAX 260316",
+   "tipo": "Preferente",
+   "uf_base": 2.6,
+   "hosp_pct": 100,
+   "amb_pct": 50,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Clínica Santa María",
+    "Hospital del Profesor",
+    "Hospital Clínico UC Christus",
+    "Clínica Las Condes",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Clínica Santa María",
+    "Hospital del Profesor",
+    "Hospital Clínico UC Christus",
+    "Clínica Las Condes",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera"
+   ]
+  },
+  {
+   "codigo": "PPS23200",
+   "serie": "PPS",
+   "nombre": "PLENO PLUS SUR 23200",
+   "tipo": "Preferente",
+   "uf_base": 2.6,
+   "hosp_pct": 100,
+   "amb_pct": 60,
+   "prest_hosp": [
+    "Clínica Alemana de Osorno",
+    "Clínica Bupa Santiago",
+    "Clínica BíoBío (Concepción)",
+    "Clínica Dávila",
+    "Clínica Isamédica (Rancagua)",
+    "Clínica Los Andes (Los Ángeles)",
+    "Clínica Puerto Montt",
+    "Clínica Regional Lircay (Talca)",
+    "Hospital Clínico del Sur (Concepción)",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Clínica Alemana de Temuco",
+    "Clínica Alemana de Valdivia",
+    "Hospital Clínico UC Christus"
+   ],
+   "prest_amb": [
+    "Clínica Alemana de Osorno",
+    "Clínica Bupa Santiago",
+    "Clínica BíoBío (Concepción)",
+    "Clínica Dávila",
+    "Clínica Isamédica (Rancagua)",
+    "Clínica Los Andes (Los Ángeles)",
+    "Clínica Puerto Montt",
+    "Clínica Regional Lircay (Talca)",
+    "Hospital Clínico del Sur (Concepción)",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Clínica Alemana de Temuco",
+    "Clínica Alemana de Valdivia",
+    "Hospital Clínico UC Christus"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PM260317",
+   "serie": "PM",
+   "nombre": "PLAN PLENO MAX 260317",
+   "tipo": "Preferente",
+   "uf_base": 2.61,
+   "hosp_pct": 100,
+   "amb_pct": 50,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Clínica Santa María",
+    "Hospital del Profesor",
+    "Hospital Clínico UC Christus",
+    "Clínica Las Condes",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Clínica Santa María",
+    "Hospital del Profesor",
+    "Hospital Clínico UC Christus",
+    "Clínica Las Condes",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera"
+   ]
+  },
+  {
+   "codigo": "PPV24190",
+   "serie": "PPV",
+   "nombre": "PLENO PLUS QUINTA 24190",
+   "tipo": "Preferente",
+   "uf_base": 2.62,
+   "hosp_pct": 100,
+   "amb_pct": 70,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica Los Carrera (Quillota)",
+    "Clínica Los Leones",
+    "Hospital Clínico Viña del Mar",
+    "Clínica Bupa Reñaca",
+    "Clínica Ciudad del Mar",
+    "Clínica Indisa",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica Los Carrera (Quillota)",
+    "Clínica Los Leones",
+    "Hospital Clínico Viña del Mar",
+    "Clínica Bupa Reñaca",
+    "Clínica Ciudad del Mar",
+    "Clínica Indisa",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PPR24190",
+   "serie": "PPR",
+   "nombre": "PLENO PLUS NORTE 24190",
+   "tipo": "Preferente",
+   "uf_base": 2.64,
+   "hosp_pct": 100,
+   "amb_pct": 70,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica La Portada (Antofagasta)",
+    "Clínica San José (Arica)",
+    "Clínica Tarapacá (Iquique)",
+    "Clínica Atacama",
+    "Clínica Bupa Antofagasta",
+    "Clínica Indisa",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica La Portada (Antofagasta)",
+    "Clínica San José (Arica)",
+    "Clínica Tarapacá (Iquique)",
+    "Clínica Atacama",
+    "Clínica Bupa Antofagasta",
+    "Clínica Indisa",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PPL24371",
+   "serie": "PPL",
+   "nombre": "PLAN PLENO PLUS 24371",
+   "tipo": "Preferente",
+   "uf_base": 2.67,
+   "hosp_pct": 100,
+   "amb_pct": 60,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila Recoleta",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila Recoleta",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Clínica Cordillera",
+    "Clínica Dávila Vespucio",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PPS23210",
+   "serie": "PPS",
+   "nombre": "PLENO PLUS SUR 23210",
+   "tipo": "Preferente",
+   "uf_base": 2.67,
+   "hosp_pct": 100,
+   "amb_pct": 60,
+   "prest_hosp": [
+    "Clínica Alemana de Osorno",
+    "Clínica Bupa Santiago",
+    "Clínica BíoBío (Concepción)",
+    "Clínica Dávila",
+    "Clínica Isamédica (Rancagua)",
+    "Clínica Los Andes (Los Ángeles)",
+    "Clínica Puerto Montt",
+    "Clínica Regional Lircay (Talca)",
+    "Hospital Clínico del Sur (Concepción)",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Clínica Alemana de Temuco",
+    "Clínica Alemana de Valdivia",
+    "Hospital Clínico UC Christus",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica Alemana de Osorno",
+    "Clínica Bupa Santiago",
+    "Clínica BíoBío (Concepción)",
+    "Clínica Dávila",
+    "Clínica Isamédica (Rancagua)",
+    "Clínica Los Andes (Los Ángeles)",
+    "Clínica Puerto Montt",
+    "Clínica Regional Lircay (Talca)",
+    "Hospital Clínico del Sur (Concepción)",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Clínica Alemana de Temuco",
+    "Clínica Alemana de Valdivia",
+    "Hospital Clínico UC Christus",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PM260318",
+   "serie": "PM",
+   "nombre": "PLAN PLENO MAX 260318",
+   "tipo": "Preferente",
+   "uf_base": 2.71,
+   "hosp_pct": 100,
+   "amb_pct": 50,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Clínica Santa María",
+    "Hospital del Profesor",
+    "Hospital Clínico UC Christus",
+    "Clínica Las Condes",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Clínica Santa María",
+    "Hospital del Profesor",
+    "Hospital Clínico UC Christus",
+    "Clínica Las Condes",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera"
+   ]
+  },
+  {
+   "codigo": "PLEN255",
+   "serie": "PLEN",
+   "nombre": "PLENO 255",
+   "tipo": "Libre Elección",
+   "uf_base": 2.72,
+   "hosp_pct": 100,
+   "amb_pct": 80,
+   "prest_hosp": [],
+   "prest_amb": []
+  },
+  {
+   "codigo": "PPL24372",
+   "serie": "PPL",
+   "nombre": "PLAN PLENO PLUS 24372",
+   "tipo": "Preferente",
+   "uf_base": 2.77,
+   "hosp_pct": 100,
+   "amb_pct": 70,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila Recoleta",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor",
+    "Integramédica",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila Recoleta",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor",
+    "Integramédica",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus"
+   ],
+   "prest_derivados": [
+    "Clínica Cordillera",
+    "Clínica Dávila Vespucio",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PPV24200",
+   "serie": "PPV",
+   "nombre": "PLENO PLUS QUINTA 24200",
+   "tipo": "Preferente",
+   "uf_base": 2.77,
+   "hosp_pct": 100,
+   "amb_pct": 70,
+   "prest_hosp": [
+    "Clínica Bupa Reñaca",
+    "Clínica Bupa Santiago",
+    "Clínica Ciudad del Mar",
+    "Clínica Dávila",
+    "Clínica Los Carrera (Quillota)",
+    "Clínica Los Leones",
+    "Hospital Clínico Viña del Mar",
+    "Clínica Indisa",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Reñaca",
+    "Clínica Bupa Santiago",
+    "Clínica Ciudad del Mar",
+    "Clínica Dávila",
+    "Clínica Los Carrera (Quillota)",
+    "Clínica Los Leones",
+    "Hospital Clínico Viña del Mar",
+    "Clínica Indisa",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PS251019",
+   "serie": "PS",
+   "nombre": "PLAN PLENO SALUD 251019",
+   "tipo": "Preferente",
+   "uf_base": 2.78,
+   "hosp_pct": 100,
+   "amb_pct": 50,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Hospital del Profesor",
+    "Hospital Clínico UC Christus",
+    "Clínica Las Condes",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Hospital del Profesor",
+    "Hospital Clínico UC Christus",
+    "Clínica Las Condes",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_derivados": [
+    "Hospital Clínico Universidad de Chile"
+   ]
+  },
+  {
+   "codigo": "PLEN256",
+   "serie": "PLEN",
+   "nombre": "PLENO 256",
+   "tipo": "Libre Elección",
+   "uf_base": 2.8,
+   "hosp_pct": 100,
+   "amb_pct": 80,
+   "prest_hosp": [],
+   "prest_amb": []
+  },
+  {
+   "codigo": "PPR24200",
+   "serie": "PPR",
+   "nombre": "PLENO PLUS NORTE 24200",
+   "tipo": "Preferente",
+   "uf_base": 2.8,
+   "hosp_pct": 100,
+   "amb_pct": 70,
+   "prest_hosp": [
+    "Clínica Atacama",
+    "Clínica Bupa Antofagasta",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica La Portada (Antofagasta)",
+    "Clínica San José (Arica)",
+    "Clínica Tarapacá (Iquique)",
+    "Clínica Indisa",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica Atacama",
+    "Clínica Bupa Antofagasta",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica La Portada (Antofagasta)",
+    "Clínica San José (Arica)",
+    "Clínica Tarapacá (Iquique)",
+    "Clínica Indisa",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PPL24373",
+   "serie": "PPL",
+   "nombre": "PLAN PLENO PLUS 24373",
+   "tipo": "Preferente",
+   "uf_base": 2.87,
+   "hosp_pct": 100,
+   "amb_pct": 60,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila Recoleta",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila Recoleta",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus"
+   ],
+   "prest_derivados": [
+    "Clínica Cordillera",
+    "Clínica Dávila Vespucio",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PPS23220",
+   "serie": "PPS",
+   "nombre": "PLENO PLUS SUR 23220",
+   "tipo": "Preferente",
+   "uf_base": 2.88,
+   "hosp_pct": 100,
+   "amb_pct": 70,
+   "prest_hosp": [
+    "Clínica Alemana de Osorno",
+    "Clínica Bupa Santiago",
+    "Clínica BíoBío (Concepción)",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica Isamédica (Rancagua)",
+    "Clínica Los Andes (Los Ángeles)",
+    "Clínica MEDS",
+    "Clínica Puerto Montt",
+    "Clínica Regional Lircay (Talca)",
+    "Hospital Clínico del Sur (Concepción)",
+    "Clínica Alemana de Temuco",
+    "Clínica Alemana de Valdivia",
+    "Hospital Clínico UC Christus",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica Alemana de Osorno",
+    "Clínica Bupa Santiago",
+    "Clínica BíoBío (Concepción)",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica Isamédica (Rancagua)",
+    "Clínica Los Andes (Los Ángeles)",
+    "Clínica MEDS",
+    "Clínica Puerto Montt",
+    "Clínica Regional Lircay (Talca)",
+    "Hospital Clínico del Sur (Concepción)",
+    "Clínica Alemana de Temuco",
+    "Clínica Alemana de Valdivia",
+    "Hospital Clínico UC Christus",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PS251020",
+   "serie": "PS",
+   "nombre": "PLAN PLENO SALUD 251020",
+   "tipo": "Preferente",
+   "uf_base": 2.9,
+   "hosp_pct": 100,
+   "amb_pct": 50,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Hospital del Profesor",
+    "Hospital Clínico UC Christus",
+    "Clínica Las Condes",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Hospital del Profesor",
+    "Hospital Clínico UC Christus",
+    "Clínica Las Condes",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_derivados": [
+    "Hospital Clínico Universidad de Chile"
+   ]
+  },
+  {
+   "codigo": "PM260319",
+   "serie": "PM",
+   "nombre": "PLAN PLENO MAX 260319",
+   "tipo": "Preferente",
+   "uf_base": 2.91,
+   "hosp_pct": 100,
+   "amb_pct": 50,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Clínica Santa María",
+    "Hospital del Profesor",
+    "Hospital Clínico UC Christus",
+    "Clínica Las Condes",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Clínica Santa María",
+    "Hospital del Profesor",
+    "Hospital Clínico UC Christus",
+    "Clínica Las Condes",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera"
+   ]
+  },
+  {
+   "codigo": "PPV24210",
+   "serie": "PPV",
+   "nombre": "PLENO PLUS QUINTA 24210",
+   "tipo": "Preferente",
+   "uf_base": 2.92,
+   "hosp_pct": 100,
+   "amb_pct": 80,
+   "prest_hosp": [
+    "Clínica Bupa Reñaca",
+    "Clínica Bupa Santiago",
+    "Clínica Ciudad del Mar",
+    "Clínica Dávila",
+    "Clínica Los Carrera (Quillota)",
+    "Clínica Los Leones",
+    "Hospital Clínico Viña del Mar",
+    "Clínica Indisa",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Reñaca",
+    "Clínica Bupa Santiago",
+    "Clínica Ciudad del Mar",
+    "Clínica Dávila",
+    "Clínica Los Carrera (Quillota)",
+    "Clínica Los Leones",
+    "Hospital Clínico Viña del Mar",
+    "Clínica Indisa",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PPR24210",
+   "serie": "PPR",
+   "nombre": "PLENO PLUS NORTE 24210",
+   "tipo": "Preferente",
+   "uf_base": 2.95,
+   "hosp_pct": 100,
+   "amb_pct": 80,
+   "prest_hosp": [
+    "Clínica Atacama",
+    "Clínica Bupa Antofagasta",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica La Portada (Antofagasta)",
+    "Clínica San José (Arica)",
+    "Clínica Tarapacá (Iquique)",
+    "Clínica Indisa",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica Atacama",
+    "Clínica Bupa Antofagasta",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica La Portada (Antofagasta)",
+    "Clínica San José (Arica)",
+    "Clínica Tarapacá (Iquique)",
+    "Clínica Indisa",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PLEN257",
+   "serie": "PLEN",
+   "nombre": "PLENO 257",
+   "tipo": "Libre Elección",
+   "uf_base": 2.96,
+   "hosp_pct": 100,
+   "amb_pct": 80,
+   "prest_hosp": [],
+   "prest_amb": []
+  },
+  {
+   "codigo": "PPL23380",
+   "serie": "PPL",
+   "nombre": "PLENO PLUS 23380",
+   "tipo": "Preferente",
+   "uf_base": 2.97,
+   "hosp_pct": 100,
+   "amb_pct": 70,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus"
+   ],
+   "prest_derivados": [
+    "Clínica Cordillera",
+    "Clínica Dávila Vespucio",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PPV24220",
+   "serie": "PPV",
+   "nombre": "PLENO PLUS QUINTA 24220",
+   "tipo": "Preferente",
+   "uf_base": 3,
+   "hosp_pct": 100,
+   "amb_pct": 80,
+   "prest_hosp": [
+    "Clínica Bupa Reñaca",
+    "Clínica Bupa Santiago",
+    "Clínica Ciudad del Mar",
+    "Clínica Dávila",
+    "Clínica Los Carrera (Quillota)",
+    "Clínica Los Leones",
+    "Hospital Clínico Viña del Mar",
+    "Clínica Indisa",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Reñaca",
+    "Clínica Bupa Santiago",
+    "Clínica Ciudad del Mar",
+    "Clínica Dávila",
+    "Clínica Los Carrera (Quillota)",
+    "Clínica Los Leones",
+    "Hospital Clínico Viña del Mar",
+    "Clínica Indisa",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PPR24220",
+   "serie": "PPR",
+   "nombre": "PLENO PLUS NORTE 24220",
+   "tipo": "Preferente",
+   "uf_base": 3.03,
+   "hosp_pct": 100,
+   "amb_pct": 80,
+   "prest_hosp": [
+    "Clínica Atacama",
+    "Clínica Bupa Antofagasta",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica La Portada (Antofagasta)",
+    "Clínica San José (Arica)",
+    "Clínica Tarapacá (Iquique)",
+    "Clínica Indisa",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica Atacama",
+    "Clínica Bupa Antofagasta",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica La Portada (Antofagasta)",
+    "Clínica San José (Arica)",
+    "Clínica Tarapacá (Iquique)",
+    "Clínica Indisa",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PS251021",
+   "serie": "PS",
+   "nombre": "PLAN PLENO SALUD 251021",
+   "tipo": "Preferente",
+   "uf_base": 3.04,
+   "hosp_pct": 100,
+   "amb_pct": 60,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Hospital del Profesor",
+    "Hospital Clínico UC Christus",
+    "Clínica Las Condes",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Hospital del Profesor",
+    "Hospital Clínico UC Christus",
+    "Clínica Las Condes",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_derivados": [
+    "Hospital Clínico Universidad de Chile"
+   ]
+  },
+  {
+   "codigo": "PLEN258",
+   "serie": "PLEN",
+   "nombre": "PLENO 258",
+   "tipo": "Libre Elección",
+   "uf_base": 3.05,
+   "hosp_pct": 100,
+   "amb_pct": 80,
+   "prest_hosp": [],
+   "prest_amb": []
+  },
+  {
+   "codigo": "PPS23230",
+   "serie": "PPS",
+   "nombre": "PLENO PLUS SUR 23230",
+   "tipo": "Preferente",
+   "uf_base": 3.05,
+   "hosp_pct": 100,
+   "amb_pct": 60,
+   "prest_hosp": [
+    "Clínica Alemana de Osorno",
+    "Clínica Bupa Santiago",
+    "Clínica BíoBío (Concepción)",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica Isamédica (Rancagua)",
+    "Clínica Los Andes (Los Ángeles)",
+    "Clínica MEDS",
+    "Clínica Puerto Montt",
+    "Clínica Regional Lircay (Talca)",
+    "Hospital Clínico del Sur (Concepción)",
+    "Clínica Alemana de Temuco",
+    "Clínica Alemana de Valdivia",
+    "Hospital Clínico UC Christus",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_amb": [
+    "Clínica Alemana de Osorno",
+    "Clínica Bupa Santiago",
+    "Clínica BíoBío (Concepción)",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica Isamédica (Rancagua)",
+    "Clínica Los Andes (Los Ángeles)",
+    "Clínica MEDS",
+    "Clínica Puerto Montt",
+    "Clínica Regional Lircay (Talca)",
+    "Hospital Clínico del Sur (Concepción)",
+    "Clínica Alemana de Temuco",
+    "Clínica Alemana de Valdivia",
+    "Hospital Clínico UC Christus",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PPL24381",
+   "serie": "PPL",
+   "nombre": "PLAN PLENO PLUS 24381",
+   "tipo": "Preferente",
+   "uf_base": 3.11,
+   "hosp_pct": 100,
+   "amb_pct": 50,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_derivados": [
+    "Clínica Cordillera",
+    "Clínica Dávila Vespucio",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PM260320",
+   "serie": "PM",
+   "nombre": "PLAN PLENO MAX 260320",
+   "tipo": "Preferente",
+   "uf_base": 3.15,
+   "hosp_pct": 100,
+   "amb_pct": 60,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Clínica Santa María",
+    "Hospital del Profesor",
+    "Hospital Clínico UC Christus",
+    "Clínica Las Condes",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Clínica Santa María",
+    "Hospital del Profesor",
+    "Hospital Clínico UC Christus",
+    "Clínica Las Condes",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera"
+   ]
+  },
+  {
+   "codigo": "PPV24230",
+   "serie": "PPV",
+   "nombre": "PLENO PLUS QUINTA 24230",
+   "tipo": "Preferente",
+   "uf_base": 3.15,
+   "hosp_pct": 100,
+   "amb_pct": 70,
+   "prest_hosp": [
+    "Clínica Bupa Reñaca",
+    "Clínica Bupa Santiago",
+    "Clínica Ciudad del Mar",
+    "Clínica Dávila",
+    "Clínica Los Carrera (Quillota)",
+    "Clínica Los Leones",
+    "Hospital Clínico Viña del Mar",
+    "Clínica Indisa",
+    "Integramédica",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Reñaca",
+    "Clínica Bupa Santiago",
+    "Clínica Ciudad del Mar",
+    "Clínica Dávila",
+    "Clínica Los Carrera (Quillota)",
+    "Clínica Los Leones",
+    "Hospital Clínico Viña del Mar",
+    "Clínica Indisa",
+    "Integramédica",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PPL24382",
+   "serie": "PPL",
+   "nombre": "PLAN PLENO PLUS 24382",
+   "tipo": "Preferente",
+   "uf_base": 3.17,
+   "hosp_pct": 100,
+   "amb_pct": 60,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_derivados": [
+    "Clínica Cordillera",
+    "Clínica Dávila Vespucio",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PPR24230",
+   "serie": "PPR",
+   "nombre": "PLENO PLUS NORTE 24230",
+   "tipo": "Preferente",
+   "uf_base": 3.18,
+   "hosp_pct": 100,
+   "amb_pct": 70,
+   "prest_hosp": [
+    "Clínica Atacama",
+    "Clínica Bupa Antofagasta",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica La Portada (Antofagasta)",
+    "Clínica San José (Arica)",
+    "Clínica Tarapacá (Iquique)",
+    "Clínica Indisa",
+    "Integramédica",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus"
+   ],
+   "prest_amb": [
+    "Clínica Atacama",
+    "Clínica Bupa Antofagasta",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica La Portada (Antofagasta)",
+    "Clínica San José (Arica)",
+    "Clínica Tarapacá (Iquique)",
+    "Clínica Indisa",
+    "Integramédica",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PS251022",
+   "serie": "PS",
+   "nombre": "PLAN PLENO SALUD 251022",
+   "tipo": "Preferente",
+   "uf_base": 3.19,
+   "hosp_pct": 100,
+   "amb_pct": 60,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Hospital Clínico UC Christus",
+    "Hospital del Profesor",
+    "Clínica Las Condes",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Hospital Clínico UC Christus",
+    "Hospital del Profesor",
+    "Clínica Las Condes",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_derivados": [
+    "Hospital Clínico Universidad de Chile"
+   ]
+  },
+  {
+   "codigo": "PPL23390",
+   "serie": "PPL",
+   "nombre": "PLENO PLUS 23390",
+   "tipo": "Preferente",
+   "uf_base": 3.23,
+   "hosp_pct": 100,
+   "amb_pct": 60,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_derivados": [
+    "Clínica Cordillera",
+    "Clínica Dávila Vespucio",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PLEN259",
+   "serie": "PLEN",
+   "nombre": "PLENO 259",
+   "tipo": "Libre Elección",
+   "uf_base": 3.25,
+   "hosp_pct": 100,
+   "amb_pct": 80,
+   "prest_hosp": [],
+   "prest_amb": []
+  },
+  {
+   "codigo": "PPS23240",
+   "serie": "PPS",
+   "nombre": "PLENO PLUS SUR 23240",
+   "tipo": "Preferente",
+   "uf_base": 3.29,
+   "hosp_pct": 100,
+   "amb_pct": 70,
+   "prest_hosp": [
+    "Clínica Alemana de Osorno",
+    "Clínica Bupa Santiago",
+    "Clínica BíoBío (Concepción)",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica Isamédica (Rancagua)",
+    "Clínica Los Andes (Los Ángeles)",
+    "Clínica MEDS",
+    "Clínica Puerto Montt",
+    "Clínica Regional Lircay (Talca)",
+    "Hospital Clínico del Sur (Concepción)",
+    "Clínica Alemana de Temuco",
+    "Clínica Alemana de Valdivia",
+    "Hospital Clínico UC Christus",
+    "Clínica Universidad de Los Andes",
+    "Clínica San Carlos de Apoquindo"
+   ],
+   "prest_amb": [
+    "Clínica Alemana de Osorno",
+    "Clínica Bupa Santiago",
+    "Clínica BíoBío (Concepción)",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica Isamédica (Rancagua)",
+    "Clínica Los Andes (Los Ángeles)",
+    "Clínica MEDS",
+    "Clínica Puerto Montt",
+    "Clínica Regional Lircay (Talca)",
+    "Hospital Clínico del Sur (Concepción)",
+    "Clínica Alemana de Temuco",
+    "Clínica Alemana de Valdivia",
+    "Hospital Clínico UC Christus",
+    "Clínica Universidad de Los Andes",
+    "Clínica San Carlos de Apoquindo"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PPL23400",
+   "serie": "PPL",
+   "nombre": "PLENO PLUS 23400",
+   "tipo": "Preferente",
+   "uf_base": 3.3,
+   "hosp_pct": 100,
+   "amb_pct": 70,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus",
+    "Clínica Universidad de Los Andes",
+    "Clínica San Carlos de Apoquindo"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus",
+    "Clínica Universidad de Los Andes",
+    "Clínica San Carlos de Apoquindo"
+   ],
+   "prest_derivados": [
+    "Clínica Cordillera",
+    "Clínica Dávila Vespucio",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PPV24240",
+   "serie": "PPV",
+   "nombre": "PLENO PLUS QUINTA 24240",
+   "tipo": "Preferente",
+   "uf_base": 3.3,
+   "hosp_pct": 100,
+   "amb_pct": 60,
+   "prest_hosp": [
+    "Clínica Bupa Reñaca",
+    "Clínica Bupa Santiago",
+    "Clínica Ciudad del Mar",
+    "Clínica Dávila",
+    "Clínica Los Carrera (Quillota)",
+    "Clínica Los Leones",
+    "Hospital Clínico Viña del Mar",
+    "Clínica Indisa",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus",
+    "Integramédica",
+    "Clínica Las Condes",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Reñaca",
+    "Clínica Bupa Santiago",
+    "Clínica Ciudad del Mar",
+    "Clínica Dávila",
+    "Clínica Los Carrera (Quillota)",
+    "Clínica Los Leones",
+    "Hospital Clínico Viña del Mar",
+    "Clínica Indisa",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus",
+    "Integramédica",
+    "Clínica Las Condes",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PPR24240",
+   "serie": "PPR",
+   "nombre": "PLENO PLUS NORTE 24240",
+   "tipo": "Preferente",
+   "uf_base": 3.33,
+   "hosp_pct": 100,
+   "amb_pct": 60,
+   "prest_hosp": [
+    "Clínica Atacama",
+    "Clínica Bupa Antofagasta",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica La Portada (Antofagasta)",
+    "Clínica San José (Arica)",
+    "Clínica Tarapacá (Iquique)",
+    "Clínica Indisa",
+    "Integramédica",
+    "Clínica Las Condes",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_amb": [
+    "Clínica Atacama",
+    "Clínica Bupa Antofagasta",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica La Portada (Antofagasta)",
+    "Clínica San José (Arica)",
+    "Clínica Tarapacá (Iquique)",
+    "Clínica Indisa",
+    "Integramédica",
+    "Clínica Las Condes",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PS251023",
+   "serie": "PS",
+   "nombre": "PLAN PLENO SALUD 251023",
+   "tipo": "Preferente",
+   "uf_base": 3.33,
+   "hosp_pct": 100,
+   "amb_pct": 70,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Hospital Clínico UC Christus",
+    "Hospital del Profesor",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes",
+    "Clínica Las Condes"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Hospital Clínico UC Christus",
+    "Hospital del Profesor",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes",
+    "Clínica Las Condes"
+   ],
+   "prest_derivados": [
+    "Hospital Clínico Universidad de Chile"
+   ]
+  },
+  {
+   "codigo": "PPS23250",
+   "serie": "PPS",
+   "nombre": "PLENO PLUS SUR 23250",
+   "tipo": "Preferente",
+   "uf_base": 3.35,
+   "hosp_pct": 100,
+   "amb_pct": 70,
+   "prest_hosp": [
+    "Clínica Alemana de Osorno",
+    "Clínica Alemana de Temuco",
+    "Clínica Alemana de Valdivia",
+    "Clínica Bupa Santiago",
+    "Clínica BíoBío (Concepción)",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica Isamédica (Rancagua)",
+    "Clínica Los Andes (Los Ángeles)",
+    "Clínica MEDS",
+    "Clínica Puerto Montt",
+    "Clínica Regional Lircay (Talca)",
+    "Hospital Clínico UC Christus",
+    "Hospital Clínico del Sur (Concepción)",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_amb": [
+    "Clínica Alemana de Osorno",
+    "Clínica Alemana de Temuco",
+    "Clínica Alemana de Valdivia",
+    "Clínica Bupa Santiago",
+    "Clínica BíoBío (Concepción)",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica Isamédica (Rancagua)",
+    "Clínica Los Andes (Los Ángeles)",
+    "Clínica MEDS",
+    "Clínica Puerto Montt",
+    "Clínica Regional Lircay (Talca)",
+    "Hospital Clínico UC Christus",
+    "Hospital Clínico del Sur (Concepción)",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PPL23410",
+   "serie": "PPL",
+   "nombre": "PLENO PLUS 23410",
+   "tipo": "Preferente",
+   "uf_base": 3.36,
+   "hosp_pct": 100,
+   "amb_pct": 70,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_derivados": [
+    "Clínica Cordillera",
+    "Clínica Dávila Vespucio",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PPS23260",
+   "serie": "PPS",
+   "nombre": "PLENO PLUS SUR 23260",
+   "tipo": "Preferente",
+   "uf_base": 3.39,
+   "hosp_pct": 100,
+   "amb_pct": 70,
+   "prest_hosp": [
+    "Clínica Alemana de Osorno",
+    "Clínica Alemana de Temuco",
+    "Clínica Alemana de Valdivia",
+    "Clínica Bupa Santiago",
+    "Clínica BíoBío (Concepción)",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica Isamédica (Rancagua)",
+    "Clínica Los Andes (Los Ángeles)",
+    "Clínica MEDS",
+    "Clínica Puerto Montt",
+    "Clínica Regional Lircay (Talca)",
+    "Hospital Clínico UC Christus",
+    "Hospital Clínico del Sur (Concepción)",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_amb": [
+    "Clínica Alemana de Osorno",
+    "Clínica Alemana de Temuco",
+    "Clínica Alemana de Valdivia",
+    "Clínica Bupa Santiago",
+    "Clínica BíoBío (Concepción)",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica Isamédica (Rancagua)",
+    "Clínica Los Andes (Los Ángeles)",
+    "Clínica MEDS",
+    "Clínica Puerto Montt",
+    "Clínica Regional Lircay (Talca)",
+    "Hospital Clínico UC Christus",
+    "Hospital Clínico del Sur (Concepción)",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PLEN260",
+   "serie": "PLEN",
+   "nombre": "PLENO 260",
+   "tipo": "Libre Elección",
+   "uf_base": 3.42,
+   "hosp_pct": 100,
+   "amb_pct": 80,
+   "prest_hosp": [],
+   "prest_amb": []
+  },
+  {
+   "codigo": "PS251024",
+   "serie": "PS",
+   "nombre": "PLAN PLENO SALUD 251024",
+   "tipo": "Preferente",
+   "uf_base": 3.43,
+   "hosp_pct": 100,
+   "amb_pct": 60,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Hospital Clínico UC Christus",
+    "Hospital del Profesor",
+    "Clínica Las Condes",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Hospital Clínico UC Christus",
+    "Hospital del Profesor",
+    "Clínica Las Condes",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_derivados": [
+    "Hospital Clínico Universidad de Chile"
+   ]
+  },
+  {
+   "codigo": "PM260321",
+   "serie": "PM",
+   "nombre": "PLAN PLENO MAX 260321",
+   "tipo": "Preferente",
+   "uf_base": 3.45,
+   "hosp_pct": 100,
+   "amb_pct": 70,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus",
+    "Hospital del Profesor",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes",
+    "Integramédica",
+    "Clínica Las Condes"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus",
+    "Hospital del Profesor",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes",
+    "Integramédica",
+    "Clínica Las Condes"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera"
+   ]
+  },
+  {
+   "codigo": "PPV24250",
+   "serie": "PPV",
+   "nombre": "PLENO PLUS QUINTA 24250",
+   "tipo": "Preferente",
+   "uf_base": 3.45,
+   "hosp_pct": 100,
+   "amb_pct": 60,
+   "prest_hosp": [
+    "Clínica Bupa Reñaca",
+    "Clínica Bupa Santiago",
+    "Clínica Ciudad del Mar",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica Los Carrera (Quillota)",
+    "Clínica Los Leones",
+    "Hospital Clínico Viña del Mar",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus",
+    "Integramédica",
+    "Clínica Las Condes",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Reñaca",
+    "Clínica Bupa Santiago",
+    "Clínica Ciudad del Mar",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica Los Carrera (Quillota)",
+    "Clínica Los Leones",
+    "Hospital Clínico Viña del Mar",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus",
+    "Integramédica",
+    "Clínica Las Condes",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PPL24411",
+   "serie": "PPL",
+   "nombre": "PLAN PLENO PLUS 24411",
+   "tipo": "Preferente",
+   "uf_base": 3.46,
+   "hosp_pct": 100,
+   "amb_pct": 60,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_derivados": [
+    "Clínica Cordillera",
+    "Clínica Dávila Vespucio",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PPR24250",
+   "serie": "PPR",
+   "nombre": "PLENO PLUS NORTE 24250",
+   "tipo": "Preferente",
+   "uf_base": 3.48,
+   "hosp_pct": 100,
+   "amb_pct": 60,
+   "prest_hosp": [
+    "Clínica Atacama",
+    "Clínica Bupa Antofagasta",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica La Portada (Antofagasta)",
+    "Clínica San José (Arica)",
+    "Clínica Tarapacá (Iquique)",
+    "Integramédica",
+    "Clínica Las Condes",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_amb": [
+    "Clínica Atacama",
+    "Clínica Bupa Antofagasta",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica La Portada (Antofagasta)",
+    "Clínica San José (Arica)",
+    "Clínica Tarapacá (Iquique)",
+    "Integramédica",
+    "Clínica Las Condes",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PS251025",
+   "serie": "PS",
+   "nombre": "PLAN PLENO SALUD 251025",
+   "tipo": "Preferente",
+   "uf_base": 3.49,
+   "hosp_pct": 100,
+   "amb_pct": 60,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Hospital Clínico UC Christus",
+    "Hospital del Profesor",
+    "Clínica Las Condes",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Hospital Clínico UC Christus",
+    "Hospital del Profesor",
+    "Clínica Las Condes",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_derivados": [
+    "Hospital Clínico Universidad de Chile"
+   ]
+  },
+  {
+   "codigo": "PPL23420",
+   "serie": "PPL",
+   "nombre": "PLENO PLUS 23420",
+   "tipo": "Preferente",
+   "uf_base": 3.54,
+   "hosp_pct": 100,
+   "amb_pct": 70,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_derivados": [
+    "Clínica Cordillera",
+    "Clínica Dávila Vespucio",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PLEN261",
+   "serie": "PLEN",
+   "nombre": "PLENO 261",
+   "tipo": "Libre Elección",
+   "uf_base": 3.6,
+   "hosp_pct": 100,
+   "amb_pct": 80,
+   "prest_hosp": [],
+   "prest_amb": []
+  },
+  {
+   "codigo": "PPV24260",
+   "serie": "PPV",
+   "nombre": "PLENO PLUS QUINTA 24260",
+   "tipo": "Preferente",
+   "uf_base": 3.6,
+   "hosp_pct": 100,
+   "amb_pct": 60,
+   "prest_hosp": [
+    "Clínica Bupa Reñaca",
+    "Clínica Bupa Santiago",
+    "Clínica Ciudad del Mar",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica Los Carrera (Quillota)",
+    "Clínica Los Leones",
+    "Hospital Clínico Viña del Mar",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus",
+    "Integramédica",
+    "Clínica Las Condes",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Reñaca",
+    "Clínica Bupa Santiago",
+    "Clínica Ciudad del Mar",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica Los Carrera (Quillota)",
+    "Clínica Los Leones",
+    "Hospital Clínico Viña del Mar",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus",
+    "Integramédica",
+    "Clínica Las Condes",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PPR24260",
+   "serie": "PPR",
+   "nombre": "PLENO PLUS NORTE 24260",
+   "tipo": "Preferente",
+   "uf_base": 3.63,
+   "hosp_pct": 100,
+   "amb_pct": 60,
+   "prest_hosp": [
+    "Clínica Atacama",
+    "Clínica Bupa Antofagasta",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica La Portada (Antofagasta)",
+    "Clínica San José (Arica)",
+    "Clínica Tarapacá (Iquique)",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus",
+    "Integramédica",
+    "Clínica Las Condes",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_amb": [
+    "Clínica Atacama",
+    "Clínica Bupa Antofagasta",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica La Portada (Antofagasta)",
+    "Clínica San José (Arica)",
+    "Clínica Tarapacá (Iquique)",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus",
+    "Integramédica",
+    "Clínica Las Condes",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PM260322",
+   "serie": "PM",
+   "nombre": "PLAN PLENO MAX 260322",
+   "tipo": "Preferente",
+   "uf_base": 3.65,
+   "hosp_pct": 100,
+   "amb_pct": 70,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus",
+    "Hospital del Profesor",
+    "Clínica Las Condes",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus",
+    "Hospital del Profesor",
+    "Clínica Las Condes",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera"
+   ]
+  },
+  {
+   "codigo": "PS251026",
+   "serie": "PS",
+   "nombre": "PLAN PLENO SALUD 251026",
+   "tipo": "Preferente",
+   "uf_base": 3.67,
+   "hosp_pct": 100,
+   "amb_pct": 70,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica Las Condes",
+    "Clínica MEDS",
+    "Hospital Clínico UC Christus",
+    "Hospital del Profesor",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica Las Condes",
+    "Clínica MEDS",
+    "Hospital Clínico UC Christus",
+    "Hospital del Profesor",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_derivados": [
+    "Hospital Clínico Universidad de Chile"
+   ]
+  },
+  {
+   "codigo": "PLEN262",
+   "serie": "PLEN",
+   "nombre": "PLENO 262",
+   "tipo": "Libre Elección",
+   "uf_base": 3.75,
+   "hosp_pct": 100,
+   "amb_pct": 80,
+   "prest_hosp": [],
+   "prest_amb": []
+  },
+  {
+   "codigo": "PPV24270",
+   "serie": "PPV",
+   "nombre": "PLENO PLUS QUINTA 24270",
+   "tipo": "Preferente",
+   "uf_base": 3.75,
+   "hosp_pct": 100,
+   "amb_pct": 70,
+   "prest_hosp": [
+    "Clínica Bupa Reñaca",
+    "Clínica Bupa Santiago",
+    "Clínica Ciudad del Mar",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica Los Carrera (Quillota)",
+    "Clínica Los Leones",
+    "Hospital Clínico Viña del Mar",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus",
+    "Clínica Las Condes",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Reñaca",
+    "Clínica Bupa Santiago",
+    "Clínica Ciudad del Mar",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica Los Carrera (Quillota)",
+    "Clínica Los Leones",
+    "Hospital Clínico Viña del Mar",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus",
+    "Clínica Las Condes",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PPR24270",
+   "serie": "PPR",
+   "nombre": "PLENO PLUS NORTE 24270",
+   "tipo": "Preferente",
+   "uf_base": 3.78,
+   "hosp_pct": 100,
+   "amb_pct": 70,
+   "prest_hosp": [
+    "Clínica Atacama",
+    "Clínica Bupa Antofagasta",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica La Portada (Antofagasta)",
+    "Clínica San José (Arica)",
+    "Clínica Tarapacá (Iquique)",
+    "Clínica Las Condes",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus",
+    "Integramédica",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_amb": [
+    "Clínica Atacama",
+    "Clínica Bupa Antofagasta",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica La Portada (Antofagasta)",
+    "Clínica San José (Arica)",
+    "Clínica Tarapacá (Iquique)",
+    "Clínica Las Condes",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus",
+    "Integramédica",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PPL24430",
+   "serie": "PPL",
+   "nombre": "PLAN PLENO PLUS 24430",
+   "tipo": "Preferente",
+   "uf_base": 3.8,
+   "hosp_pct": 100,
+   "amb_pct": 60,
+   "prest_hosp": [
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes",
+    "Clínica Las Condes"
+   ],
+   "prest_amb": [
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes",
+    "Clínica Las Condes"
+   ],
+   "prest_derivados": [
+    "Clínica Dávila",
+    "Hospital Clínico Universidad de Chile"
+   ]
+  },
+  {
+   "codigo": "PM260323",
+   "serie": "PM",
+   "nombre": "PLAN PLENO MAX 260323",
+   "tipo": "Preferente",
+   "uf_base": 3.83,
+   "hosp_pct": 100,
+   "amb_pct": 70,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica Las Condes",
+    "Clínica MEDS",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus",
+    "Hospital del Profesor",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica Las Condes",
+    "Clínica MEDS",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus",
+    "Hospital del Profesor",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera"
+   ]
+  },
+  {
+   "codigo": "PPS23270",
+   "serie": "PPS",
+   "nombre": "PLENO PLUS SUR 23270",
+   "tipo": "Preferente",
+   "uf_base": 3.84,
+   "hosp_pct": 100,
+   "amb_pct": 80,
+   "prest_hosp": [
+    "Clínica Alemana de Osorno",
+    "Clínica Alemana de Temuco",
+    "Clínica Alemana de Valdivia",
+    "Clínica Bupa Santiago",
+    "Clínica BíoBío (Concepción)",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica Isamédica (Rancagua)",
+    "Clínica Los Andes (Los Ángeles)",
+    "Clínica MEDS",
+    "Clínica Puerto Montt",
+    "Clínica Regional Lircay (Talca)",
+    "Hospital Clínico UC Christus",
+    "Hospital Clínico del Sur (Concepción)",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica Alemana de Osorno",
+    "Clínica Alemana de Temuco",
+    "Clínica Alemana de Valdivia",
+    "Clínica Bupa Santiago",
+    "Clínica BíoBío (Concepción)",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica Isamédica (Rancagua)",
+    "Clínica Los Andes (Los Ángeles)",
+    "Clínica MEDS",
+    "Clínica Puerto Montt",
+    "Clínica Regional Lircay (Talca)",
+    "Hospital Clínico UC Christus",
+    "Hospital Clínico del Sur (Concepción)",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PPV24280",
+   "serie": "PPV",
+   "nombre": "PLENO PLUS QUINTA 24280",
+   "tipo": "Preferente",
+   "uf_base": 3.9,
+   "hosp_pct": 100,
+   "amb_pct": 70,
+   "prest_hosp": [
+    "Clínica Bupa Reñaca",
+    "Clínica Bupa Santiago",
+    "Clínica Ciudad del Mar",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica Los Carrera (Quillota)",
+    "Clínica Los Leones",
+    "Hospital Clínico Viña del Mar",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus",
+    "Clínica Las Condes",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Reñaca",
+    "Clínica Bupa Santiago",
+    "Clínica Ciudad del Mar",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica Los Carrera (Quillota)",
+    "Clínica Los Leones",
+    "Hospital Clínico Viña del Mar",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus",
+    "Clínica Las Condes",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PPR24280",
+   "serie": "PPR",
+   "nombre": "PLENO PLUS NORTE 24280",
+   "tipo": "Preferente",
+   "uf_base": 3.93,
+   "hosp_pct": 100,
+   "amb_pct": 70,
+   "prest_hosp": [
+    "Clínica Atacama",
+    "Clínica Bupa Antofagasta",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica La Portada (Antofagasta)",
+    "Clínica San José (Arica)",
+    "Clínica Tarapacá (Iquique)",
+    "Clínica Las Condes",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus",
+    "Integramédica",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_amb": [
+    "Clínica Atacama",
+    "Clínica Bupa Antofagasta",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica La Portada (Antofagasta)",
+    "Clínica San José (Arica)",
+    "Clínica Tarapacá (Iquique)",
+    "Clínica Las Condes",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus",
+    "Integramédica",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PS251027",
+   "serie": "PS",
+   "nombre": "PLAN PLENO SALUD 251027",
+   "tipo": "Preferente",
+   "uf_base": 3.94,
+   "hosp_pct": 100,
+   "amb_pct": 70,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica Las Condes",
+    "Clínica MEDS",
+    "Hospital Clínico UC Christus",
+    "Hospital del Profesor",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica Las Condes",
+    "Clínica MEDS",
+    "Hospital Clínico UC Christus",
+    "Hospital del Profesor",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_derivados": [
+    "Hospital Clínico Universidad de Chile"
+   ]
+  },
+  {
+   "codigo": "PLEN263",
+   "serie": "PLEN",
+   "nombre": "PLENO 263",
+   "tipo": "Libre Elección",
+   "uf_base": 4.01,
+   "hosp_pct": 100,
+   "amb_pct": 80,
+   "prest_hosp": [],
+   "prest_amb": []
+  },
+  {
+   "codigo": "PM260324",
+   "serie": "PM",
+   "nombre": "PLAN PLENO MAX 260324",
+   "tipo": "Preferente",
+   "uf_base": 4.02,
+   "hosp_pct": 100,
+   "amb_pct": 70,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica Las Condes",
+    "Clínica MEDS",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus",
+    "Hospital del Profesor",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica Las Condes",
+    "Clínica MEDS",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus",
+    "Hospital del Profesor",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera"
+   ]
+  },
+  {
+   "codigo": "PPL24431",
+   "serie": "PPL",
+   "nombre": "PLAN PLENO PLUS 24431",
+   "tipo": "Preferente",
+   "uf_base": 4.05,
+   "hosp_pct": 100,
+   "amb_pct": 60,
+   "prest_hosp": [
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes",
+    "Clínica Las Condes"
+   ],
+   "prest_amb": [
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes",
+    "Clínica Las Condes"
+   ],
+   "prest_derivados": [
+    "Clínica Cordillera",
+    "Clínica Dávila Vespucio",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PPV24290",
+   "serie": "PPV",
+   "nombre": "PLENO PLUS QUINTA 24290",
+   "tipo": "Preferente",
+   "uf_base": 4.05,
+   "hosp_pct": 100,
+   "amb_pct": 80,
+   "prest_hosp": [
+    "Clínica Bupa Reñaca",
+    "Clínica Bupa Santiago",
+    "Clínica Ciudad del Mar",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica Los Carrera (Quillota)",
+    "Clínica Los Leones",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus",
+    "Hospital Clínico Viña del Mar",
+    "Clínica Las Condes",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Reñaca",
+    "Clínica Bupa Santiago",
+    "Clínica Ciudad del Mar",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica Los Carrera (Quillota)",
+    "Clínica Los Leones",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus",
+    "Hospital Clínico Viña del Mar",
+    "Clínica Las Condes",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PS251028",
+   "serie": "PS",
+   "nombre": "PLAN PLENO SALUD 251028",
+   "tipo": "Preferente",
+   "uf_base": 4.07,
+   "hosp_pct": 100,
+   "amb_pct": 70,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica Las Condes",
+    "Clínica MEDS",
+    "Hospital Clínico UC Christus",
+    "Hospital del Profesor",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica Las Condes",
+    "Clínica MEDS",
+    "Hospital Clínico UC Christus",
+    "Hospital del Profesor",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_derivados": [
+    "Hospital Clínico Universidad de Chile"
+   ]
+  },
+  {
+   "codigo": "PPR24290",
+   "serie": "PPR",
+   "nombre": "PLENO PLUS NORTE 24290",
+   "tipo": "Preferente",
+   "uf_base": 4.08,
+   "hosp_pct": 100,
+   "amb_pct": 80,
+   "prest_hosp": [
+    "Clínica Atacama",
+    "Clínica Bupa Antofagasta",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica La Portada (Antofagasta)",
+    "Clínica San José (Arica)",
+    "Clínica Tarapacá (Iquique)",
+    "Clínica Las Condes",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica Atacama",
+    "Clínica Bupa Antofagasta",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica La Portada (Antofagasta)",
+    "Clínica San José (Arica)",
+    "Clínica Tarapacá (Iquique)",
+    "Clínica Las Condes",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PM260325",
+   "serie": "PM",
+   "nombre": "PLAN PLENO MAX 260325",
+   "tipo": "Preferente",
+   "uf_base": 4.19,
+   "hosp_pct": 100,
+   "amb_pct": 70,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica Las Condes",
+    "Clínica MEDS",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus",
+    "Hospital del Profesor",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica Las Condes",
+    "Clínica MEDS",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus",
+    "Hospital del Profesor",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera"
+   ]
+  },
+  {
+   "codigo": "PPV24300",
+   "serie": "PPV",
+   "nombre": "PLENO PLUS QUINTA 24300",
+   "tipo": "Preferente",
+   "uf_base": 4.2,
+   "hosp_pct": 100,
+   "amb_pct": 60,
+   "prest_hosp": [
+    "Clínica Bupa Reñaca",
+    "Clínica Bupa Santiago",
+    "Clínica Ciudad del Mar",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica Las Condes",
+    "Clínica Los Carrera (Quillota)",
+    "Clínica Los Leones",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Santa María",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus",
+    "Hospital Clínico Viña del Mar",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Reñaca",
+    "Clínica Bupa Santiago",
+    "Clínica Ciudad del Mar",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica Las Condes",
+    "Clínica Los Carrera (Quillota)",
+    "Clínica Los Leones",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Santa María",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus",
+    "Hospital Clínico Viña del Mar",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PLEN264",
+   "serie": "PLEN",
+   "nombre": "PLENO 264",
+   "tipo": "Libre Elección",
+   "uf_base": 4.22,
+   "hosp_pct": 100,
+   "amb_pct": 80,
+   "prest_hosp": [],
+   "prest_amb": []
+  },
+  {
+   "codigo": "PPS23280",
+   "serie": "PPS",
+   "nombre": "PLENO PLUS SUR 23280",
+   "tipo": "Preferente",
+   "uf_base": 4.23,
+   "hosp_pct": 100,
+   "amb_pct": 60,
+   "prest_hosp": [
+    "Clínica Alemana de Osorno",
+    "Clínica Alemana de Temuco",
+    "Clínica Alemana de Valdivia",
+    "Clínica Bupa Santiago",
+    "Clínica BíoBío (Concepción)",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica Isamédica (Rancagua)",
+    "Clínica Los Andes (Los Ángeles)",
+    "Clínica MEDS",
+    "Clínica Puerto Montt",
+    "Clínica Regional Lircay (Talca)",
+    "Hospital Clínico UC Christus",
+    "Hospital Clínico del Sur (Concepción)",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes",
+    "Integramédica",
+    "Clínica Las Condes"
+   ],
+   "prest_amb": [
+    "Clínica Alemana de Osorno",
+    "Clínica Alemana de Temuco",
+    "Clínica Alemana de Valdivia",
+    "Clínica Bupa Santiago",
+    "Clínica BíoBío (Concepción)",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica Isamédica (Rancagua)",
+    "Clínica Los Andes (Los Ángeles)",
+    "Clínica MEDS",
+    "Clínica Puerto Montt",
+    "Clínica Regional Lircay (Talca)",
+    "Hospital Clínico UC Christus",
+    "Hospital Clínico del Sur (Concepción)",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes",
+    "Integramédica",
+    "Clínica Las Condes"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PPR24300",
+   "serie": "PPR",
+   "nombre": "PLENO PLUS NORTE 24300",
+   "tipo": "Preferente",
+   "uf_base": 4.24,
+   "hosp_pct": 100,
+   "amb_pct": 60,
+   "prest_hosp": [
+    "Clínica Atacama",
+    "Clínica Bupa Antofagasta",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica La Portada (Antofagasta)",
+    "Clínica Las Condes",
+    "Clínica San José (Arica)",
+    "Clínica Tarapacá (Iquique)",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica Atacama",
+    "Clínica Bupa Antofagasta",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica La Portada (Antofagasta)",
+    "Clínica Las Condes",
+    "Clínica San José (Arica)",
+    "Clínica Tarapacá (Iquique)",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PS251029",
+   "serie": "PS",
+   "nombre": "PLAN PLENO SALUD 251029",
+   "tipo": "Preferente",
+   "uf_base": 4.25,
+   "hosp_pct": 100,
+   "amb_pct": 70,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica Las Condes",
+    "Clínica MEDS",
+    "Hospital Clínico UC Christus",
+    "Hospital del Profesor",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica Las Condes",
+    "Clínica MEDS",
+    "Hospital Clínico UC Christus",
+    "Hospital del Profesor",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes"
+   ],
+   "prest_derivados": [
+    "Hospital Clínico Universidad de Chile"
+   ]
+  },
+  {
+   "codigo": "PPL24440",
+   "serie": "PPL",
+   "nombre": "PLAN PLENO PLUS 24440",
+   "tipo": "Preferente",
+   "uf_base": 4.3,
+   "hosp_pct": 100,
+   "amb_pct": 60,
+   "prest_hosp": [
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes",
+    "Clínica Las Condes"
+   ],
+   "prest_amb": [
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes",
+    "Clínica Las Condes"
+   ],
+   "prest_derivados": [
+    "Clínica Dávila",
+    "Hospital Clínico Universidad de Chile"
+   ]
+  },
+  {
+   "codigo": "PPV24310",
+   "serie": "PPV",
+   "nombre": "PLENO PLUS QUINTA 24310",
+   "tipo": "Preferente",
+   "uf_base": 4.35,
+   "hosp_pct": 100,
+   "amb_pct": 60,
+   "prest_hosp": [
+    "Clínica Bupa Reñaca",
+    "Clínica Bupa Santiago",
+    "Clínica Ciudad del Mar",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica Las Condes",
+    "Clínica Los Carrera (Quillota)",
+    "Clínica Los Leones",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Santa María",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus",
+    "Hospital Clínico Viña del Mar",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Reñaca",
+    "Clínica Bupa Santiago",
+    "Clínica Ciudad del Mar",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica Las Condes",
+    "Clínica Los Carrera (Quillota)",
+    "Clínica Los Leones",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Santa María",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus",
+    "Hospital Clínico Viña del Mar",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PM260326",
+   "serie": "PM",
+   "nombre": "PLAN PLENO MAX 260326",
+   "tipo": "Preferente",
+   "uf_base": 4.36,
+   "hosp_pct": 100,
+   "amb_pct": 70,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica Las Condes",
+    "Clínica MEDS",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Santa María",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus",
+    "Hospital del Profesor",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica Las Condes",
+    "Clínica MEDS",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Santa María",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus",
+    "Hospital del Profesor",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera"
+   ]
+  },
+  {
+   "codigo": "PPR24310",
+   "serie": "PPR",
+   "nombre": "PLENO PLUS NORTE 24310",
+   "tipo": "Preferente",
+   "uf_base": 4.39,
+   "hosp_pct": 100,
+   "amb_pct": 60,
+   "prest_hosp": [
+    "Clínica Atacama",
+    "Clínica Bupa Antofagasta",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica La Portada (Antofagasta)",
+    "Clínica San José (Arica)",
+    "Clínica Tarapacá (Iquique)",
+    "Clínica Santa María",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus",
+    "Clínica San Carlos de Apoquindo",
+    "Integramédica",
+    "Clínica Las Condes"
+   ],
+   "prest_amb": [
+    "Clínica Atacama",
+    "Clínica Bupa Antofagasta",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica La Portada (Antofagasta)",
+    "Clínica San José (Arica)",
+    "Clínica Tarapacá (Iquique)",
+    "Clínica Santa María",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus",
+    "Clínica San Carlos de Apoquindo",
+    "Integramédica",
+    "Clínica Las Condes"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PS251030",
+   "serie": "PS",
+   "nombre": "PLAN PLENO SALUD 251030",
+   "tipo": "Preferente",
+   "uf_base": 4.41,
+   "hosp_pct": 100,
+   "amb_pct": 70,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica Las Condes",
+    "Clínica MEDS",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus",
+    "Hospital del Profesor"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica Las Condes",
+    "Clínica MEDS",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus",
+    "Hospital del Profesor"
+   ],
+   "prest_derivados": [
+    "Hospital Clínico Universidad de Chile"
+   ]
+  },
+  {
+   "codigo": "PLEN265",
+   "serie": "PLEN",
+   "nombre": "PLENO 265",
+   "tipo": "Libre Elección",
+   "uf_base": 4.44,
+   "hosp_pct": 100,
+   "amb_pct": 80,
+   "prest_hosp": [],
+   "prest_amb": []
+  },
+  {
+   "codigo": "PM260327",
+   "serie": "PM",
+   "nombre": "PLAN PLENO MAX 260327",
+   "tipo": "Preferente",
+   "uf_base": 4.45,
+   "hosp_pct": 100,
+   "amb_pct": 70,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica Las Condes",
+    "Clínica MEDS",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Santa María",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus",
+    "Hospital del Profesor",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica Las Condes",
+    "Clínica MEDS",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Santa María",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus",
+    "Hospital del Profesor",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera"
+   ]
+  },
+  {
+   "codigo": "PPL24441",
+   "serie": "PPL",
+   "nombre": "PLAN PLENO PLUS 24441",
+   "tipo": "Preferente",
+   "uf_base": 4.45,
+   "hosp_pct": 100,
+   "amb_pct": 70,
+   "prest_hosp": [
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes",
+    "Clínica Las Condes",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes",
+    "Clínica Las Condes",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Clínica Cordillera",
+    "Clínica Dávila Vespucio",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PPV24320",
+   "serie": "PPV",
+   "nombre": "PLENO PLUS QUINTA 24320",
+   "tipo": "Preferente",
+   "uf_base": 4.5,
+   "hosp_pct": 100,
+   "amb_pct": 70,
+   "prest_hosp": [
+    "Clínica Bupa Reñaca",
+    "Clínica Bupa Santiago",
+    "Clínica Ciudad del Mar",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica Las Condes",
+    "Clínica Los Carrera (Quillota)",
+    "Clínica Los Leones",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Santa María",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus",
+    "Hospital Clínico Viña del Mar",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Reñaca",
+    "Clínica Bupa Santiago",
+    "Clínica Ciudad del Mar",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica Las Condes",
+    "Clínica Los Carrera (Quillota)",
+    "Clínica Los Leones",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Santa María",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus",
+    "Hospital Clínico Viña del Mar",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PPR24320",
+   "serie": "PPR",
+   "nombre": "PLENO PLUS NORTE 24320",
+   "tipo": "Preferente",
+   "uf_base": 4.54,
+   "hosp_pct": 100,
+   "amb_pct": 70,
+   "prest_hosp": [
+    "Clínica Atacama",
+    "Clínica Bupa Antofagasta",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica La Portada (Antofagasta)",
+    "Clínica San José (Arica)",
+    "Clínica Tarapacá (Iquique)",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes",
+    "Integramédica",
+    "Clínica Las Condes"
+   ],
+   "prest_amb": [
+    "Clínica Atacama",
+    "Clínica Bupa Antofagasta",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica La Portada (Antofagasta)",
+    "Clínica San José (Arica)",
+    "Clínica Tarapacá (Iquique)",
+    "Clínica Santa María",
+    "Hospital Clínico UC Christus",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes",
+    "Integramédica",
+    "Clínica Las Condes"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PPS23290",
+   "serie": "PPS",
+   "nombre": "PLENO PLUS SUR 23290",
+   "tipo": "Preferente",
+   "uf_base": 4.54,
+   "hosp_pct": 100,
+   "amb_pct": 70,
+   "prest_hosp": [
+    "Clínica Alemana de Osorno",
+    "Clínica Alemana de Temuco",
+    "Clínica Alemana de Valdivia",
+    "Clínica Bupa Santiago",
+    "Clínica BíoBío (Concepción)",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica Isamédica (Rancagua)",
+    "Clínica Los Andes (Los Ángeles)",
+    "Clínica MEDS",
+    "Clínica Puerto Montt",
+    "Clínica Regional Lircay (Talca)",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus",
+    "Hospital Clínico del Sur (Concepción)",
+    "Clínica Las Condes",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica Alemana de Osorno",
+    "Clínica Alemana de Temuco",
+    "Clínica Alemana de Valdivia",
+    "Clínica Bupa Santiago",
+    "Clínica BíoBío (Concepción)",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica Isamédica (Rancagua)",
+    "Clínica Los Andes (Los Ángeles)",
+    "Clínica MEDS",
+    "Clínica Puerto Montt",
+    "Clínica Regional Lircay (Talca)",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus",
+    "Hospital Clínico del Sur (Concepción)",
+    "Clínica Las Condes",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PM260328",
+   "serie": "PM",
+   "nombre": "PLAN PLENO MAX 260328",
+   "tipo": "Preferente",
+   "uf_base": 4.58,
+   "hosp_pct": 100,
+   "amb_pct": 70,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica Las Condes",
+    "Clínica MEDS",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Santa María",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus",
+    "Hospital del Profesor",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica Las Condes",
+    "Clínica MEDS",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Santa María",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus",
+    "Hospital del Profesor",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera"
+   ]
+  },
+  {
+   "codigo": "PPV24330",
+   "serie": "PPV",
+   "nombre": "PLENO PLUS QUINTA 24330",
+   "tipo": "Preferente",
+   "uf_base": 4.65,
+   "hosp_pct": 100,
+   "amb_pct": 70,
+   "prest_hosp": [
+    "Clínica Bupa Reñaca",
+    "Clínica Bupa Santiago",
+    "Clínica Ciudad del Mar",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica Las Condes",
+    "Clínica Los Carrera (Quillota)",
+    "Clínica Los Leones",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Santa María",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus",
+    "Hospital Clínico Viña del Mar",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Reñaca",
+    "Clínica Bupa Santiago",
+    "Clínica Ciudad del Mar",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica Las Condes",
+    "Clínica Los Carrera (Quillota)",
+    "Clínica Los Leones",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Santa María",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus",
+    "Hospital Clínico Viña del Mar",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PPL24450",
+   "serie": "PPL",
+   "nombre": "PLAN PLENO PLUS 24450",
+   "tipo": "Preferente",
+   "uf_base": 4.67,
+   "hosp_pct": 100,
+   "amb_pct": 70,
+   "prest_hosp": [
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Santa María",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus",
+    "Clínica Las Condes",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica Indisa",
+    "Clínica MEDS",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Santa María",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus",
+    "Clínica Las Condes",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Clínica Dávila",
+    "Hospital Clínico Universidad de Chile"
+   ]
+  },
+  {
+   "codigo": "PS261031",
+   "serie": "PS",
+   "nombre": "PLAN PLENO SALUD 251031",
+   "tipo": "Preferente",
+   "uf_base": 4.67,
+   "hosp_pct": 100,
+   "amb_pct": 70,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica Las Condes",
+    "Clínica MEDS",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus",
+    "Hospital del Profesor"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica Las Condes",
+    "Clínica MEDS",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus",
+    "Hospital del Profesor"
+   ],
+   "prest_derivados": [
+    "Hospital Clínico Universidad de Chile"
+   ]
+  },
+  {
+   "codigo": "PPR24330",
+   "serie": "PPR",
+   "nombre": "PLENO PLUS NORTE 24330",
+   "tipo": "Preferente",
+   "uf_base": 4.69,
+   "hosp_pct": 100,
+   "amb_pct": 70,
+   "prest_hosp": [
+    "Clínica Atacama",
+    "Clínica Bupa Antofagasta",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica La Portada (Antofagasta)",
+    "Clínica San José (Arica)",
+    "Clínica Tarapacá (Iquique)",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Santa María",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus",
+    "Integramédica",
+    "Clínica Las Condes"
+   ],
+   "prest_amb": [
+    "Clínica Atacama",
+    "Clínica Bupa Antofagasta",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica La Portada (Antofagasta)",
+    "Clínica San José (Arica)",
+    "Clínica Tarapacá (Iquique)",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Santa María",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus",
+    "Integramédica",
+    "Clínica Las Condes"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PLEN266",
+   "serie": "PLEN",
+   "nombre": "PLENO 266",
+   "tipo": "Libre Elección",
+   "uf_base": 4.72,
+   "hosp_pct": 100,
+   "amb_pct": 80,
+   "prest_hosp": [],
+   "prest_amb": []
+  },
+  {
+   "codigo": "PM260329",
+   "serie": "PM",
+   "nombre": "PLAN PLENO MAX 260329",
+   "tipo": "Preferente",
+   "uf_base": 4.75,
+   "hosp_pct": 100,
+   "amb_pct": 70,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica Las Condes",
+    "Clínica MEDS",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Santa María",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus",
+    "Hospital del Profesor",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica Las Condes",
+    "Clínica MEDS",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Santa María",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus",
+    "Hospital del Profesor",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera"
+   ]
+  },
+  {
+   "codigo": "PPV24340",
+   "serie": "PPV",
+   "nombre": "PLENO PLUS QUINTA 24340",
+   "tipo": "Preferente",
+   "uf_base": 4.8,
+   "hosp_pct": 100,
+   "amb_pct": 80,
+   "prest_hosp": [
+    "Clínica Bupa Reñaca",
+    "Clínica Bupa Santiago",
+    "Clínica Ciudad del Mar",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica Las Condes",
+    "Clínica Los Carrera (Quillota)",
+    "Clínica Los Leones",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Santa María",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus",
+    "Hospital Clínico Viña del Mar",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Reñaca",
+    "Clínica Bupa Santiago",
+    "Clínica Ciudad del Mar",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica Las Condes",
+    "Clínica Los Carrera (Quillota)",
+    "Clínica Los Leones",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Santa María",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus",
+    "Hospital Clínico Viña del Mar",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PPS23300",
+   "serie": "PPS",
+   "nombre": "PLENO PLUS SUR 23300",
+   "tipo": "Preferente",
+   "uf_base": 4.81,
+   "hosp_pct": 100,
+   "amb_pct": 80,
+   "prest_hosp": [
+    "Clínica Alemana de Osorno",
+    "Clínica Alemana de Temuco",
+    "Clínica Alemana de Valdivia",
+    "Clínica Bupa Santiago",
+    "Clínica BíoBío (Concepción)",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica Isamédica (Rancagua)",
+    "Clínica Los Andes (Los Ángeles)",
+    "Clínica MEDS",
+    "Clínica Puerto Montt",
+    "Clínica Regional Lircay (Talca)",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus",
+    "Hospital Clínico del Sur (Concepción)",
+    "Clínica Las Condes",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica Alemana de Osorno",
+    "Clínica Alemana de Temuco",
+    "Clínica Alemana de Valdivia",
+    "Clínica Bupa Santiago",
+    "Clínica BíoBío (Concepción)",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica Isamédica (Rancagua)",
+    "Clínica Los Andes (Los Ángeles)",
+    "Clínica MEDS",
+    "Clínica Puerto Montt",
+    "Clínica Regional Lircay (Talca)",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus",
+    "Hospital Clínico del Sur (Concepción)",
+    "Clínica Las Condes",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PPR24340",
+   "serie": "PPR",
+   "nombre": "PLENO PLUS NORTE 24340",
+   "tipo": "Preferente",
+   "uf_base": 4.84,
+   "hosp_pct": 100,
+   "amb_pct": 80,
+   "prest_hosp": [
+    "Clínica Atacama",
+    "Clínica Bupa Antofagasta",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica La Portada (Antofagasta)",
+    "Clínica Las Condes",
+    "Clínica San José (Arica)",
+    "Clínica Tarapacá (Iquique)",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Santa María",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica Atacama",
+    "Clínica Bupa Antofagasta",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica La Portada (Antofagasta)",
+    "Clínica Las Condes",
+    "Clínica San José (Arica)",
+    "Clínica Tarapacá (Iquique)",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Santa María",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PM260330",
+   "serie": "PM",
+   "nombre": "PLAN PLENO MAX 260330",
+   "tipo": "Preferente",
+   "uf_base": 4.93,
+   "hosp_pct": 100,
+   "amb_pct": 70,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica Las Condes",
+    "Clínica MEDS",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Santa María",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus",
+    "Hospital del Profesor",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica Las Condes",
+    "Clínica MEDS",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Santa María",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus",
+    "Hospital del Profesor",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera"
+   ]
+  },
+  {
+   "codigo": "PS261032",
+   "serie": "PS",
+   "nombre": "PLAN PLENO SALUD 251032",
+   "tipo": "Preferente",
+   "uf_base": 4.95,
+   "hosp_pct": 100,
+   "amb_pct": 70,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica Las Condes",
+    "Clínica MEDS",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus",
+    "Hospital del Profesor"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica Las Condes",
+    "Clínica MEDS",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus",
+    "Hospital del Profesor"
+   ],
+   "prest_derivados": [
+    "Hospital Clínico Universidad de Chile"
+   ]
+  },
+  {
+   "codigo": "PPL24460",
+   "serie": "PPL",
+   "nombre": "PLAN PLENO PLUS 24460",
+   "tipo": "Preferente",
+   "uf_base": 5.02,
+   "hosp_pct": 100,
+   "amb_pct": 70,
+   "prest_hosp": [
+    "Clínica Indisa",
+    "Clínica Las Condes",
+    "Clínica MEDS",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Santa María",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus"
+   ],
+   "prest_amb": [
+    "Clínica Indisa",
+    "Clínica Las Condes",
+    "Clínica MEDS",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Santa María",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus"
+   ],
+   "prest_derivados": [
+    "Clínica Dávila",
+    "Hospital Clínico Universidad de Chile"
+   ]
+  },
+  {
+   "codigo": "PLEN267",
+   "serie": "PLEN",
+   "nombre": "PLENO 267",
+   "tipo": "Libre Elección",
+   "uf_base": 5.03,
+   "hosp_pct": 100,
+   "amb_pct": 80,
+   "prest_hosp": [],
+   "prest_amb": []
+  },
+  {
+   "codigo": "PPV24350",
+   "serie": "PPV",
+   "nombre": "PLENO PLUS QUINTA 24350",
+   "tipo": "Preferente",
+   "uf_base": 5.05,
+   "hosp_pct": 100,
+   "amb_pct": 80,
+   "prest_hosp": [
+    "Clínica Bupa Reñaca",
+    "Clínica Bupa Santiago",
+    "Clínica Ciudad del Mar",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica Las Condes",
+    "Clínica Los Carrera (Quillota)",
+    "Clínica Los Leones",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Santa María",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus",
+    "Hospital Clínico Viña del Mar",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Reñaca",
+    "Clínica Bupa Santiago",
+    "Clínica Ciudad del Mar",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica Las Condes",
+    "Clínica Los Carrera (Quillota)",
+    "Clínica Los Leones",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Santa María",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus",
+    "Hospital Clínico Viña del Mar",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PPR24350",
+   "serie": "PPR",
+   "nombre": "PLENO PLUS NORTE 24350",
+   "tipo": "Preferente",
+   "uf_base": 5.09,
+   "hosp_pct": 100,
+   "amb_pct": 80,
+   "prest_hosp": [
+    "Clínica Atacama",
+    "Clínica Bupa Antofagasta",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica La Portada (Antofagasta)",
+    "Clínica Las Condes",
+    "Clínica San José (Arica)",
+    "Clínica Tarapacá (Iquique)",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Santa María",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica Atacama",
+    "Clínica Bupa Antofagasta",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica La Portada (Antofagasta)",
+    "Clínica Las Condes",
+    "Clínica San José (Arica)",
+    "Clínica Tarapacá (Iquique)",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Santa María",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PPL24461",
+   "serie": "PPL",
+   "nombre": "PLAN PLENO PLUS 24461",
+   "tipo": "Preferente",
+   "uf_base": 5.1,
+   "hosp_pct": 100,
+   "amb_pct": 80,
+   "prest_hosp": [
+    "Clínica Indisa",
+    "Clínica Las Condes",
+    "Clínica MEDS",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Santa María",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica Indisa",
+    "Clínica Las Condes",
+    "Clínica MEDS",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Santa María",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Clínica Cordillera",
+    "Clínica Dávila Vespucio",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PM260331",
+   "serie": "PM",
+   "nombre": "PLAN PLENO MAX 260331",
+   "tipo": "Preferente",
+   "uf_base": 5.13,
+   "hosp_pct": 100,
+   "amb_pct": 70,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica Las Condes",
+    "Clínica MEDS",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Santa María",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus",
+    "Hospital del Profesor",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica Las Condes",
+    "Clínica MEDS",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Santa María",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus",
+    "Hospital del Profesor",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera"
+   ]
+  },
+  {
+   "codigo": "PLEN268",
+   "serie": "PLEN",
+   "nombre": "PLENO 268",
+   "tipo": "Libre Elección",
+   "uf_base": 5.14,
+   "hosp_pct": 100,
+   "amb_pct": 80,
+   "prest_hosp": [],
+   "prest_amb": []
+  },
+  {
+   "codigo": "PPV24360",
+   "serie": "PPV",
+   "nombre": "PLENO PLUS QUINTA 24360",
+   "tipo": "Preferente",
+   "uf_base": 5.2,
+   "hosp_pct": 100,
+   "amb_pct": 80,
+   "prest_hosp": [
+    "Clínica Bupa Reñaca",
+    "Clínica Bupa Santiago",
+    "Clínica Ciudad del Mar",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica Las Condes",
+    "Clínica Los Carrera (Quillota)",
+    "Clínica Los Leones",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Santa María",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus",
+    "Hospital Clínico Viña del Mar",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Reñaca",
+    "Clínica Bupa Santiago",
+    "Clínica Ciudad del Mar",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica Las Condes",
+    "Clínica Los Carrera (Quillota)",
+    "Clínica Los Leones",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Santa María",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus",
+    "Hospital Clínico Viña del Mar",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PS261033",
+   "serie": "PS",
+   "nombre": "PLAN PLENO SALUD 251033",
+   "tipo": "Preferente",
+   "uf_base": 5.21,
+   "hosp_pct": 100,
+   "amb_pct": 80,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica Las Condes",
+    "Clínica MEDS",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus",
+    "Hospital del Profesor",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica Las Condes",
+    "Clínica MEDS",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus",
+    "Hospital del Profesor",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Hospital Clínico Universidad de Chile"
+   ]
+  },
+  {
+   "codigo": "PPR24360",
+   "serie": "PPR",
+   "nombre": "PLENO PLUS NORTE 24360",
+   "tipo": "Preferente",
+   "uf_base": 5.24,
+   "hosp_pct": 100,
+   "amb_pct": 80,
+   "prest_hosp": [
+    "Clínica Atacama",
+    "Clínica Bupa Antofagasta",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica La Portada (Antofagasta)",
+    "Clínica Las Condes",
+    "Clínica San José (Arica)",
+    "Clínica Tarapacá (Iquique)",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Santa María",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica Atacama",
+    "Clínica Bupa Antofagasta",
+    "Clínica Bupa Santiago",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica La Portada (Antofagasta)",
+    "Clínica Las Condes",
+    "Clínica San José (Arica)",
+    "Clínica Tarapacá (Iquique)",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Santa María",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PLEN269",
+   "serie": "PLEN",
+   "nombre": "PLENO 269",
+   "tipo": "Libre Elección",
+   "uf_base": 5.29,
+   "hosp_pct": 100,
+   "amb_pct": 80,
+   "prest_hosp": [],
+   "prest_amb": []
+  },
+  {
+   "codigo": "PPS23310",
+   "serie": "PPS",
+   "nombre": "PLENO PLUS SUR 23310",
+   "tipo": "Preferente",
+   "uf_base": 5.29,
+   "hosp_pct": 100,
+   "amb_pct": 80,
+   "prest_hosp": [
+    "Clínica Alemana de Osorno",
+    "Clínica Alemana de Temuco",
+    "Clínica Alemana de Valdivia",
+    "Clínica Bupa Santiago",
+    "Clínica BíoBío (Concepción)",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica Isamédica (Rancagua)",
+    "Clínica Las Condes",
+    "Clínica Los Andes (Los Ángeles)",
+    "Clínica MEDS",
+    "Clínica Puerto Montt",
+    "Clínica Regional Lircay (Talca)",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus",
+    "Hospital Clínico del Sur (Concepción)",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica Alemana de Osorno",
+    "Clínica Alemana de Temuco",
+    "Clínica Alemana de Valdivia",
+    "Clínica Bupa Santiago",
+    "Clínica BíoBío (Concepción)",
+    "Clínica Dávila",
+    "Clínica Indisa",
+    "Clínica Isamédica (Rancagua)",
+    "Clínica Las Condes",
+    "Clínica Los Andes (Los Ángeles)",
+    "Clínica MEDS",
+    "Clínica Puerto Montt",
+    "Clínica Regional Lircay (Talca)",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus",
+    "Hospital Clínico del Sur (Concepción)",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Hospital Clínico Universidad de Chile",
+    "Hospital del Profesor"
+   ]
+  },
+  {
+   "codigo": "PM260332",
+   "serie": "PM",
+   "nombre": "PLAN PLENO MAX 260332",
+   "tipo": "Preferente",
+   "uf_base": 5.32,
+   "hosp_pct": 100,
+   "amb_pct": 70,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica Las Condes",
+    "Clínica MEDS",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Santa María",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus",
+    "Hospital del Profesor",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica Las Condes",
+    "Clínica MEDS",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Santa María",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus",
+    "Hospital del Profesor",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera"
+   ]
+  },
+  {
+   "codigo": "PPL24470",
+   "serie": "PPL",
+   "nombre": "PLAN PLENO PLUS 24470",
+   "tipo": "Preferente",
+   "uf_base": 5.35,
+   "hosp_pct": 100,
+   "amb_pct": 80,
+   "prest_hosp": [
+    "Clínica Indisa",
+    "Clínica Las Condes",
+    "Clínica MEDS",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Santa María",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica Indisa",
+    "Clínica Las Condes",
+    "Clínica MEDS",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Santa María",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Clínica Dávila",
+    "Hospital Clínico Universidad de Chile"
+   ]
+  },
+  {
+   "codigo": "PS261034",
+   "serie": "PS",
+   "nombre": "PLAN PLENO SALUD 251034",
+   "tipo": "Preferente",
+   "uf_base": 5.43,
+   "hosp_pct": 100,
+   "amb_pct": 80,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica Las Condes",
+    "Clínica MEDS",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus",
+    "Hospital del Profesor",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica Las Condes",
+    "Clínica MEDS",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus",
+    "Hospital del Profesor",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Hospital Clínico Universidad de Chile"
+   ]
+  },
+  {
+   "codigo": "PLEN270",
+   "serie": "PLEN",
+   "nombre": "PLENO 270",
+   "tipo": "Libre Elección",
+   "uf_base": 5.45,
+   "hosp_pct": 100,
+   "amb_pct": 80,
+   "prest_hosp": [],
+   "prest_amb": []
+  },
+  {
+   "codigo": "PM260333",
+   "serie": "PM",
+   "nombre": "PLAN PLENO MAX 260333",
+   "tipo": "Preferente",
+   "uf_base": 5.45,
+   "hosp_pct": 100,
+   "amb_pct": 70,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica Las Condes",
+    "Clínica MEDS",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Santa María",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus",
+    "Hospital del Profesor",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica Las Condes",
+    "Clínica MEDS",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Santa María",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus",
+    "Hospital del Profesor",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera"
+   ]
+  },
+  {
+   "codigo": "PM260334",
+   "serie": "PM",
+   "nombre": "PLAN PLENO MAX 260334",
+   "tipo": "Preferente",
+   "uf_base": 5.64,
+   "hosp_pct": 100,
+   "amb_pct": 80,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica Las Condes",
+    "Clínica MEDS",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Santa María",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus",
+    "Hospital del Profesor",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica Las Condes",
+    "Clínica MEDS",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Santa María",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus",
+    "Hospital del Profesor",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera"
+   ]
+  },
+  {
+   "codigo": "PLEN271",
+   "serie": "PLEN",
+   "nombre": "PLENO 271",
+   "tipo": "Libre Elección",
+   "uf_base": 5.65,
+   "hosp_pct": 100,
+   "amb_pct": 80,
+   "prest_hosp": [],
+   "prest_amb": []
+  },
+  {
+   "codigo": "PS261035",
+   "serie": "PS",
+   "nombre": "PLAN PLENO SALUD 251035",
+   "tipo": "Preferente",
+   "uf_base": 5.7,
+   "hosp_pct": 100,
+   "amb_pct": 80,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica Las Condes",
+    "Clínica MEDS",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus",
+    "Hospital del Profesor",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica Las Condes",
+    "Clínica MEDS",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus",
+    "Hospital del Profesor",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Hospital Clínico Universidad de Chile"
+   ]
+  },
+  {
+   "codigo": "PM260335",
+   "serie": "PM",
+   "nombre": "PLAN PLENO MAX 260335",
+   "tipo": "Preferente",
+   "uf_base": 5.8,
+   "hosp_pct": 100,
+   "amb_pct": 80,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica Las Condes",
+    "Clínica MEDS",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Santa María",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus",
+    "Hospital del Profesor",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica Las Condes",
+    "Clínica MEDS",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Santa María",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus",
+    "Hospital del Profesor",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera"
+   ]
+  },
+  {
+   "codigo": "PLEN272",
+   "serie": "PLEN",
+   "nombre": "PLENO 272",
+   "tipo": "Libre Elección",
+   "uf_base": 5.95,
+   "hosp_pct": 100,
+   "amb_pct": 80,
+   "prest_hosp": [],
+   "prest_amb": []
+  },
+  {
+   "codigo": "PS261036",
+   "serie": "PS",
+   "nombre": "PLAN PLENO SALUD 251036",
+   "tipo": "Preferente",
+   "uf_base": 6.02,
+   "hosp_pct": 100,
+   "amb_pct": 80,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica Las Condes",
+    "Clínica MEDS",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus",
+    "Hospital del Profesor",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica Las Condes",
+    "Clínica MEDS",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus",
+    "Hospital del Profesor",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Hospital Clínico Universidad de Chile"
+   ]
+  },
+  {
+   "codigo": "PM260336",
+   "serie": "PM",
+   "nombre": "PLAN PLENO MAX 260336",
+   "tipo": "Preferente",
+   "uf_base": 6.05,
+   "hosp_pct": 100,
+   "amb_pct": 80,
+   "prest_hosp": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica Las Condes",
+    "Clínica MEDS",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Santa María",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus",
+    "Hospital del Profesor",
+    "Integramédica"
+   ],
+   "prest_amb": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera",
+    "Clínica Dávila",
+    "Clínica Dávila Vespucio",
+    "Clínica Indisa",
+    "Clínica Las Condes",
+    "Clínica MEDS",
+    "Clínica San Carlos de Apoquindo",
+    "Clínica Santa María",
+    "Clínica Universidad de Los Andes",
+    "Hospital Clínico UC Christus",
+    "Hospital del Profesor",
+    "Integramédica"
+   ],
+   "prest_derivados": [
+    "Clínica Bupa Santiago",
+    "Clínica Cordillera"
+   ]
+  },
+  {
+   "codigo": "PLEN273",
+   "serie": "PLEN",
+   "nombre": "PLENO 273",
+   "tipo": "Libre Elección",
+   "uf_base": 6.3,
+   "hosp_pct": 100,
+   "amb_pct": 80,
+   "prest_hosp": [],
+   "prest_amb": []
+  },
+  {
+   "codigo": "PLEN274",
+   "serie": "PLEN",
+   "nombre": "PLENO 274",
+   "tipo": "Libre Elección",
+   "uf_base": 6.47,
+   "hosp_pct": 100,
+   "amb_pct": 80,
+   "prest_hosp": [],
+   "prest_amb": []
+  },
+  {
+   "codigo": "PLEN275",
+   "serie": "PLEN",
+   "nombre": "PLENO 275",
+   "tipo": "Libre Elección",
+   "uf_base": 6.93,
+   "hosp_pct": 100,
+   "amb_pct": 80,
+   "prest_hosp": [],
+   "prest_amb": []
+  }
+ ]
+}

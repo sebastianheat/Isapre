@@ -11,7 +11,7 @@ const TOOLS: Anthropic.Tool[] = [
   {
     name: "cotizar_planes",
     description:
-      "Calcula 3 opciones de planes Pleno Salud de Nueva Masvida con precios exactos. Llamar apenas se tenga la edad del cotizante y la renta bruta mensual (y las cargas, si las hay).",
+      "Calcula 3 opciones reales de planes de Nueva Masvida con precios exactos (catálogo oficial), el desglose por beneficiario, la cobertura y el link al PDF de cada plan. Llamar apenas se tenga la edad del cotizante y la renta bruta mensual (y las cargas y la clínica preferida, si las hay).",
     input_schema: {
       type: "object",
       properties: {
@@ -28,6 +28,11 @@ const TOOLS: Anthropic.Tool[] = [
             properties: { edad: { type: "integer" } },
             required: ["edad"],
           },
+        },
+        clinica_preferida: {
+          type: "string",
+          description:
+            "Clínica o prestador de preferencia del cliente, si lo mencionó (ej: 'Clínica Dávila', 'Indisa'). Omitir si no indicó ninguna.",
         },
       },
       required: ["edad", "renta_mensual"],
@@ -89,6 +94,7 @@ export async function POST(req: Request) {
             edad?: number;
             renta_mensual?: number;
             cargas?: Carga[];
+            clinica_preferida?: string;
           };
           const valorUF = await obtenerValorUF();
           const resultado = cotizar(
@@ -96,6 +102,7 @@ export async function POST(req: Request) {
             Number(input.renta_mensual) || 0,
             Array.isArray(input.cargas) ? input.cargas : [],
             valorUF,
+            input.clinica_preferida ?? null,
           );
           toolResults.push({
             type: "tool_result",
