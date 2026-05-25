@@ -11,14 +11,15 @@ const TOOLS: Anthropic.Tool[] = [
   {
     name: "cotizar_planes",
     description:
-      "Calcula 3 opciones reales de planes de Nueva Masvida con precios exactos (catálogo oficial), el desglose por beneficiario, la cobertura y el link al PDF de cada plan. Llamar apenas se tenga la edad del cotizante y la renta bruta mensual (y las cargas y la clínica preferida, si las hay).",
+      "Calcula 3 opciones reales de planes de Nueva Masvida con precios exactos (catálogo oficial), el desglose por beneficiario, la cobertura y el link al PDF de cada plan. Llamar apenas se tenga la edad del cotizante y el sueldo líquido mensual (y las cargas y la clínica preferida, si las hay).",
     input_schema: {
       type: "object",
       properties: {
         edad: { type: "integer", description: "Edad del cotizante en años" },
-        renta_mensual: {
+        sueldo_liquido: {
           type: "integer",
-          description: "Renta bruta mensual del cotizante en pesos chilenos (ej: 1200000)",
+          description:
+            "Sueldo líquido mensual del cotizante en pesos chilenos, lo que recibe en mano (ej: 1000000). El 7% legal se estima internamente.",
         },
         cargas: {
           type: "array",
@@ -35,7 +36,7 @@ const TOOLS: Anthropic.Tool[] = [
             "Clínica o prestador de preferencia del cliente, si lo mencionó (ej: 'Clínica Dávila', 'Indisa'). Omitir si no indicó ninguna.",
         },
       },
-      required: ["edad", "renta_mensual"],
+      required: ["edad", "sueldo_liquido"],
     },
   },
 ];
@@ -92,14 +93,14 @@ export async function POST(req: Request) {
           if (block.type !== "tool_use" || block.name !== "cotizar_planes") continue;
           const input = block.input as {
             edad?: number;
-            renta_mensual?: number;
+            sueldo_liquido?: number;
             cargas?: Carga[];
             clinica_preferida?: string;
           };
           const valorUF = await obtenerValorUF();
           const resultado = cotizar(
             Number(input.edad) || 0,
-            Number(input.renta_mensual) || 0,
+            Number(input.sueldo_liquido) || 0,
             Array.isArray(input.cargas) ? input.cargas : [],
             valorUF,
             input.clinica_preferida ?? null,

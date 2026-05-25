@@ -10,7 +10,7 @@ interface Msg {
 const SALUDO: Msg = {
   role: "assistant",
   content:
-    "Hola, soy Romina, tu asesora en Isapres Chile. Con gusto te ayudo a encontrar y cotizar tu plan de salud.\n\nPara partir, cuéntame por favor: ¿qué edad tienes y en qué rango está tu renta bruta mensual (antes de descuentos)? Si vas a sumar cargas (pareja, hijos), indícame cuántas y sus edades. Y si tienes alguna clínica o prestador de preferencia, también me sirve saberlo.\n\nSi te acomoda, puedes enviarme un audio y lo revisamos. 🙂",
+    "Hola, soy Romina, tu asesora en Isapres Chile. Con gusto te ayudo a encontrar y cotizar tu plan de salud.\n\nPara partir, cuéntame por favor: ¿qué edad tienes y cuánto es tu sueldo líquido (lo que recibes en mano)? Si vas a sumar cargas (pareja, hijos), indícame cuántas y sus edades. Y si tienes alguna clínica o prestador de preferencia, también me sirve saberlo.\n\nSi te acomoda, puedes enviarme un audio y lo revisamos. 🙂",
 };
 
 export default function Page() {

@@ -166,7 +166,7 @@ function planMatcheaClinica(p: PlanRaw, preferida: string): boolean {
 
 export function cotizar(
   edad: number,
-  rentaMensual: number,
+  sueldoLiquido: number,
   cargas: Carga[],
   valorUF: number,
   clinicaPreferida?: string | null,
@@ -184,7 +184,10 @@ export function cotizar(
     return { ...p, precioUF, precioPesos: precioUF * valorUF };
   });
 
-  const target7 = rentaMensual * 0.07;
+  // El cliente entrega su sueldo LÍQUIDO. Estimamos el bruto/imponible
+  // (bruto ≈ líquido ÷ 0,8) y de ahí calculamos el 7% legal de salud.
+  const brutoEstimado = sueldoLiquido / 0.8;
+  const target7 = brutoEstimado * 0.07;
 
   // Filtro por clínica preferida.
   const aplicables = preferida
