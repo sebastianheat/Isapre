@@ -1,3 +1,4 @@
+import { waitUntil } from "@vercel/functions";
 import { responderTurno } from "@/lib/agent";
 import { enviarWhatsApp, getHistorial, guardarHistorial } from "@/lib/whatsapp";
 import { kvMarcarUnaVez } from "@/lib/store";
@@ -17,23 +18,10 @@ export async function GET(req: Request) {
   return new Response("Forbidden", { status: 403 });
 }
 
-// Mensajes entrantes de WhatsApp.
-export async function POST(req: Request) {
-  let body: unknown;
+// Procesa el mensaje en segundo plano (Claude + envío). NO bloquea la respuesta a Meta.
+async function procesarMensaje(msg: any): Promise<void> {
   try {
-    body = await req.json();
-  } catch {
-    return Response.json({ ok: true });
-  }
-
-  try {
-    const value = (body as any)?.entry?.[0]?.changes?.[0]?.value;
-    const msg = value?.messages?.[0];
-    if (!msg?.from) return Response.json({ ok: true }); // statuses, etc.
-
-    // Dedupe: Meta reintenta el webhook; procesamos cada mensaje una sola vez.
-    if (!(await kvMarcarUnaVez(`wamsg:${msg.id}`))) return Response.json({ ok: true });
-
+    if (!(await kvMarcarUnaVez(`wamsg:${msg.id}`))) return; // dedupe
     const from: string = msg.from;
     let texto = "";
     if (msg.type === "text") {
@@ -44,7 +32,7 @@ export async function POST(req: Request) {
     } else {
       texto = "(El cliente envió un adjunto que no puedo leer. Pídele que te escriba su consulta.)";
     }
-    if (!texto.trim()) return Response.json({ ok: true });
+    if (!texto.trim()) return;
 
     const historial = await getHistorial(from);
     historial.push({ role: "user", content: texto });
@@ -53,7 +41,23 @@ export async function POST(req: Request) {
     await guardarHistorial(from, historial);
     await enviarWhatsApp(from, reply);
   } catch (e) {
-    console.error("Error en webhook de WhatsApp:", e);
+    console.error("Error procesando mensaje de WhatsApp:", e);
+  }
+}
+
+// Mensajes entrantes: respondemos 200 de inmediato y procesamos en background,
+// para no exceder el timeout del webhook de Meta.
+export async function POST(req: Request) {
+  let body: any;
+  try {
+    body = await req.json();
+  } catch {
+    return Response.json({ ok: true });
+  }
+
+  const msg = body?.entry?.[0]?.changes?.[0]?.value?.messages?.[0];
+  if (msg?.from) {
+    waitUntil(procesarMensaje(msg));
   }
 
   return Response.json({ ok: true });
