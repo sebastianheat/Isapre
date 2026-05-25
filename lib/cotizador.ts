@@ -7,9 +7,21 @@
 //   El GES (0.854 UF en NMV) se cobra POR beneficiario, no una vez por contrato.
 
 import catalogo from "./catalogo-nuevamasvida.json";
+import coberturas from "./coberturas-nuevamasvida.json";
 
 const GES_UF: number = catalogo.ges_uf;
 const PDF_BASE = "https://nuevaisapre.cl/pdfs/nuevamasvida";
+
+// Cobertura por clínica (extraída de los PDF oficiales). Solo incluye planes
+// metropolitanos validados; el resto cae a la cobertura general del catálogo.
+interface TramoCobertura {
+  pct: number;
+  clinicas: string[];
+}
+const COBERTURAS = coberturas as Record<
+  string,
+  { hosp: TramoCobertura[]; amb: TramoCobertura[]; amb_igual_hosp: boolean }
+>;
 
 interface PlanRaw {
   codigo: string;
@@ -95,6 +107,12 @@ export interface OpcionPlan {
   excedente_pesos: number;
   excedente_fmt: string;
   pdf_url: string;
+  // Desglose de cobertura por clínica (solo planes metropolitanos validados).
+  cobertura_por_clinica: {
+    hospitalaria: TramoCobertura[];
+    ambulatoria: TramoCobertura[];
+    ambulatoria_igual_hospitalaria: boolean;
+  } | null;
 }
 
 export interface ResultadoCotizacion {
@@ -266,6 +284,15 @@ export function cotizar(
       excedente_pesos: Math.round(p.precioPesos - target7),
       excedente_fmt: pesos(p.precioPesos - target7),
       pdf_url: `${PDF_BASE}/${p.codigo}.pdf`,
+      cobertura_por_clinica: (() => {
+        const det = COBERTURAS[p.codigo];
+        if (!det) return null;
+        return {
+          hospitalaria: det.hosp,
+          ambulatoria: det.amb,
+          ambulatoria_igual_hospitalaria: det.amb.length === 0 && det.amb_igual_hosp,
+        };
+      })(),
     };
   });
 
