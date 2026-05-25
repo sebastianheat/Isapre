@@ -13,6 +13,28 @@ const SALUDO: Msg = {
     "Hola, soy Romina, tu asesora en Isapres Chile. Con gusto te ayudo a encontrar y cotizar tu plan de salud.\n\nPara partir, cuéntame por favor: ¿qué edad tienes, en qué ciudad o región vives y cuánto es tu sueldo líquido (lo que recibes en mano)? Si vas a sumar cargas (pareja, hijos), indícame cuántas y sus edades, y si tienes alguna clínica o prestador de preferencia.\n\nSi te acomoda, puedes enviarme un audio y lo revisamos. 🙂",
 };
 
+// Renderiza el texto del mensaje dejando los links (markdown y URLs sueltas) clickeables.
+function renderRich(text: string) {
+  const regex = /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)|(https?:\/\/[^\s<]+[^\s<.,;:)])/g;
+  const out: React.ReactNode[] = [];
+  let last = 0;
+  let m: RegExpExecArray | null;
+  let key = 0;
+  while ((m = regex.exec(text)) !== null) {
+    if (m.index > last) out.push(text.slice(last, m.index));
+    const href = m[2] ?? m[3];
+    const label = m[1] ?? m[3];
+    out.push(
+      <a key={key++} href={href} target="_blank" rel="noopener noreferrer" className="msg-link">
+        {label}
+      </a>,
+    );
+    last = regex.lastIndex;
+  }
+  if (last < text.length) out.push(text.slice(last));
+  return out;
+}
+
 export default function Page() {
   const [messages, setMessages] = useState<Msg[]>([SALUDO]);
   const [input, setInput] = useState("");
@@ -81,7 +103,9 @@ export default function Page() {
       <div className="messages" ref={scrollRef}>
         {messages.map((m, i) => (
           <div key={i} className={`row ${m.role === "user" ? "user" : ""}`}>
-            <div className={`bubble ${m.role === "user" ? "user" : "bot"}`}>{m.content}</div>
+            <div className={`bubble ${m.role === "user" ? "user" : "bot"}`}>
+              {renderRich(m.content)}
+            </div>
           </div>
         ))}
         {loading && (
