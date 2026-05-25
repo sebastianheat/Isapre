@@ -1,27 +1,16 @@
-// Motor de cotización Nueva Masvida (NMV).
-// Usa el catálogo REAL (lib/catalogo-nuevamasvida.json, fuente tu7.cl) y la
-// fórmula oficial. Las cifras NO las inventa el modelo: se calculan aquí.
+// Motor de cotización multi-isapre.
+// Usa los catálogos REALES de las 7 isapres (lib/catalogos.json, fuente tu7.cl).
+// Por defecto cotiza Nueva Masvida; cambia de isapre según la necesidad del
+// cliente (clínica preferida, región que NMV no cubre, o isapre solicitada).
 //
-// Fórmula (igual a la del cotizador de nuevaisapre.cl):
-//   precioUF   = uf_base × Σ(factor de cada beneficiario) + GES × nº beneficiarios
-//   El GES (0.854 UF en NMV) se cobra POR beneficiario, no una vez por contrato.
+// Fórmula: precioUF = uf_base × Σ(factores) + GES_isapre × nº beneficiarios.
+// Factores: Tabla Única de Factores (misma para todas las isapres).
 
-import catalogo from "./catalogo-nuevamasvida.json";
+import catalogos from "./catalogos.json";
 import coberturas from "./coberturas-nuevamasvida.json";
 
-const GES_UF: number = catalogo.ges_uf;
-const PDF_BASE = "https://nuevaisapre.cl/pdfs/nuevamasvida";
-
-// Cobertura por clínica (extraída de los PDF oficiales). Solo incluye planes
-// metropolitanos validados; el resto cae a la cobertura general del catálogo.
-interface TramoCobertura {
-  pct: number;
-  clinicas: string[];
-}
-const COBERTURAS = coberturas as Record<
-  string,
-  { hosp: TramoCobertura[]; amb: TramoCobertura[]; amb_igual_hosp: boolean }
->;
+const PDF_BASE = "https://nuevaisapre.cl/pdfs";
+const ISAPRE_DEFAULT = "nuevamasvida";
 
 interface PlanRaw {
   codigo: string;
@@ -33,12 +22,32 @@ interface PlanRaw {
   amb_pct: number;
   prest_hosp: string[];
   prest_amb: string[];
-  prest_derivados?: string[];
+}
+type Catalogos = Record<string, { label: string; ges_uf: number; planes: PlanRaw[] }>;
+const CAT = catalogos as Catalogos;
+
+interface PlanFull extends PlanRaw {
+  isapre: string;
+  isapreLabel: string;
+  ges: number;
+}
+const ALL_PLANES: PlanFull[] = [];
+for (const [slug, c] of Object.entries(CAT)) {
+  for (const p of c.planes) {
+    ALL_PLANES.push({ ...p, isapre: slug, isapreLabel: c.label, ges: c.ges_uf });
+  }
 }
 
-const PLANES = catalogo.planes as PlanRaw[];
+interface TramoCobertura {
+  pct: number;
+  clinicas: string[];
+}
+const COBERTURAS = coberturas as Record<
+  string,
+  { hosp: TramoCobertura[]; amb: TramoCobertura[]; amb_igual_hosp: boolean }
+>;
 
-// Factores por edad — Tabla de Factores Nº 64 (cotizante / carga).
+// Tabla Única de Factores por edad (cotizante / carga).
 function factorCotizante(edad: number): number {
   if (edad <= 19) return 0.6;
   if (edad <= 24) return 0.9;
@@ -48,10 +57,8 @@ function factorCotizante(edad: number): number {
   if (edad <= 64) return 2.0;
   return 2.4;
 }
-
-// Las cargas se empiezan a cobrar desde los 2 años (antes no suman precio).
 function factorCarga(edad: number): number {
-  if (edad < 2) return 0;
+  if (edad < 2) return 0; // las cargas se cobran desde los 2 años
   if (edad <= 19) return 0.6;
   if (edad <= 24) return 0.7;
   if (edad <= 34) return 0.7;
@@ -73,119 +80,9 @@ function normalizar(s: string): string {
     .trim();
 }
 
-export interface Carga {
-  edad: number;
-}
-
-export interface Beneficiario {
-  rol: "Cotizante" | "Carga";
-  edad: number;
-  factor: number;
-  uf: number;
-  uf_fmt: string;
-  pesos: number;
-  pesos_fmt: string;
-}
-
-export interface OpcionPlan {
-  etiqueta: "Económica" | "Recomendada" | "Premium";
-  codigo: string;
-  nombre: string;
-  tipo: string;
-  uf_base: number;
-  cobertura_hospitalaria_pct: number;
-  cobertura_ambulatoria_pct: number;
-  // Clínicas de la red preferente, con la preferida del cliente primero.
-  prestadores_hospitalarios: string[];
-  prestadores_ambulatorios: string[];
-  clinica_preferida_en_red: boolean;
-  beneficiarios: Beneficiario[];
-  precio_uf: number;
-  precio_uf_fmt: string;
-  precio_pesos: number;
-  precio_pesos_fmt: string;
-  excedente_pesos: number;
-  excedente_fmt: string;
-  pdf_url: string;
-  // Desglose de cobertura por clínica (solo planes metropolitanos validados).
-  cobertura_por_clinica: {
-    hospitalaria: TramoCobertura[];
-    ambulatoria: TramoCobertura[];
-    ambulatoria_igual_hospitalaria: boolean;
-  } | null;
-}
-
-export interface ResultadoCotizacion {
-  valor_uf: number;
-  cotizacion_7_pesos: number;
-  cotizacion_7_fmt: string;
-  modo_libre_eleccion: boolean;
-  aviso?: string;
-  opciones: OpcionPlan[];
-  nota: string;
-}
-
-interface PlanCalc extends PlanRaw {
-  precioUF: number;
-  precioPesos: number;
-}
-
-function construirBeneficiarios(
-  edad: number,
-  cargas: Carga[],
-  ufBase: number,
-  valorUF: number,
-): Beneficiario[] {
-  const lista: Beneficiario[] = [];
-  const fCot = factorCotizante(edad);
-  const ufCot = ufBase * fCot + GES_UF;
-  lista.push({
-    rol: "Cotizante",
-    edad,
-    factor: fCot,
-    uf: ufCot,
-    uf_fmt: uf(ufCot),
-    pesos: Math.round(ufCot * valorUF),
-    pesos_fmt: pesos(ufCot * valorUF),
-  });
-  for (const c of cargas) {
-    const f = factorCarga(c.edad);
-    const ufc = f > 0 ? ufBase * f + GES_UF : 0;
-    lista.push({
-      rol: "Carga",
-      edad: c.edad,
-      factor: f,
-      uf: ufc,
-      uf_fmt: uf(ufc),
-      pesos: Math.round(ufc * valorUF),
-      pesos_fmt: pesos(ufc * valorUF),
-    });
-  }
-  return lista;
-}
-
-function ordenarPorPreferida(prest: string[], preferida: string | null): string[] {
-  if (!preferida) return prest;
-  const q = normalizar(preferida);
-  const match = (n: string) => {
-    const nn = normalizar(n);
-    return nn.includes(q) || q.includes(nn);
-  };
-  return [...prest].sort((a, b) => Number(match(b)) - Number(match(a)));
-}
-
-function planMatcheaClinica(p: PlanRaw, preferida: string): boolean {
-  const q = normalizar(preferida);
-  return [...(p.prest_hosp || []), ...(p.prest_amb || [])].some((n) => {
-    const nn = normalizar(n);
-    return nn.includes(q) || q.includes(nn);
-  });
-}
-
 // Región de cada clínica por substring del nombre. Cubre los prestadores de
-// TODAS las isapres (no solo NMV), para no equivocar la zona al asesorar.
-// Importante: "Clínica Alemana" existe en Santiago (Metropolitana, por defecto)
-// y en regiones (Osorno, Temuco, Valdivia), que se distinguen por su sufijo.
+// TODAS las isapres. "Clínica Alemana" sin sufijo = Santiago (Metropolitana);
+// las regionales (Osorno, Temuco, Valdivia) se distinguen por su sufijo.
 const REGION_RULES: [string, string][] = [
   ["renaca", "Valparaíso"],
   ["vina del mar", "Valparaíso"],
@@ -257,6 +154,116 @@ function normalizarRegion(txt: string): string | null {
   return null;
 }
 
+// Texto libre de isapre -> slug.
+const ISAPRE_KEYWORDS: [string, string][] = [
+  ["masvida", "nuevamasvida"], ["nmv", "nuevamasvida"], ["nueva mas vida", "nuevamasvida"],
+  ["banmedica", "banmedica"], ["consalud", "consalud"], ["colmena", "colmena"],
+  ["cruz blanca", "cruzblanca"], ["cruzblanca", "cruzblanca"],
+  ["vida tres", "vidatres"], ["vidatres", "vidatres"], ["vida 3", "vidatres"],
+  ["esencial", "esencial"],
+];
+function matchIsapre(txt: string): string | null {
+  const n = normalizar(txt);
+  for (const [k, s] of ISAPRE_KEYWORDS) if (n.includes(k)) return s;
+  return null;
+}
+
+function ordenarPorPreferida(prest: string[], preferida: string | null): string[] {
+  if (!preferida) return prest;
+  const q = normalizar(preferida);
+  const match = (n: string) => {
+    const nn = normalizar(n);
+    return nn.includes(q) || q.includes(nn);
+  };
+  return [...prest].sort((a, b) => Number(match(b)) - Number(match(a)));
+}
+function planMatcheaClinica(p: PlanRaw, preferida: string): boolean {
+  const q = normalizar(preferida);
+  return [...(p.prest_hosp || []), ...(p.prest_amb || [])].some((n) => {
+    const nn = normalizar(n);
+    return nn.includes(q) || q.includes(nn);
+  });
+}
+
+export interface Carga {
+  edad: number;
+}
+export interface Beneficiario {
+  rol: "Cotizante" | "Carga";
+  edad: number;
+  factor: number;
+  uf: number;
+  uf_fmt: string;
+  pesos: number;
+  pesos_fmt: string;
+}
+export interface OpcionPlan {
+  etiqueta: "Económica" | "Recomendada" | "Premium";
+  isapre: string;
+  codigo: string;
+  nombre: string;
+  tipo: string;
+  uf_base: number;
+  cobertura_hospitalaria_pct: number;
+  cobertura_ambulatoria_pct: number;
+  prestadores_hospitalarios: string[];
+  prestadores_ambulatorios: string[];
+  clinica_preferida_en_red: boolean;
+  beneficiarios: Beneficiario[];
+  precio_uf: number;
+  precio_uf_fmt: string;
+  precio_pesos: number;
+  precio_pesos_fmt: string;
+  excedente_pesos: number;
+  excedente_fmt: string;
+  pdf_url: string;
+  cobertura_por_clinica: {
+    hospitalaria: TramoCobertura[];
+    ambulatoria: TramoCobertura[];
+    ambulatoria_igual_hospitalaria: boolean;
+  } | null;
+}
+export interface ResultadoCotizacion {
+  isapre: string;
+  cambio_de_isapre: boolean;
+  valor_uf: number;
+  cotizacion_7_pesos: number;
+  cotizacion_7_fmt: string;
+  aviso?: string;
+  opciones: OpcionPlan[];
+  nota: string;
+}
+
+interface PlanCalc extends PlanFull {
+  precioUF: number;
+  precioPesos: number;
+}
+
+function construirBeneficiarios(
+  edad: number,
+  cargas: Carga[],
+  ufBase: number,
+  ges: number,
+  valorUF: number,
+): Beneficiario[] {
+  const lista: Beneficiario[] = [];
+  const fCot = factorCotizante(edad);
+  const ufCot = ufBase * fCot + ges;
+  lista.push({
+    rol: "Cotizante", edad, factor: fCot, uf: ufCot, uf_fmt: uf(ufCot),
+    pesos: Math.round(ufCot * valorUF), pesos_fmt: pesos(ufCot * valorUF),
+  });
+  for (const c of cargas) {
+    const f = factorCarga(c.edad);
+    const ufc = f > 0 ? ufBase * f + ges : 0;
+    lista.push({
+      rol: "Carga", edad: c.edad, factor: f, uf: ufc, uf_fmt: uf(ufc),
+      pesos: Math.round(ufc * valorUF), pesos_fmt: pesos(ufc * valorUF),
+    });
+  }
+  return lista;
+}
+
 export function cotizar(
   edad: number,
   sueldoLiquido: number,
@@ -264,86 +271,94 @@ export function cotizar(
   valorUF: number,
   clinicaPreferida?: string | null,
   region?: string | null,
+  isapreSolicitada?: string | null,
 ): ResultadoCotizacion {
   const cargasSafe = Array.isArray(cargas) ? cargas : [];
   const preferida = clinicaPreferida?.trim() ? clinicaPreferida.trim() : null;
   const regionBucket = region?.trim() ? normalizarRegion(region) : null;
+  const slugSolicitado = isapreSolicitada?.trim() ? matchIsapre(isapreSolicitada) : null;
 
   const factorTotal =
     factorCotizante(edad) + cargasSafe.reduce((s, c) => s + factorCarga(c.edad), 0);
   const numBeneficiariosGES =
     1 + cargasSafe.filter((c) => factorCarga(c.edad) > 0).length;
 
-  const cotizados: PlanCalc[] = PLANES.map((p) => {
-    const precioUF = p.uf_base * factorTotal + GES_UF * numBeneficiariosGES;
-    return { ...p, precioUF, precioPesos: precioUF * valorUF };
-  });
-
-  // El cliente entrega su sueldo LÍQUIDO. Estimamos el bruto/imponible
-  // (bruto ≈ líquido ÷ 0,8) y de ahí calculamos el 7% legal de salud.
+  // El cliente entrega su sueldo LÍQUIDO; estimamos el bruto (÷0,8) y el 7%.
   const brutoEstimado = sueldoLiquido / 0.8;
   const target7 = brutoEstimado * 0.07;
 
-  // Filtro geográfico: si conocemos la región, nos quedamos con los planes que
-  // tengan al menos una clínica en esa zona. Si NMV no tiene red ahí, avisamos
-  // (no mostramos planes de Santiago como si sirvieran).
-  let universoRegion = cotizados;
-  if (regionBucket) {
-    const enRegion = cotizados.filter((p) => planEnRegion(p, regionBucket));
-    if (enRegion.length > 0) {
-      universoRegion = enRegion;
-    } else {
+  const precios: PlanCalc[] = ALL_PLANES.map((p) => {
+    const precioUF = p.uf_base * factorTotal + p.ges * numBeneficiariosGES;
+    return { ...p, precioUF, precioPesos: precioUF * valorUF };
+  });
+
+  const nq = preferida ? normalizar(preferida) : "";
+  const quiereAlemanaStgo =
+    !!preferida &&
+    nq.includes("aleman") &&
+    !/(osorno|temuco|valdivia)/.test(nq) &&
+    (regionBucket === null || regionBucket === "Metropolitana");
+
+  // Isapre a cotizar: Alemana Santiago -> Esencial; isapre pedida -> esa; default NMV.
+  let isapre = ISAPRE_DEFAULT;
+  if (quiereAlemanaStgo) isapre = "esencial";
+  else if (slugSolicitado) isapre = slugSolicitado;
+
+  const filtro = (p: PlanCalc) =>
+    (!regionBucket || planEnRegion(p, regionBucket)) &&
+    (!preferida || planMatcheaClinica(p, preferida));
+
+  let cambioIsapre = false;
+  let aviso: string | undefined;
+  let candidatos = precios.filter((p) => p.isapre === isapre && filtro(p));
+
+  if (candidatos.length === 0) {
+    // La isapre elegida no cubre la zona/clínica: buscamos en todas y elegimos
+    // la que mejor calce (más planes que cumplen).
+    const todos = precios.filter(filtro);
+    if (todos.length === 0) {
+      const dondeFalla = preferida
+        ? `con la clínica indicada ("${preferida}")`
+        : `en ${regionBucket ?? "tu zona"}`;
       return {
+        isapre: CAT[isapre].label,
+        cambio_de_isapre: false,
         valor_uf: valorUF,
         cotizacion_7_pesos: Math.round(target7),
         cotizacion_7_fmt: pesos(target7),
-        modo_libre_eleccion: false,
         aviso:
-          `Nueva Masvida no tiene red de clínicas en ${regionBucket}. ` +
-          `Conviene revisar otra isapre con cobertura en tu zona; ` +
-          `te puedo dejar con Cynthia para que te arme esa opción.`,
+          `No encontré una red ${dondeFalla} en las isapres que manejo. ` +
+          `Mejor te dejo con Cynthia para revisarlo caso a caso.`,
         opciones: [],
         nota: "",
       };
     }
-  }
-
-  // Filtro por clínica preferida (dentro de la región).
-  const aplicables = preferida
-    ? universoRegion.filter((p) => planMatcheaClinica(p, preferida))
-    : universoRegion;
-  const modoLibreEleccion = !!preferida && aplicables.length === 0;
-
-  let universo: PlanCalc[];
-  let aviso: string | undefined;
-  if (modoLibreEleccion) {
-    const le = cotizados.filter((p) => p.tipo === "Libre Elección");
-    universo = le.length > 0 ? le : cotizados;
+    const counts: Record<string, number> = {};
+    for (const p of todos) counts[p.isapre] = (counts[p.isapre] || 0) + 1;
+    const best = Object.entries(counts).sort((a, b) => b[1] - a[1])[0][0];
+    isapre = best;
+    cambioIsapre = true;
+    candidatos = precios.filter((p) => p.isapre === best && filtro(p));
     aviso =
-      `La clínica indicada ("${preferida}") no está en la red preferente de Nueva Masvida. ` +
-      `Te muestro planes de Libre Elección, que te dan cobertura en cualquier prestador. ` +
-      `Cynthia puede confirmar alternativas para esa clínica.`;
-  } else {
-    universo = aplicables.length >= 3 ? aplicables : universoRegion;
+      `Para lo que buscas, ${CAT[best].label} es la isapre que mejor te calza, ` +
+      `así que te cotizo ahí. (Igual, Cynthia confirma todo y puede comparar otras opciones.)`;
   }
 
-  // Selección de la línea de planes:
-  //  - Si el cliente puede pagar un Pleno Max (su 7% cubre el PM más barato),
-  //    priorizamos PM (mejor cobertura) para rentas altas.
-  //  - Si no, preferimos Pleno Salud (PS); luego cualquier Preferente; luego todo.
-  let fuente = universo;
-  if (!modoLibreEleccion) {
-    const pm = universo.filter((p) => p.serie === "PM");
-    const ps = universo.filter((p) => p.serie === "PS");
+  // Línea de planes dentro de la isapre elegida:
+  let fuente = candidatos;
+  if (isapre === "nuevamasvida") {
+    const pm = candidatos.filter((p) => p.serie === "PM");
+    const ps = candidatos.filter((p) => p.serie === "PS");
     const pmMin = pm.length ? Math.min(...pm.map((p) => p.precioPesos)) : Infinity;
-    if (pm.length >= 3 && target7 >= pmMin) {
-      fuente = pm;
-    } else if (ps.length >= 3) {
-      fuente = ps;
-    } else {
-      const pref = universo.filter((p) => p.tipo === "Preferente");
-      fuente = pref.length >= 3 ? pref : universo;
+    if (pm.length >= 3 && target7 >= pmMin) fuente = pm;
+    else if (ps.length >= 3) fuente = ps;
+    else {
+      const pref = candidatos.filter((p) => p.tipo === "Preferente");
+      fuente = pref.length >= 3 ? pref : candidatos;
     }
+  } else {
+    const pref = candidatos.filter((p) => p.tipo === "Preferente");
+    fuente = pref.length >= 3 ? pref : candidatos;
   }
 
   // Selección anclada al 7%: ventana de 3 (más barato / cercano / más caro).
@@ -372,10 +387,12 @@ export function cotizar(
 
   const etiquetas: OpcionPlan["etiqueta"][] = ["Económica", "Recomendada", "Premium"];
   const opciones: OpcionPlan[] = elegidos.map((p, i) => {
-    const beneficiarios = construirBeneficiarios(edad, cargasSafe, p.uf_base, valorUF);
+    const beneficiarios = construirBeneficiarios(edad, cargasSafe, p.uf_base, p.ges, valorUF);
     const enRed = preferida ? planMatcheaClinica(p, preferida) : false;
+    const det = p.isapre === "nuevamasvida" ? COBERTURAS[p.codigo] : undefined;
     return {
       etiqueta: etiquetas[i],
+      isapre: p.isapreLabel,
       codigo: p.codigo,
       nombre: p.nombre,
       tipo: p.tipo,
@@ -392,24 +409,23 @@ export function cotizar(
       precio_pesos_fmt: pesos(p.precioPesos),
       excedente_pesos: Math.round(p.precioPesos - target7),
       excedente_fmt: pesos(p.precioPesos - target7),
-      pdf_url: `${PDF_BASE}/${p.codigo}.pdf`,
-      cobertura_por_clinica: (() => {
-        const det = COBERTURAS[p.codigo];
-        if (!det) return null;
-        return {
-          hospitalaria: det.hosp,
-          ambulatoria: det.amb,
-          ambulatoria_igual_hospitalaria: det.amb.length === 0 && det.amb_igual_hosp,
-        };
-      })(),
+      pdf_url: `${PDF_BASE}/${p.isapre}/${p.codigo}.pdf`,
+      cobertura_por_clinica: det
+        ? {
+            hospitalaria: det.hosp,
+            ambulatoria: det.amb,
+            ambulatoria_igual_hospitalaria: det.amb.length === 0 && det.amb_igual_hosp,
+          }
+        : null,
     };
   });
 
   return {
+    isapre: CAT[isapre].label,
+    cambio_de_isapre: cambioIsapre,
     valor_uf: valorUF,
     cotizacion_7_pesos: Math.round(target7),
     cotizacion_7_fmt: pesos(target7),
-    modo_libre_eleccion: modoLibreEleccion,
     aviso,
     opciones,
     nota:

@@ -11,7 +11,7 @@ const TOOLS: Anthropic.Tool[] = [
   {
     name: "cotizar_planes",
     description:
-      "Calcula 3 opciones reales de planes de Nueva Masvida con precios exactos (catálogo oficial), el desglose por beneficiario, la cobertura y el link al PDF de cada plan. Llamar apenas se tenga la edad del cotizante y el sueldo líquido mensual (y las cargas y la clínica preferida, si las hay).",
+      "Cotiza 3 opciones reales de plan de salud con precios exactos (catálogos oficiales de las 7 isapres), desglose por beneficiario, cobertura y link al PDF. Por defecto cotiza Nueva Masvida; cambia de isapre solo, según la clínica preferida (ej. Clínica Alemana de Santiago → Esencial), la región (si NMV no la cubre) o la isapre que pida el cliente. Llamar apenas se tenga edad + sueldo líquido (más región, cargas, clínica e isapre si las mencionó).",
     input_schema: {
       type: "object",
       properties: {
@@ -39,6 +39,11 @@ const TOOLS: Anthropic.Tool[] = [
           type: "string",
           description:
             "Región o ciudad donde vive el cliente (ej: 'Santiago', 'Viña del Mar', 'Concepción'). Sirve para mostrar los planes con clínicas de su zona. Omitir si no la indicó.",
+        },
+        isapre_solicitada: {
+          type: "string",
+          description:
+            "Isapre específica que el cliente pidió, si nombró una (ej: 'Banmédica', 'Colmena', 'Consalud', 'Cruz Blanca', 'Vida Tres', 'Esencial', 'Nueva Masvida'). Omitir si no pidió ninguna en particular.",
         },
       },
       required: ["edad", "sueldo_liquido"],
@@ -102,6 +107,7 @@ export async function POST(req: Request) {
             cargas?: Carga[];
             clinica_preferida?: string;
             region?: string;
+            isapre_solicitada?: string;
           };
           const valorUF = await obtenerValorUF();
           const resultado = cotizar(
@@ -111,6 +117,7 @@ export async function POST(req: Request) {
             valorUF,
             input.clinica_preferida ?? null,
             input.region ?? null,
+            input.isapre_solicitada ?? null,
           );
           toolResults.push({
             type: "tool_result",
