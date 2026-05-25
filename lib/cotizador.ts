@@ -307,9 +307,13 @@ export function cotizar(
   if (quiereAlemanaStgo) isapre = "esencial";
   else if (slugSolicitado) isapre = slugSolicitado;
 
+  // Si quiere Alemana de Santiago, el filtro debe ser específico (no las Alemanas
+  // regionales de Osorno/Temuco/Valdivia).
+  const clinicaFiltro = quiereAlemanaStgo ? "Clínica Alemana de Santiago" : preferida;
+
   const filtro = (p: PlanCalc) =>
     (!regionBucket || planEnRegion(p, regionBucket)) &&
-    (!preferida || planMatcheaClinica(p, preferida));
+    (!clinicaFiltro || planMatcheaClinica(p, clinicaFiltro));
 
   let cambioIsapre = false;
   let aviso: string | undefined;
@@ -391,7 +395,7 @@ export function cotizar(
   const etiquetas: OpcionPlan["etiqueta"][] = ["Económica", "Recomendada", "Premium"];
   const opciones: OpcionPlan[] = elegidos.map((p, i) => {
     const beneficiarios = construirBeneficiarios(edad, cargasSafe, p.uf_base, p.ges, valorUF);
-    const enRed = preferida ? planMatcheaClinica(p, preferida) : false;
+    const enRed = clinicaFiltro ? planMatcheaClinica(p, clinicaFiltro) : false;
     const det = COBERTURAS[p.isapre]?.[p.codigo];
     return {
       etiqueta: etiquetas[i],
@@ -402,8 +406,8 @@ export function cotizar(
       uf_base: p.uf_base,
       cobertura_hospitalaria_pct: p.hosp_pct,
       cobertura_ambulatoria_pct: p.amb_pct,
-      prestadores_hospitalarios: ordenarPorPreferida(p.prest_hosp || [], preferida),
-      prestadores_ambulatorios: ordenarPorPreferida(p.prest_amb || [], preferida),
+      prestadores_hospitalarios: ordenarPorPreferida(p.prest_hosp || [], clinicaFiltro),
+      prestadores_ambulatorios: ordenarPorPreferida(p.prest_amb || [], clinicaFiltro),
       clinica_preferida_en_red: enRed,
       beneficiarios,
       precio_uf: Number(p.precioUF.toFixed(3)),
