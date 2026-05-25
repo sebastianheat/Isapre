@@ -35,6 +35,11 @@ const TOOLS: Anthropic.Tool[] = [
           description:
             "Clínica o prestador de preferencia del cliente, si lo mencionó (ej: 'Clínica Dávila', 'Indisa'). Omitir si no indicó ninguna.",
         },
+        region: {
+          type: "string",
+          description:
+            "Región o ciudad donde vive el cliente (ej: 'Santiago', 'Viña del Mar', 'Concepción'). Sirve para mostrar los planes con clínicas de su zona. Omitir si no la indicó.",
+        },
       },
       required: ["edad", "sueldo_liquido"],
     },
@@ -96,6 +101,7 @@ export async function POST(req: Request) {
             sueldo_liquido?: number;
             cargas?: Carga[];
             clinica_preferida?: string;
+            region?: string;
           };
           const valorUF = await obtenerValorUF();
           const resultado = cotizar(
@@ -104,6 +110,7 @@ export async function POST(req: Request) {
             Array.isArray(input.cargas) ? input.cargas : [],
             valorUF,
             input.clinica_preferida ?? null,
+            input.region ?? null,
           );
           toolResults.push({
             type: "tool_result",

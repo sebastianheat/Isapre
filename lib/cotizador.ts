@@ -182,15 +182,76 @@ function planMatcheaClinica(p: PlanRaw, preferida: string): boolean {
   });
 }
 
+// Región de cada clínica de la red NMV (por substring del nombre).
+const REGION_RULES: [string, string][] = [
+  ["renaca", "Valparaíso"],
+  ["bupa antofagasta", "Antofagasta"],
+  ["vina del mar", "Valparaíso"],
+  ["ciudad del mar", "Valparaíso"],
+  ["los leones", "Valparaíso"],
+  ["los carrera", "Valparaíso"],
+  ["san jose", "Arica y Parinacota"],
+  ["tarapaca", "Tarapacá"],
+  ["la portada", "Antofagasta"],
+  ["atacama", "Atacama"],
+  ["los andes (los", "Biobío"],
+  ["biobio", "Biobío"],
+  ["del sur", "Biobío"],
+  ["isamedica", "O'Higgins"],
+  ["lircay", "Maule"],
+  ["puerto montt", "Los Lagos"],
+  ["osorno", "Los Lagos"],
+  ["temuco", "Araucanía"],
+  ["valdivia", "Los Ríos"],
+];
+function regionDeClinica(nombre: string): string {
+  const n = normalizar(nombre);
+  for (const [k, r] of REGION_RULES) if (n.includes(k)) return r;
+  return "Metropolitana";
+}
+function planEnRegion(p: PlanRaw, region: string): boolean {
+  return [...(p.prest_hosp || []), ...(p.prest_amb || [])].some(
+    (c) => regionDeClinica(c) === region,
+  );
+}
+
+// Texto libre de región/ciudad del cliente -> bucket de región.
+const REGION_KEYWORDS: [string, string][] = [
+  ["metropolitana", "Metropolitana"], ["santiago", "Metropolitana"], ["maipu", "Metropolitana"],
+  ["puente alto", "Metropolitana"], ["providencia", "Metropolitana"], ["nunoa", "Metropolitana"],
+  ["la florida", "Metropolitana"], ["rm", "Metropolitana"],
+  ["vina", "Valparaíso"], ["valparaiso", "Valparaíso"], ["renaca", "Valparaíso"],
+  ["quilpue", "Valparaíso"], ["villa alemana", "Valparaíso"], ["quillota", "Valparaíso"], ["concon", "Valparaíso"],
+  ["arica", "Arica y Parinacota"],
+  ["iquique", "Tarapacá"], ["tarapaca", "Tarapacá"], ["hospicio", "Tarapacá"],
+  ["antofagasta", "Antofagasta"], ["calama", "Antofagasta"],
+  ["copiapo", "Atacama"], ["atacama", "Atacama"], ["vallenar", "Atacama"],
+  ["rancagua", "O'Higgins"], ["higgins", "O'Higgins"], ["san fernando", "O'Higgins"],
+  ["talca", "Maule"], ["maule", "Maule"], ["curico", "Maule"], ["linares", "Maule"],
+  ["concepcion", "Biobío"], ["biobio", "Biobío"], ["bio bio", "Biobío"], ["talcahuano", "Biobío"],
+  ["los angeles", "Biobío"], ["chillan", "Biobío"], ["nuble", "Biobío"], ["coronel", "Biobío"],
+  ["puerto montt", "Los Lagos"], ["osorno", "Los Lagos"], ["los lagos", "Los Lagos"],
+  ["puerto varas", "Los Lagos"], ["castro", "Los Lagos"], ["chiloe", "Los Lagos"],
+  ["temuco", "Araucanía"], ["araucania", "Araucanía"], ["angol", "Araucanía"], ["villarrica", "Araucanía"],
+  ["valdivia", "Los Ríos"], ["los rios", "Los Ríos"], ["la union", "Los Ríos"],
+];
+function normalizarRegion(txt: string): string | null {
+  const n = normalizar(txt);
+  for (const [k, r] of REGION_KEYWORDS) if (n.includes(k)) return r;
+  return null;
+}
+
 export function cotizar(
   edad: number,
   sueldoLiquido: number,
   cargas: Carga[],
   valorUF: number,
   clinicaPreferida?: string | null,
+  region?: string | null,
 ): ResultadoCotizacion {
   const cargasSafe = Array.isArray(cargas) ? cargas : [];
   const preferida = clinicaPreferida?.trim() ? clinicaPreferida.trim() : null;
+  const regionBucket = region?.trim() ? normalizarRegion(region) : null;
 
   const factorTotal =
     factorCotizante(edad) + cargasSafe.reduce((s, c) => s + factorCarga(c.edad), 0);
@@ -207,10 +268,18 @@ export function cotizar(
   const brutoEstimado = sueldoLiquido / 0.8;
   const target7 = brutoEstimado * 0.07;
 
-  // Filtro por clínica preferida.
+  // Filtro geográfico: si conocemos la región, nos quedamos con los planes que
+  // tengan al menos una clínica en esa región (si hay suficientes).
+  let universoRegion = cotizados;
+  if (regionBucket) {
+    const enRegion = cotizados.filter((p) => planEnRegion(p, regionBucket));
+    if (enRegion.length >= 3) universoRegion = enRegion;
+  }
+
+  // Filtro por clínica preferida (dentro de la región).
   const aplicables = preferida
-    ? cotizados.filter((p) => planMatcheaClinica(p, preferida))
-    : cotizados;
+    ? universoRegion.filter((p) => planMatcheaClinica(p, preferida))
+    : universoRegion;
   const modoLibreEleccion = !!preferida && aplicables.length === 0;
 
   let universo: PlanCalc[];
@@ -223,15 +292,23 @@ export function cotizar(
       `Te muestro planes de Libre Elección, que te dan cobertura en cualquier prestador. ` +
       `Cynthia puede confirmar alternativas para esa clínica.`;
   } else {
-    universo = aplicables.length >= 3 ? aplicables : cotizados;
+    universo = aplicables.length >= 3 ? aplicables : universoRegion;
   }
 
-  // Preferimos línea Pleno Salud (PS); si no alcanza, Preferentes; si no, todo.
+  // Selección de la línea de planes:
+  //  - Si el cliente puede pagar un Pleno Max (su 7% cubre el PM más barato),
+  //    priorizamos PM (mejor cobertura) para rentas altas.
+  //  - Si no, preferimos Pleno Salud (PS); luego cualquier Preferente; luego todo.
   let fuente = universo;
   if (!modoLibreEleccion) {
+    const pm = universo.filter((p) => p.serie === "PM");
     const ps = universo.filter((p) => p.serie === "PS");
-    if (ps.length >= 3) fuente = ps;
-    else {
+    const pmMin = pm.length ? Math.min(...pm.map((p) => p.precioPesos)) : Infinity;
+    if (pm.length >= 3 && target7 >= pmMin) {
+      fuente = pm;
+    } else if (ps.length >= 3) {
+      fuente = ps;
+    } else {
       const pref = universo.filter((p) => p.tipo === "Preferente");
       fuente = pref.length >= 3 ? pref : universo;
     }
