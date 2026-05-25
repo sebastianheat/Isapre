@@ -7,7 +7,7 @@
 // Factores: Tabla Única de Factores (misma para todas las isapres).
 
 import catalogos from "./catalogos.json";
-import coberturas from "./coberturas-nuevamasvida.json";
+import coberturas from "./coberturas.json";
 
 const PDF_BASE = "https://nuevaisapre.cl/pdfs";
 const ISAPRE_DEFAULT = "nuevamasvida";
@@ -42,9 +42,12 @@ interface TramoCobertura {
   pct: number;
   clinicas: string[];
 }
+// Cobertura por clínica, por isapre -> código. Solo donde es confiable
+// (NMV metropolitano validado contra PDF; Esencial derivado del catálogo, que
+// es exacto por ser red cerrada de cobertura uniforme).
 const COBERTURAS = coberturas as Record<
   string,
-  { hosp: TramoCobertura[]; amb: TramoCobertura[]; amb_igual_hosp: boolean }
+  Record<string, { hosp: TramoCobertura[]; amb: TramoCobertura[]; amb_igual_hosp: boolean }>
 >;
 
 // Tabla Única de Factores por edad (cotizante / carga).
@@ -389,7 +392,7 @@ export function cotizar(
   const opciones: OpcionPlan[] = elegidos.map((p, i) => {
     const beneficiarios = construirBeneficiarios(edad, cargasSafe, p.uf_base, p.ges, valorUF);
     const enRed = preferida ? planMatcheaClinica(p, preferida) : false;
-    const det = p.isapre === "nuevamasvida" ? COBERTURAS[p.codigo] : undefined;
+    const det = COBERTURAS[p.isapre]?.[p.codigo];
     return {
       etiqueta: etiquetas[i],
       isapre: p.isapreLabel,
