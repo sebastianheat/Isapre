@@ -182,27 +182,39 @@ function planMatcheaClinica(p: PlanRaw, preferida: string): boolean {
   });
 }
 
-// Región de cada clínica de la red NMV (por substring del nombre).
+// Región de cada clínica por substring del nombre. Cubre los prestadores de
+// TODAS las isapres (no solo NMV), para no equivocar la zona al asesorar.
+// Importante: "Clínica Alemana" existe en Santiago (Metropolitana, por defecto)
+// y en regiones (Osorno, Temuco, Valdivia), que se distinguen por su sufijo.
 const REGION_RULES: [string, string][] = [
   ["renaca", "Valparaíso"],
-  ["bupa antofagasta", "Antofagasta"],
   ["vina del mar", "Valparaíso"],
   ["ciudad del mar", "Valparaíso"],
   ["los leones", "Valparaíso"],
   ["los carrera", "Valparaíso"],
+  ["redsalud valparaiso", "Valparaíso"],
   ["san jose", "Arica y Parinacota"],
   ["tarapaca", "Tarapacá"],
+  ["iquique", "Tarapacá"],
+  ["bupa antofagasta", "Antofagasta"],
   ["la portada", "Antofagasta"],
+  ["el loa", "Antofagasta"],
   ["atacama", "Atacama"],
+  ["elqui", "Coquimbo"],
+  ["isamedica", "O'Higgins"],
+  ["rancagua", "O'Higgins"],
+  ["lircay", "Maule"],
+  ["chillan", "Ñuble"],
   ["los andes (los", "Biobío"],
   ["biobio", "Biobío"],
+  ["concepcion", "Biobío"],
   ["del sur", "Biobío"],
-  ["isamedica", "O'Higgins"],
-  ["lircay", "Maule"],
-  ["puerto montt", "Los Lagos"],
-  ["osorno", "Los Lagos"],
   ["temuco", "Araucanía"],
   ["valdivia", "Los Ríos"],
+  ["puerto montt", "Los Lagos"],
+  ["puerto varas", "Los Lagos"],
+  ["osorno", "Los Lagos"],
+  ["magallanes", "Magallanes"],
 ];
 function regionDeClinica(nombre: string): string {
   const n = normalizar(nombre);
@@ -229,11 +241,15 @@ const REGION_KEYWORDS: [string, string][] = [
   ["rancagua", "O'Higgins"], ["higgins", "O'Higgins"], ["san fernando", "O'Higgins"],
   ["talca", "Maule"], ["maule", "Maule"], ["curico", "Maule"], ["linares", "Maule"],
   ["concepcion", "Biobío"], ["biobio", "Biobío"], ["bio bio", "Biobío"], ["talcahuano", "Biobío"],
-  ["los angeles", "Biobío"], ["chillan", "Biobío"], ["nuble", "Biobío"], ["coronel", "Biobío"],
+  ["los angeles", "Biobío"], ["coronel", "Biobío"],
+  ["chillan", "Ñuble"], ["nuble", "Ñuble"],
+  ["la serena", "Coquimbo"], ["coquimbo", "Coquimbo"], ["ovalle", "Coquimbo"], ["elqui", "Coquimbo"],
   ["puerto montt", "Los Lagos"], ["osorno", "Los Lagos"], ["los lagos", "Los Lagos"],
   ["puerto varas", "Los Lagos"], ["castro", "Los Lagos"], ["chiloe", "Los Lagos"],
   ["temuco", "Araucanía"], ["araucania", "Araucanía"], ["angol", "Araucanía"], ["villarrica", "Araucanía"],
   ["valdivia", "Los Ríos"], ["los rios", "Los Ríos"], ["la union", "Los Ríos"],
+  ["punta arenas", "Magallanes"], ["magallanes", "Magallanes"], ["natales", "Magallanes"],
+  ["coyhaique", "Aysén"], ["aysen", "Aysén"],
 ];
 function normalizarRegion(txt: string): string | null {
   const n = normalizar(txt);
@@ -269,11 +285,27 @@ export function cotizar(
   const target7 = brutoEstimado * 0.07;
 
   // Filtro geográfico: si conocemos la región, nos quedamos con los planes que
-  // tengan al menos una clínica en esa región (si hay suficientes).
+  // tengan al menos una clínica en esa zona. Si NMV no tiene red ahí, avisamos
+  // (no mostramos planes de Santiago como si sirvieran).
   let universoRegion = cotizados;
   if (regionBucket) {
     const enRegion = cotizados.filter((p) => planEnRegion(p, regionBucket));
-    if (enRegion.length >= 3) universoRegion = enRegion;
+    if (enRegion.length > 0) {
+      universoRegion = enRegion;
+    } else {
+      return {
+        valor_uf: valorUF,
+        cotizacion_7_pesos: Math.round(target7),
+        cotizacion_7_fmt: pesos(target7),
+        modo_libre_eleccion: false,
+        aviso:
+          `Nueva Masvida no tiene red de clínicas en ${regionBucket}. ` +
+          `Conviene revisar otra isapre con cobertura en tu zona; ` +
+          `te puedo dejar con Cynthia para que te arme esa opción.`,
+        opciones: [],
+        nota: "",
+      };
+    }
   }
 
   // Filtro por clínica preferida (dentro de la región).
