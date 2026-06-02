@@ -16,7 +16,7 @@ export interface Lead {
   origen?: string;
 }
 
-// Guarda el lead y, si HEAT está configurado, lo empuja al CRM para Cynthia.
+// Guarda el lead y, si HEAT está configurado, lo empuja al CRM para el equipo.
 export async function guardarLead(lead: Lead): Promise<void> {
   const registro = { ...lead, fecha: new Date().toISOString() };
   const id = `lead:${lead.telefono || lead.rut || Date.now()}`;
@@ -29,7 +29,7 @@ export async function guardarLead(lead: Lead): Promise<void> {
   }
 }
 
-// Empuja el lead a HEAT/GoHighLevel (upsert de contacto + tag para Cynthia).
+// Empuja el lead a HEAT/GoHighLevel (upsert de contacto + tag de derivación).
 // Requiere HEAT_API_KEY y HEAT_LOCATION_ID; si no están, solo queda el log.
 async function pushToHeat(lead: Lead): Promise<void> {
   const apiKey = process.env.HEAT_API_KEY;

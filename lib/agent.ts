@@ -60,7 +60,7 @@ const TOOLS: Anthropic.Tool[] = [
   {
     name: "registrar_lead",
     description:
-      "Registra al cliente como lead para que Cynthia lo contacte y cierre. Llamar SOLO cuando el cliente mostró interés y ya entregó su nombre y RUT. Después de llamarla, confirma al cliente con calidez.",
+      "Registra al cliente como lead para que el equipo de ejecutivos lo contacte y cierre. Llamar SOLO cuando el cliente mostró interés y ya entregó su nombre y RUT. Después de llamarla, confirma al cliente con calidez.",
     input_schema: {
       type: "object",
       properties: {

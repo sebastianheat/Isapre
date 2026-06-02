@@ -7,13 +7,13 @@ const VENTAJAS = [
   { ico: "🤝", t: "Asesoría 100% gratis", s: "Sin compromiso ni cargos ocultos" },
   { ico: "🔒", t: "Sin alza 2025-2026", s: "Compromiso público de Nueva Masvida" },
   { ico: "⚡", t: "Activación 24-72 h", s: "100% online, sin papeleo" },
-  { ico: "💬", t: "Cierre por WhatsApp", s: "Tu ejecutiva Cynthia te acompaña" },
+  { ico: "💬", t: "Cierre por WhatsApp", s: "Un ejecutivo te acompaña en todo el proceso" },
 ];
 
 const PASOS = [
   { n: "1", t: "Ingresa tus datos", s: "Edad, sueldo líquido, región y a quién quieres cubrir." },
   { n: "2", t: "Comparamos las 7 isapres", s: "Buscamos los mejores planes ajustados a tu bolsillo." },
-  { n: "3", t: "Cierras con Cynthia", s: "Te contacta por WhatsApp y deja todo activo en 24-72 h." },
+  { n: "3", t: "Cierras con un ejecutivo", s: "Te contactamos por WhatsApp y dejamos todo activo en 24-72 h." },
 ];
 
 export default function Page() {

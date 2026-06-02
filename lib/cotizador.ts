@@ -363,7 +363,7 @@ export function cotizar(
         cotizacion_7_fmt: pesos(target7),
         aviso:
           `No encontré una red ${dondeFalla} en las isapres que manejo. ` +
-          `Mejor te dejo con Cynthia para revisarlo caso a caso.`,
+          `Mejor te dejo con un ejecutivo del equipo para revisarlo caso a caso.`,
         opciones: [],
         nota: "",
       };
@@ -468,7 +468,7 @@ export function cotizar(
     nota:
       "Cobertura preferente: el % indicado aplica en las clínicas de la red del plan; " +
       "fuera de ellas rige la cobertura de libre elección. El detalle por clínica y los " +
-      "topes están en el PDF de cada plan. Cynthia confirma todo al cierre.",
+      "topes están en el PDF de cada plan. El ejecutivo confirma todo al cierre.",
   };
 }
 
