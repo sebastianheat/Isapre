@@ -47,7 +47,7 @@ export default function LeadForm() {
     edad: "",
     sueldo_liquido: "",
     prevision_actual: "Fonasa",
-    cargas_cantidad: "0",
+    cargas_cantidad: "",
     cargas_edades: "",
     clinica_preferida: "",
   });
@@ -179,20 +179,26 @@ export default function LeadForm() {
           onChange={(e) => set("sueldo_liquido", e.target.value)}
           required
         />
-        <input
-          type="number"
-          placeholder="Cantidad de cargas"
-          min={0}
-          max={10}
-          value={f.cargas_cantidad}
-          onChange={(e) => set("cargas_cantidad", e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="Edades de las cargas (ej. 10, 7)"
-          value={f.cargas_edades}
-          onChange={(e) => set("cargas_edades", e.target.value)}
-        />
+        <label className="field">
+          <span className="field-label">Cargas (hijos/pareja)</span>
+          <input
+            type="number"
+            placeholder="0"
+            min={0}
+            max={10}
+            value={f.cargas_cantidad}
+            onChange={(e) => set("cargas_cantidad", e.target.value)}
+          />
+        </label>
+        <label className="field">
+          <span className="field-label">Edades de las cargas</span>
+          <input
+            type="text"
+            placeholder="Ej. 10, 7"
+            value={f.cargas_edades}
+            onChange={(e) => set("cargas_edades", e.target.value)}
+          />
+        </label>
         <input
           className="full"
           type="text"
