@@ -271,7 +271,7 @@ a:hover { text-decoration: underline; }
 }
 .composer textarea {
   flex: 1; resize: none; border: 1px solid var(--border);
-  border-radius: 20px; padding: 9px 14px; font-size: 14px;
+  border-radius: 20px; padding: 9px 14px; font-size: 16px;
   font-family: inherit; max-height: 100px; outline: none;
 }
 .composer textarea:focus { border-color: var(--blue); }
@@ -312,8 +312,12 @@ a:hover { text-decoration: underline; }
 }
 @media (max-width: 480px) {
   .chat-widget-panel {
-    right: 0; bottom: 0; width: 100vw; height: 100dvh;
-    max-height: 100dvh; border-radius: 0; border: none;
+    right: 0; left: 0; width: 100vw; border-radius: 0; border: none;
+    /* Anclar al visualViewport para que el teclado no empuje la pantalla.
+       Si --chat-vh no está seteado (panel cerrado / sin JS), cae a dvh. */
+    top: var(--chat-top, 0); bottom: auto;
+    height: var(--chat-vh, 100dvh);
+    max-height: var(--chat-vh, 100dvh);
   }
 }
 .chat-widget-header {
