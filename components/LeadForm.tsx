@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
+import { CLINICAS_POR_REGION } from "@/lib/clinicasPorRegion";
 
 const REGIONES = [
   "Arica y Parinacota",
@@ -34,10 +35,14 @@ const PREVISIONES = [
   "Otro",
 ];
 
+const MAX_CLINICAS = 3;
+
 export default function LeadForm() {
   const [enviando, setEnviando] = useState(false);
   const [enviado, setEnviado] = useState(false);
   const [error, setError] = useState("");
+  const [clinicasOpen, setClinicasOpen] = useState(false);
+  const clinicasRef = useRef<HTMLDivElement>(null);
   const [f, setF] = useState({
     nombre: "",
     rut: "",
@@ -49,12 +54,43 @@ export default function LeadForm() {
     prevision_actual: "Fonasa",
     cargas_cantidad: "",
     cargas_edades: "",
-    clinica_preferida: "",
+    clinicas_preferidas: [] as string[],
   });
 
-  function set<K extends keyof typeof f>(k: K, v: string) {
+  function set<K extends keyof typeof f>(k: K, v: (typeof f)[K]) {
     setF((s) => ({ ...s, [k]: v }));
   }
+
+  // Al cambiar de región, filtra clínicas para dejar solo las que aplican.
+  function cambiarRegion(nuevaRegion: string) {
+    const validas = new Set(CLINICAS_POR_REGION[nuevaRegion] ?? []);
+    setF((s) => ({
+      ...s,
+      region: nuevaRegion,
+      clinicas_preferidas: s.clinicas_preferidas.filter((c) => validas.has(c)),
+    }));
+  }
+
+  function toggleClinica(clinica: string) {
+    setF((s) => {
+      const ya = s.clinicas_preferidas.includes(clinica);
+      if (ya) {
+        return { ...s, clinicas_preferidas: s.clinicas_preferidas.filter((c) => c !== clinica) };
+      }
+      if (s.clinicas_preferidas.length >= MAX_CLINICAS) return s;
+      return { ...s, clinicas_preferidas: [...s.clinicas_preferidas, clinica] };
+    });
+  }
+
+  // Cerrar dropdown al click fuera.
+  useEffect(() => {
+    function onDocClick(e: MouseEvent) {
+      if (!clinicasRef.current) return;
+      if (!clinicasRef.current.contains(e.target as Node)) setClinicasOpen(false);
+    }
+    document.addEventListener("mousedown", onDocClick);
+    return () => document.removeEventListener("mousedown", onDocClick);
+  }, []);
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -73,10 +109,17 @@ export default function LeadForm() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          ...f,
+          nombre: f.nombre,
+          rut: f.rut,
+          telefono: f.telefono,
+          email: f.email,
+          region: f.region,
           edad: Number(f.edad),
           sueldo_liquido: Number(f.sueldo_liquido),
+          prevision_actual: f.prevision_actual,
           cargas_cantidad: Number(f.cargas_cantidad) || 0,
+          cargas_edades: f.cargas_edades,
+          clinica_preferida: f.clinicas_preferidas.join(", "),
           origen: "landing-beta",
         }),
       });
@@ -99,9 +142,8 @@ export default function LeadForm() {
         <div className="success-check">✓</div>
         <h3>¡Listo, {f.nombre.split(" ")[0]}!</h3>
         <p>
-          Recibimos tus datos. <strong>Cynthia</strong>, nuestra ejecutiva, te va a contactar por
-          WhatsApp al <strong>{f.telefono}</strong> con las mejores opciones de plan ajustadas a
-          tu presupuesto.
+          Recibimos tus datos. Nuestros ejecutivos se pondrán en contacto contigo para brindarte
+          la mejor opción de plan ajustada a tu presupuesto.
         </p>
         <p className="small">
           ¿Quieres adelantar la conversación? Abre el chat de Romina abajo a la derecha y te
@@ -110,6 +152,9 @@ export default function LeadForm() {
       </div>
     );
   }
+
+  const clinicasRegion = CLINICAS_POR_REGION[f.region] ?? [];
+  const seleccionadas = f.clinicas_preferidas;
 
   return (
     <form className="lead-form" onSubmit={submit}>
@@ -148,7 +193,7 @@ export default function LeadForm() {
           autoComplete="email"
           required
         />
-        <select value={f.region} onChange={(e) => set("region", e.target.value)} required>
+        <select value={f.region} onChange={(e) => cambiarRegion(e.target.value)} required>
           {REGIONES.map((r) => (
             <option key={r}>{r}</option>
           ))}
@@ -199,13 +244,67 @@ export default function LeadForm() {
             onChange={(e) => set("cargas_edades", e.target.value)}
           />
         </label>
-        <input
-          className="full"
-          type="text"
-          placeholder="Clínica preferida (opcional)"
-          value={f.clinica_preferida}
-          onChange={(e) => set("clinica_preferida", e.target.value)}
-        />
+
+        <div className="field full" ref={clinicasRef}>
+          <span className="field-label">
+            Clínicas preferidas en {f.region} (hasta {MAX_CLINICAS} · opcional)
+          </span>
+          <button
+            type="button"
+            className="multi-trigger"
+            onClick={() => setClinicasOpen((o) => !o)}
+          >
+            {seleccionadas.length === 0 ? (
+              <span className="multi-placeholder">Selecciona tus clínicas preferidas</span>
+            ) : (
+              <span className="multi-chips">
+                {seleccionadas.map((c) => (
+                  <span key={c} className="chip">
+                    {c}
+                    <span
+                      className="chip-x"
+                      role="button"
+                      tabIndex={0}
+                      onClick={(ev) => {
+                        ev.stopPropagation();
+                        toggleClinica(c);
+                      }}
+                    >
+                      ×
+                    </span>
+                  </span>
+                ))}
+              </span>
+            )}
+            <span className="multi-caret">{clinicasOpen ? "▴" : "▾"}</span>
+          </button>
+          {clinicasOpen && (
+            <div className="multi-menu">
+              {clinicasRegion.length === 0 ? (
+                <div className="multi-empty">No tenemos clínicas listadas para esta región.</div>
+              ) : (
+                clinicasRegion.map((c) => {
+                  const checked = seleccionadas.includes(c);
+                  const disabled = !checked && seleccionadas.length >= MAX_CLINICAS;
+                  return (
+                    <label
+                      key={c}
+                      className={`multi-option ${disabled ? "disabled" : ""}`}
+                    >
+                      <input
+                        type="checkbox"
+                        checked={checked}
+                        disabled={disabled}
+                        onChange={() => toggleClinica(c)}
+                      />
+                      <span>{c}</span>
+                    </label>
+                  );
+                })
+              )}
+            </div>
+          )}
+        </div>
       </div>
 
       {error && <div className="form-error">{error}</div>}
@@ -214,7 +313,7 @@ export default function LeadForm() {
         {enviando ? "Enviando…" : "Cotizar gratis"}
       </button>
       <p className="legal">
-        Al enviar aceptas que te contactemos por WhatsApp para entregarte tus opciones de plan.
+        Al enviar aceptas que te contactemos para entregarte tus opciones de plan.
       </p>
     </form>
   );

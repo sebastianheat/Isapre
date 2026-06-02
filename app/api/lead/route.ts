@@ -1,4 +1,5 @@
-import { guardarLead } from "@/lib/leads";
+import { guardarLead, type Lead } from "@/lib/leads";
+import { enviarLeadPorEmail } from "@/lib/email";
 
 export const runtime = "nodejs";
 export const maxDuration = 15;
@@ -42,23 +43,33 @@ export async function POST(req: Request) {
       ? `${body.cargas_cantidad} carga(s)${body.cargas_edades ? ` — edades: ${body.cargas_edades}` : ""}`
       : "";
 
+  const lead: Lead = {
+    nombre,
+    rut,
+    telefono,
+    email,
+    region: body.region,
+    edad: body.edad,
+    sueldoLiquido: body.sueldo_liquido,
+    previsionActual: body.prevision_actual,
+    cargasResumen,
+    clinicaPreferida: body.clinica_preferida,
+    origen: body.origen ?? "landing-form",
+  };
+
   try {
-    await guardarLead({
-      nombre,
-      rut,
-      telefono,
-      email,
-      region: body.region,
-      edad: body.edad,
-      sueldoLiquido: body.sueldo_liquido,
-      previsionActual: body.prevision_actual,
-      cargasResumen,
-      clinicaPreferida: body.clinica_preferida,
-      origen: body.origen ?? "landing-form",
-    });
-    return Response.json({ ok: true });
+    await guardarLead(lead);
   } catch (err) {
     console.error("Error guardando lead:", err);
     return Response.json({ ok: false, error: "Error guardando el lead." }, { status: 500 });
   }
+
+  // El email es complementario: si falla, el lead igual quedó en KV/HEAT.
+  try {
+    await enviarLeadPorEmail(lead);
+  } catch (err) {
+    console.error("Error enviando email del lead:", err);
+  }
+
+  return Response.json({ ok: true });
 }
