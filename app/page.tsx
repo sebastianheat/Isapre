@@ -1,141 +1,101 @@
-"use client";
+import LeadForm from "@/components/LeadForm";
+import ChatWidget from "@/components/ChatWidget";
 
-import { useEffect, useRef, useState } from "react";
+const VENTAJAS = [
+  { ico: "🏥", t: "+5.000 prestadores", s: "Red amplia en todo Chile" },
+  { ico: "📋", t: "1.782 planes comparados", s: "Las 7 isapres del mercado" },
+  { ico: "🤝", t: "Asesoría 100% gratis", s: "Sin compromiso ni cargos ocultos" },
+  { ico: "🔒", t: "Sin alza 2025-2026", s: "Compromiso público de Nueva Masvida" },
+  { ico: "⚡", t: "Activación 24-72 h", s: "100% online, sin papeleo" },
+  { ico: "💬", t: "Cierre por WhatsApp", s: "Tu ejecutiva Cynthia te acompaña" },
+];
 
-interface Msg {
-  role: "user" | "assistant";
-  content: string;
-}
-
-const SALUDO: Msg = {
-  role: "assistant",
-  content:
-    "Hola, soy Romina, tu asesora en Isapres Chile. Con gusto te ayudo a encontrar y cotizar tu plan de salud.\n\nPara partir, cuéntame por favor: ¿qué edad tienes, en qué ciudad o región vives y cuánto es tu sueldo líquido (lo que recibes en mano)? Si vas a sumar cargas (pareja, hijos), indícame cuántas y sus edades, y si tienes alguna clínica o prestador de preferencia.\n\nSi te acomoda, puedes enviarme un audio y lo revisamos. 🙂",
-};
-
-// Renderiza el texto del mensaje dejando los links (markdown y URLs sueltas) clickeables.
-function renderRich(text: string) {
-  const regex = /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)|(https?:\/\/[^\s<]+[^\s<.,;:)])/g;
-  const out: React.ReactNode[] = [];
-  let last = 0;
-  let m: RegExpExecArray | null;
-  let key = 0;
-  while ((m = regex.exec(text)) !== null) {
-    if (m.index > last) out.push(text.slice(last, m.index));
-    const href = m[2] ?? m[3];
-    const label = m[1] ?? m[3];
-    out.push(
-      <a key={key++} href={href} target="_blank" rel="noopener noreferrer" className="msg-link">
-        {label}
-      </a>,
-    );
-    last = regex.lastIndex;
-  }
-  if (last < text.length) out.push(text.slice(last));
-  return out;
-}
+const PASOS = [
+  { n: "1", t: "Ingresa tus datos", s: "Edad, sueldo líquido, región y a quién quieres cubrir." },
+  { n: "2", t: "Comparamos las 7 isapres", s: "Buscamos los mejores planes ajustados a tu bolsillo." },
+  { n: "3", t: "Cierras con Cynthia", s: "Te contacta por WhatsApp y deja todo activo en 24-72 h." },
+];
 
 export default function Page() {
-  const [messages, setMessages] = useState<Msg[]>([SALUDO]);
-  const [input, setInput] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const taRef = useRef<HTMLTextAreaElement>(null);
-
-  useEffect(() => {
-    scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
-  }, [messages, loading]);
-
-  async function send() {
-    const text = input.trim();
-    if (!text || loading) return;
-
-    const next = [...messages, { role: "user" as const, content: text }];
-    setMessages(next);
-    setInput("");
-    setError("");
-    setLoading(true);
-    if (taRef.current) taRef.current.style.height = "auto";
-
-    try {
-      const res = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: next }),
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        setError(data.error || "Algo falló. Intenta de nuevo.");
-      } else {
-        setMessages((m) => [...m, { role: "assistant", content: data.reply }]);
-      }
-    } catch {
-      setError("Sin conexión. Intenta de nuevo.");
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  function onKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      send();
-    }
-  }
-
-  function autosize(e: React.ChangeEvent<HTMLTextAreaElement>) {
-    setInput(e.target.value);
-    e.target.style.height = "auto";
-    e.target.style.height = Math.min(e.target.scrollHeight, 120) + "px";
-  }
-
   return (
-    <div className="app">
-      <header className="header">
-        <div className="avatar">R</div>
-        <div>
-          <h1>Romina · Isapres Chile</h1>
-          <span>Asesora de planes de salud</span>
+    <div className="landing">
+      <header className="nav">
+        <div className="nav-inner">
+          <div className="brand">
+            <span className="brand-mark">N</span>
+            <span className="brand-name">nuevaisapre<span className="brand-tld">.cl</span></span>
+          </div>
+          <nav className="nav-links">
+            <a href="#como-funciona">Cómo funciona</a>
+            <a href="#ventajas">Por qué elegirnos</a>
+            <a href="#form">Cotizar</a>
+          </nav>
         </div>
       </header>
 
-      <div className="messages" ref={scrollRef}>
-        {messages.map((m, i) => (
-          <div key={i} className={`row ${m.role === "user" ? "user" : ""}`}>
-            <div className={`bubble ${m.role === "user" ? "user" : "bot"}`}>
-              {renderRich(m.content)}
-            </div>
+      <section className="hero">
+        <div className="hero-inner">
+          <div className="hero-copy">
+            <span className="hero-pill">Comparador independiente · sin costo</span>
+            <h1>
+              Encuentra tu <span className="hl">mejor plan de isapre</span> en 30 segundos.
+            </h1>
+            <p>
+              Comparamos en tiempo real los <strong>1.782 planes</strong> de las 7 isapres y
+              elegimos los 3 que mejor te calzan según tu <strong>presupuesto</strong>, edad y
+              clínica de preferencia. Cierra por WhatsApp con tu ejecutiva.
+            </p>
+            <ul className="hero-checks">
+              <li>✓ Precios reales · catálogos oficiales</li>
+              <li>✓ Cobertura por clínica con porcentajes exactos</li>
+              <li>✓ Una ejecutiva real (no un bot al final)</li>
+            </ul>
           </div>
-        ))}
-        {loading && (
-          <div className="row">
-            <div className="bubble bot">
-              <div className="typing">
-                <span />
-                <span />
-                <span />
+          <div id="form" className="hero-form">
+            <LeadForm />
+          </div>
+        </div>
+      </section>
+
+      <section id="ventajas" className="ventajas">
+        <h2>Por qué cotizar con nosotros</h2>
+        <div className="ventajas-grid">
+          {VENTAJAS.map((v) => (
+            <div key={v.t} className="ventaja">
+              <div className="ventaja-ico">{v.ico}</div>
+              <div className="ventaja-text">
+                <strong>{v.t}</strong>
+                <span>{v.s}</span>
               </div>
             </div>
-          </div>
-        )}
-      </div>
+          ))}
+        </div>
+      </section>
 
-      {error && <div className="error">{error}</div>}
+      <section id="como-funciona" className="pasos">
+        <h2>Cómo funciona</h2>
+        <div className="pasos-grid">
+          {PASOS.map((p) => (
+            <div key={p.n} className="paso">
+              <div className="paso-num">{p.n}</div>
+              <strong>{p.t}</strong>
+              <span>{p.s}</span>
+            </div>
+          ))}
+        </div>
+      </section>
 
-      <div className="composer">
-        <textarea
-          ref={taRef}
-          value={input}
-          onChange={autosize}
-          onKeyDown={onKeyDown}
-          placeholder="Escribe tu mensaje…"
-          rows={1}
-        />
-        <button onClick={send} disabled={loading || !input.trim()} aria-label="Enviar">
-          ➤
-        </button>
-      </div>
+      <section className="cierre">
+        <h2>Tu plan ideal está a un formulario de distancia</h2>
+        <p>Llena tus datos arriba y un asesor te contacta por WhatsApp.</p>
+        <a href="#form" className="cta-link">Cotizar ahora</a>
+      </section>
+
+      <footer className="footer">
+        <span>© {new Date().getFullYear()} nuevaisapre.cl · Asesoría certificada en isapres</span>
+      </footer>
+
+      <ChatWidget />
     </div>
   );
 }

@@ -7,6 +7,13 @@ export interface Lead {
   plan?: string;
   region?: string;
   telefono?: string;
+  email?: string;
+  edad?: number;
+  sueldoLiquido?: number;
+  previsionActual?: string;
+  cargasResumen?: string;
+  clinicaPreferida?: string;
+  origen?: string;
 }
 
 // Guarda el lead y, si HEAT está configurado, lo empuja al CRM para Cynthia.
@@ -41,14 +48,20 @@ async function pushToHeat(lead: Lead): Promise<void> {
       locationId,
       firstName: firstName || lead.nombre,
       lastName: rest.join(" "),
+      email: lead.email,
       phone: lead.telefono ? `+${lead.telefono.replace(/^\+/, "")}` : undefined,
-      source: "Romina WhatsApp",
+      source: lead.origen ?? "Romina",
       tags: ["escalar_ejecutivo", "interesado"],
       customFields: [
         { key: "rut", value: lead.rut },
         { key: "isapre_solicitada", value: lead.isapre ?? "" },
         { key: "plan_cotizado", value: lead.plan ?? "" },
         { key: "region", value: lead.region ?? "" },
+        { key: "edad", value: lead.edad ? String(lead.edad) : "" },
+        { key: "sueldo_liquido", value: lead.sueldoLiquido ? String(lead.sueldoLiquido) : "" },
+        { key: "prevision_actual", value: lead.previsionActual ?? "" },
+        { key: "cargas", value: lead.cargasResumen ?? "" },
+        { key: "clinica_preferida", value: lead.clinicaPreferida ?? "" },
       ],
     }),
   });
