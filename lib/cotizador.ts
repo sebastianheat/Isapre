@@ -10,7 +10,6 @@ import catalogos from "./catalogos.json";
 import coberturas from "./coberturas.json";
 
 const PDF_BASE = "https://nuevaisapre.cl/pdfs";
-const ISAPRE_DEFAULT = "nuevamasvida";
 
 interface PlanRaw {
   codigo: string;
@@ -284,6 +283,7 @@ export function cotizar(
   clinicaPreferida?: string | null,
   region?: string | null,
   isapreSolicitada?: string | null,
+  presupuestoMax?: number | null,
 ): ResultadoCotizacion {
   const cargasSafe = Array.isArray(cargas) ? cargas : [];
   const preferida = clinicaPreferida?.trim() ? clinicaPreferida.trim() : null;
@@ -311,10 +311,14 @@ export function cotizar(
     !/(osorno|temuco|valdivia)/.test(nq) &&
     (regionBucket === null || regionBucket === "Metropolitana");
 
-  // Isapre a cotizar: Alemana Santiago -> Esencial; isapre pedida -> esa; default NMV.
-  let isapre = ISAPRE_DEFAULT;
-  if (quiereAlemanaStgo) isapre = "esencial";
-  else if (slugSolicitado) isapre = slugSolicitado;
+  // Isapre a cotizar:
+  //  - "Alemana Santiago" pedida -> Esencial (la única que la tiene).
+  //  - Isapre solicitada por nombre -> esa isapre.
+  //  - En cualquier otro caso: buscamos en LAS 7 ISAPRES y elegimos el mejor
+  //    plan según el presupuesto del cliente (sin sesgo por isapre).
+  let isapreLock: string | null = null;
+  if (quiereAlemanaStgo) isapreLock = "esencial";
+  else if (slugSolicitado) isapreLock = slugSolicitado;
 
   // Si quiere Alemana de Santiago, el filtro debe ser específico (no las Alemanas
   // regionales de Osorno/Temuco/Valdivia).
@@ -324,20 +328,35 @@ export function cotizar(
     (!regionBucket || planEnRegion(p, regionBucket)) &&
     (!clinicaFiltro || planMatcheaClinica(p, clinicaFiltro));
 
+  // Ancla de selección: el presupuesto que dio el cliente, o el 7% legal.
+  const target =
+    presupuestoMax && presupuestoMax > 0 ? presupuestoMax : target7;
+
   let cambioIsapre = false;
   let aviso: string | undefined;
-  let candidatos = precios.filter((p) => p.isapre === isapre && filtro(p));
+  let candidatos = isapreLock
+    ? precios.filter((p) => p.isapre === isapreLock && filtro(p))
+    : precios.filter(filtro);
 
   if (candidatos.length === 0) {
-    // La isapre elegida no cubre la zona/clínica: buscamos en todas y elegimos
-    // la que mejor calce (más planes que cumplen).
-    const todos = precios.filter(filtro);
-    if (todos.length === 0) {
+    // Sin candidatos: si la isapre estaba "lockeada", probamos cross-isapre.
+    if (isapreLock) {
+      const todos = precios.filter(filtro);
+      if (todos.length > 0) {
+        candidatos = todos;
+        isapreLock = null;
+        cambioIsapre = true;
+        aviso =
+          `La isapre pedida no calzaba con tu zona o clínica, ` +
+          `así que busqué la mejor opción entre todas.`;
+      }
+    }
+    if (candidatos.length === 0) {
       const dondeFalla = preferida
         ? `con la clínica indicada ("${preferida}")`
         : `en ${regionBucket ?? "tu zona"}`;
       return {
-        isapre: CAT[isapre].label,
+        isapre: isapreLock ? CAT[isapreLock].label : "—",
         cambio_de_isapre: false,
         valor_uf: valorUF,
         cotizacion_7_pesos: Math.round(target7),
@@ -349,24 +368,18 @@ export function cotizar(
         nota: "",
       };
     }
-    const counts: Record<string, number> = {};
-    for (const p of todos) counts[p.isapre] = (counts[p.isapre] || 0) + 1;
-    const best = Object.entries(counts).sort((a, b) => b[1] - a[1])[0][0];
-    isapre = best;
-    cambioIsapre = true;
-    candidatos = precios.filter((p) => p.isapre === best && filtro(p));
-    aviso =
-      `Para lo que buscas, ${CAT[best].label} es la isapre que mejor te calza, ` +
-      `así que te cotizo ahí. (Igual, Cynthia confirma todo y puede comparar otras opciones.)`;
   }
 
-  // Línea de planes dentro de la isapre elegida:
+  // Línea de planes a anclar al presupuesto:
+  //  - Si la isapre está lockeada en NMV, mantenemos PM/PS por afinidad.
+  //  - Si está lockeada en otra, preferimos plans Preferente.
+  //  - Si es cross-isapre, preferimos Preferente (más relevantes), si no, todo.
   let fuente = candidatos;
-  if (isapre === "nuevamasvida") {
+  if (isapreLock === "nuevamasvida") {
     const pm = candidatos.filter((p) => p.serie === "PM");
     const ps = candidatos.filter((p) => p.serie === "PS");
     const pmMin = pm.length ? Math.min(...pm.map((p) => p.precioPesos)) : Infinity;
-    if (pm.length >= 3 && target7 >= pmMin) fuente = pm;
+    if (pm.length >= 3 && target >= pmMin) fuente = pm;
     else if (ps.length >= 3) fuente = ps;
     else {
       const pref = candidatos.filter((p) => p.tipo === "Preferente");
@@ -380,11 +393,11 @@ export function cotizar(
   // Selección anclada al 7%: ventana de 3 (más barato / cercano / más caro).
   const ordPrecio = [...fuente].sort((a, b) => a.precioPesos - b.precioPesos);
   let elegidos: PlanCalc[];
-  if (ordPrecio.length >= 3 && target7 > 0) {
+  if (ordPrecio.length >= 3 && target > 0) {
     let ai = 0;
     let mejorDif = Infinity;
     ordPrecio.forEach((p, i) => {
-      const d = Math.abs(p.precioPesos - target7);
+      const d = Math.abs(p.precioPesos - target);
       if (d < mejorDif) {
         mejorDif = d;
         ai = i;
@@ -436,8 +449,16 @@ export function cotizar(
     };
   });
 
+  // Etiqueta de isapre a nivel resultado: si todas las opciones son de una
+  // sola isapre, esa; si están mezcladas (búsqueda cross-isapre), "Varias".
+  const isapresEnOpciones = new Set(opciones.map((o) => o.isapre));
+  const isapreLabel =
+    isapreLock ? CAT[isapreLock].label
+    : isapresEnOpciones.size === 1 ? [...isapresEnOpciones][0]
+    : "Varias";
+
   return {
-    isapre: CAT[isapre].label,
+    isapre: isapreLabel,
     cambio_de_isapre: cambioIsapre,
     valor_uf: valorUF,
     cotizacion_7_pesos: Math.round(target7),

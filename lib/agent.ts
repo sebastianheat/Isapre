@@ -14,7 +14,7 @@ const TOOLS: Anthropic.Tool[] = [
   {
     name: "cotizar_planes",
     description:
-      "Cotiza 3 opciones reales de plan de salud con precios exactos (catálogos oficiales de las 7 isapres), desglose por beneficiario, cobertura y link al PDF. Por defecto cotiza Nueva Masvida; cambia de isapre solo, según la clínica preferida (ej. Clínica Alemana de Santiago → Esencial), la región (si NMV no la cubre) o la isapre que pida el cliente. Llamar apenas se tenga edad + sueldo líquido (más región, cargas, clínica e isapre si las mencionó).",
+      "Cotiza 3 opciones reales de planes de salud con precios exactos (catálogos oficiales de las 7 isapres), desglose por beneficiario, cobertura y link al PDF. Busca el MEJOR plan entre las 7 isapres ajustado al presupuesto del cliente, SIN sesgo por isapre. Reglas de routing: si pide Clínica Alemana de Santiago, cotiza Esencial (única con esa clínica); si pide explícitamente una isapre por nombre, cotiza esa; en cualquier otro caso busca entre todas. Llamar apenas se tenga edad + sueldo líquido (más región, cargas, clínica, isapre y presupuesto si los mencionó).",
     input_schema: {
       type: "object",
       properties: {
@@ -46,7 +46,12 @@ const TOOLS: Anthropic.Tool[] = [
         isapre_solicitada: {
           type: "string",
           description:
-            "Isapre específica que el cliente pidió, si nombró una (ej: 'Banmédica', 'Colmena', 'Consalud', 'Cruz Blanca', 'Vida Tres', 'Esencial', 'Nueva Masvida'). Omitir si no pidió ninguna en particular.",
+            "Isapre específica que el cliente pidió, si nombró una (ej: 'Banmédica', 'Colmena', 'Consalud', 'Cruz Blanca', 'Vida Tres', 'Esencial', 'Nueva Masvida'). Omitir si no pidió ninguna en particular — por defecto la herramienta busca el mejor plan entre las 7 isapres.",
+        },
+        presupuesto_max: {
+          type: "integer",
+          description:
+            "Presupuesto mensual máximo que el cliente dijo que puede pagar, en pesos chilenos (ej: 150000). Omitir si no mencionó un tope; en ese caso la herramienta usa el 7% legal como referencia.",
         },
       },
       required: ["edad", "sueldo_liquido"],
@@ -77,6 +82,7 @@ interface CotizarInput {
   clinica_preferida?: string;
   region?: string;
   isapre_solicitada?: string;
+  presupuesto_max?: number;
 }
 
 // Procesa un turno: corre el loop de tool-use de Claude y devuelve el texto de respuesta.
@@ -126,6 +132,7 @@ export async function responderTurno(
           input.clinica_preferida ?? null,
           input.region ?? null,
           input.isapre_solicitada ?? null,
+          input.presupuesto_max ? Number(input.presupuesto_max) : null,
         );
         toolResults.push({
           type: "tool_result",
