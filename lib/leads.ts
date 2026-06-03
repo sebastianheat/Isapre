@@ -29,8 +29,9 @@ export async function guardarLead(lead: Lead): Promise<void> {
   }
 }
 
-// Empuja el lead a HEAT/GoHighLevel (upsert de contacto + tag de derivación).
-// Requiere HEAT_API_KEY y HEAT_LOCATION_ID; si no están, solo queda el log.
+// Empuja el lead a HEAT/GoHighLevel: upsert de contacto + opportunity en el
+// pipeline configurado. Requiere HEAT_API_KEY y HEAT_LOCATION_ID; si están
+// HEAT_PIPELINE_ID + HEAT_STAGE_ID además crea la oportunidad en el pipeline.
 async function pushToHeat(lead: Lead): Promise<void> {
   const apiKey = process.env.HEAT_API_KEY;
   const locationId = process.env.HEAT_LOCATION_ID;
@@ -67,5 +68,55 @@ async function pushToHeat(lead: Lead): Promise<void> {
   });
   if (!res.ok) {
     throw new Error(`HEAT ${res.status}: ${await res.text()}`);
+  }
+  const data = (await res.json()) as { contact?: { id?: string } };
+  const contactId = data.contact?.id;
+
+  const pipelineId = process.env.HEAT_PIPELINE_ID;
+  const stageId = process.env.HEAT_STAGE_ID;
+  if (contactId && pipelineId && stageId) {
+    try {
+      await crearOportunidad(apiKey, locationId, pipelineId, stageId, contactId, lead);
+    } catch (e) {
+      console.error("Crear oportunidad en HEAT falló:", e);
+    }
+  }
+}
+
+// Crea una opportunity en el pipeline configurado, con LTV estimado
+// (sueldo × 7% × 24 meses) y nombre legible para el ejecutivo.
+async function crearOportunidad(
+  apiKey: string,
+  locationId: string,
+  pipelineId: string,
+  pipelineStageId: string,
+  contactId: string,
+  lead: Lead,
+): Promise<void> {
+  const monetaryValue = lead.sueldoLiquido
+    ? Math.round(lead.sueldoLiquido * 0.07 * 24)
+    : 0;
+  const name = `Lead web — ${lead.nombre}${lead.isapre ? ` (${lead.isapre})` : ""}`;
+
+  const res = await fetch("https://services.leadconnectorhq.com/opportunities/", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      Version: "2021-07-28",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      pipelineId,
+      locationId,
+      name,
+      pipelineStageId,
+      status: "open",
+      contactId,
+      monetaryValue,
+      source: lead.origen ?? "Romina",
+    }),
+  });
+  if (!res.ok) {
+    throw new Error(`HEAT opportunity ${res.status}: ${await res.text()}`);
   }
 }
