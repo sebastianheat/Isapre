@@ -92,6 +92,19 @@ interface CotizarInput {
   presupuesto_max?: number;
 }
 
+// El modelo a veces formatea URLs como [label](https://...) markdown link.
+// Eso se ve bien renderizado pero al COPIAR el mensaje (lo que el cliente
+// suele hacer para guardar/reenviar) se pierde la URL — solo queda el label.
+// Aplanamos a "label https://..." para que la URL siempre quede visible
+// en plain text. Funciona también con emails [x@y.cl](mailto:x@y.cl).
+function aplanarUrls(text: string): string {
+  return text
+    // [label](https://url) -> label https://url
+    .replace(/\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g, "$1 $2")
+    // [label](mailto:x@y) -> label x@y
+    .replace(/\[([^\]]+)\]\(mailto:([^)\s]+)\)/g, "$1 $2");
+}
+
 // Procesa un turno: corre el loop de tool-use de Claude y devuelve el texto de respuesta.
 export async function responderTurno(
   history: ChatMessage[],
@@ -113,13 +126,13 @@ export async function responderTurno(
     });
 
     if (response.stop_reason !== "tool_use") {
-      return (
+      const raw =
         response.content
           .filter((b): b is Anthropic.TextBlock => b.type === "text")
           .map((b) => b.text)
           .join("\n")
-          .trim() || "Perdona, ¿me repites eso?"
-      );
+          .trim() || "Perdona, ¿me repites eso?";
+      return aplanarUrls(raw);
     }
 
     messages.push({ role: "assistant", content: response.content });
