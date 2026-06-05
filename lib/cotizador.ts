@@ -9,7 +9,10 @@
 import catalogos from "./catalogos.json";
 import coberturas from "./coberturas.json";
 
-const PDF_BASE = "https://nuevaisapre.cl/pdfs";
+// Base de los PDFs oficiales por plan. Si está vacío, no incluimos el campo
+// pdf_url en la respuesta — evita devolver links 404. Configurable por env
+// para que apunte a donde sea que tengamos los PDFs hosteados.
+const PDF_BASE = (process.env.PDF_BASE_URL ?? "").replace(/\/$/, "");
 
 interface PlanRaw {
   codigo: string;
@@ -191,20 +194,55 @@ function matchIsapre(txt: string): string | null {
   return null;
 }
 
+// Grupos de sinónimos: cuando el cliente menciona cualquier término del
+// grupo, matchea con cualquier OTRO del mismo grupo. Útil porque la gente
+// dice "Marcoleta" o "UC" en vez de "Hospital Clínico UC Christus", que
+// es el nombre canónico que tenemos en el catálogo.
+const ALIAS_GRUPOS: string[][] = [
+  // UC Christus (campus Marcoleta y San Carlos de Apoquindo)
+  [
+    "uc christus",
+    "ucchristus",
+    "marcoleta",
+    "uc marcoleta",
+    "hospital clinico uc",
+    "hospital uc",
+    "clinica uc",
+    "san carlos de apoquindo",
+    "san carlos apoquindo",
+  ],
+  // Vidaintegra (centros médicos ambulatorios de Banmédica)
+  ["vidaintegra", "vida integra"],
+];
+
+function tieneAlguno(texto: string, aliases: string[]): boolean {
+  return aliases.some((a) => texto.includes(a));
+}
+
 // Compara nombres de clínica con tolerancia a:
 //  - prefijos genéricos ("Clínica X", "Hospital X")
 //  - variaciones de espacios ("Red Salud" vs "RedSalud")
+//  - sinónimos locales chilenos ("Marcoleta" = "UC Christus")
 //  - tildes y mayúsculas
 function clinicaMatch(catalogo: string, query: string): boolean {
   const a = normalizarClinica(catalogo);
   const b = normalizarClinica(query);
   if (!a.full || !b.full) return false;
-  return (
+  // Match por substring (con y sin espacios).
+  if (
     a.full.includes(b.full) ||
     b.full.includes(a.full) ||
     a.compact.includes(b.compact) ||
     b.compact.includes(a.compact)
-  );
+  ) {
+    return true;
+  }
+  // Match por sinónimo: si ambos lados caen en el mismo grupo, son la misma
+  // institución aunque el nombre canónico difiera.
+  for (const grupo of ALIAS_GRUPOS) {
+    if (tieneAlguno(a.full, grupo) && tieneAlguno(b.full, grupo)) return true;
+  }
+  return false;
 }
 
 function ordenarPorPreferida(prest: string[], preferida: string | null): string[] {
@@ -262,7 +300,7 @@ export interface OpcionPlan {
   precio_pesos_fmt: string;
   excedente_pesos: number;
   excedente_fmt: string;
-  pdf_url: string;
+  pdf_url: string | null;
   cobertura_por_clinica: {
     hospitalaria: TramoCobertura[];
     ambulatoria: TramoCobertura[];
@@ -566,7 +604,7 @@ export function cotizar(
       precio_pesos_fmt: pesos(p.precioPesos),
       excedente_pesos: Math.round(p.precioPesos - target7),
       excedente_fmt: pesos(p.precioPesos - target7),
-      pdf_url: `${PDF_BASE}/${p.isapre}/${p.codigo}.pdf`,
+      pdf_url: PDF_BASE ? `${PDF_BASE}/${p.isapre}/${p.codigo}.pdf` : null,
       cobertura_por_clinica: det
         ? {
             hospitalaria: det.hosp,
