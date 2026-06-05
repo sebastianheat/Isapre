@@ -60,16 +60,17 @@ const TOOLS: Anthropic.Tool[] = [
   {
     name: "registrar_lead",
     description:
-      "Registra al cliente como lead para que el equipo de ejecutivos lo contacte y cierre. Llamar SOLO cuando el cliente mostró interés y ya entregó su nombre y RUT. **Incluye todos los campos que ya recolectaste en la conversación** (edad, sueldo, cargas, clínica preferida, isapre, plan, email si lo dio) para que el ejecutivo tenga contexto completo. Después de llamarla, confirma al cliente con calidez.",
+      "Registra al cliente como lead para que el equipo de ejecutivos lo contacte. Llamar SOLO cuando el cliente confirmó explícitamente que quiere ser contactado o cerrar un plan, y entregó nombre + RUT + al menos uno de los dos contactos (WhatsApp o email). **Pásale TODOS los campos que ya recolectaste en la conversación** (edad, sueldo, cargas, clínica preferida, isapre, plan, etc.) para que el ejecutivo tenga contexto completo. Si falta WhatsApp y email, el tool devuelve error — pídele al cliente al menos uno antes de reintentar.",
     input_schema: {
       type: "object",
       properties: {
         nombre: { type: "string", description: "Nombre del cliente" },
         rut: { type: "string", description: "RUT del cliente con guión y dígito verificador" },
+        telefono: { type: "string", description: "WhatsApp del cliente con código país, ej. +56912345678. En WhatsApp ya lo tenemos automático — no es necesario." },
+        email: { type: "string", description: "Email del cliente, ej. nombre@dominio.cl" },
         isapre: { type: "string", description: "Isapre del plan que le interesó" },
         plan_codigo: { type: "string", description: "Código del plan elegido, si lo hay" },
         region: { type: "string", description: "Región o ciudad del cliente" },
-        email: { type: "string", description: "Email del cliente, si lo entregó" },
         edad: { type: "integer", description: "Edad del cliente" },
         sueldo_liquido: { type: "integer", description: "Sueldo líquido mensual en CLP" },
         prevision_actual: { type: "string", description: "Isapre/Fonasa actual del cliente" },
@@ -149,36 +150,53 @@ export async function responderTurno(
         const input = block.input as {
           nombre?: string;
           rut?: string;
+          telefono?: string;
+          email?: string;
           isapre?: string;
           plan_codigo?: string;
           region?: string;
-          email?: string;
           edad?: number;
           sueldo_liquido?: number;
           prevision_actual?: string;
           cargas_resumen?: string;
           clinica_preferida?: string;
         };
-        await guardarLead({
-          nombre: input.nombre ?? "",
-          rut: input.rut ?? "",
-          isapre: input.isapre,
-          plan: input.plan_codigo,
-          region: input.region,
-          telefono: ctx?.telefono,
-          email: input.email,
-          edad: input.edad,
-          sueldoLiquido: input.sueldo_liquido,
-          previsionActual: input.prevision_actual,
-          cargasResumen: input.cargas_resumen,
-          clinicaPreferida: input.clinica_preferida,
-          origen: ctx?.telefono ? "whatsapp-chat" : "web-chat",
-        });
-        toolResults.push({
-          type: "tool_result",
-          tool_use_id: block.id,
-          content: JSON.stringify({ ok: true }),
-        });
+        const telefono = ctx?.telefono ?? input.telefono?.trim() ?? undefined;
+        const email = input.email?.trim() ?? undefined;
+        if (!telefono && !email) {
+          // El equipo necesita un canal para contactar — bloqueamos y
+          // pedimos a Romina que se lo pida al cliente.
+          toolResults.push({
+            type: "tool_result",
+            tool_use_id: block.id,
+            content: JSON.stringify({
+              ok: false,
+              error:
+                "Falta WhatsApp o email para registrar el lead. Pídele al cliente al menos uno de los dos (idealmente ambos) y reintenta.",
+            }),
+          });
+        } else {
+          await guardarLead({
+            nombre: input.nombre ?? "",
+            rut: input.rut ?? "",
+            telefono,
+            email,
+            isapre: input.isapre,
+            plan: input.plan_codigo,
+            region: input.region,
+            edad: input.edad,
+            sueldoLiquido: input.sueldo_liquido,
+            previsionActual: input.prevision_actual,
+            cargasResumen: input.cargas_resumen,
+            clinicaPreferida: input.clinica_preferida,
+            origen: ctx?.telefono ? "whatsapp-chat" : "web-chat",
+          });
+          toolResults.push({
+            type: "tool_result",
+            tool_use_id: block.id,
+            content: JSON.stringify({ ok: true }),
+          });
+        }
       }
     }
 
