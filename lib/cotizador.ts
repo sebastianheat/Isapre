@@ -82,6 +82,18 @@ function normalizar(s: string): string {
     .trim();
 }
 
+// Normaliza el nombre de una cl\u00ednica para hacerlo comparable: saca el prefijo
+// gen\u00e9rico ("Cl\u00ednica", "Hospital", "Hospital Cl\u00ednico", "Centro M\u00e9dico"),
+// colapsa espacios, y devuelve tambi\u00e9n una variante SIN espacios para tolerar
+// "Red Salud" vs "RedSalud", "MedSur" vs "Med Sur", etc.
+function normalizarClinica(s: string): { full: string; compact: string } {
+  const full = normalizar(s)
+    .replace(/^(clinica|hospital|hospital clinico|centro medico|integramedica)\s+/u, "")
+    .replace(/\s+/g, " ")
+    .trim();
+  return { full, compact: full.replace(/\s+/g, "") };
+}
+
 // Región de cada clínica por substring del nombre. Cubre los prestadores de
 // TODAS las isapres. "Clínica Alemana" sin sufijo = Santiago (Metropolitana);
 // las regionales (Osorno, Temuco, Valdivia) se distinguen por su sufijo.
@@ -179,21 +191,44 @@ function matchIsapre(txt: string): string | null {
   return null;
 }
 
+// Compara nombres de clínica con tolerancia a:
+//  - prefijos genéricos ("Clínica X", "Hospital X")
+//  - variaciones de espacios ("Red Salud" vs "RedSalud")
+//  - tildes y mayúsculas
+function clinicaMatch(catalogo: string, query: string): boolean {
+  const a = normalizarClinica(catalogo);
+  const b = normalizarClinica(query);
+  if (!a.full || !b.full) return false;
+  return (
+    a.full.includes(b.full) ||
+    b.full.includes(a.full) ||
+    a.compact.includes(b.compact) ||
+    b.compact.includes(a.compact)
+  );
+}
+
 function ordenarPorPreferida(prest: string[], preferida: string | null): string[] {
   if (!preferida) return prest;
-  const q = normalizar(preferida);
-  const match = (n: string) => {
-    const nn = normalizar(n);
-    return nn.includes(q) || q.includes(nn);
-  };
-  return [...prest].sort((a, b) => Number(match(b)) - Number(match(a)));
+  return [...prest].sort(
+    (a, b) => Number(clinicaMatch(b, preferida)) - Number(clinicaMatch(a, preferida)),
+  );
 }
 function planMatcheaClinica(p: PlanRaw, preferida: string): boolean {
-  const q = normalizar(preferida);
-  return [...(p.prest_hosp || []), ...(p.prest_amb || [])].some((n) => {
-    const nn = normalizar(n);
-    return nn.includes(q) || q.includes(nn);
-  });
+  return [...(p.prest_hosp || []), ...(p.prest_amb || [])].some((n) =>
+    clinicaMatch(n, preferida),
+  );
+}
+
+// Lista los labels de isapres que tienen la clínica preferida en al menos uno
+// de sus planes (en cualquier red). Sirve para informarle al cliente cuando
+// el filtro principal no encuentra esa clínica en preferente.
+function isapresConClinica(preferida: string, excluir?: string | null): string[] {
+  const labels = new Set<string>();
+  for (const p of ALL_PLANES) {
+    if (excluir && p.isapre === excluir) continue;
+    if (planMatcheaClinica(p, preferida)) labels.add(p.isapreLabel);
+  }
+  return [...labels].sort();
 }
 
 export interface Carga {
@@ -324,50 +359,105 @@ export function cotizar(
   // regionales de Osorno/Temuco/Valdivia).
   const clinicaFiltro = quiereAlemanaStgo ? "Clínica Alemana de Santiago" : preferida;
 
-  const filtro = (p: PlanCalc) =>
-    (!regionBucket || planEnRegion(p, regionBucket)) &&
-    (!clinicaFiltro || planMatcheaClinica(p, clinicaFiltro));
-
   // Ancla de selección: el presupuesto que dio el cliente, o el 7% legal.
   const target =
     presupuestoMax && presupuestoMax > 0 ? presupuestoMax : target7;
 
+  // Cascada de filtros: del más estricto al más laxo. Nunca devolvemos
+  // opciones vacías — si no encontramos con clínica, probamos sin clínica;
+  // si no hay nada en la región, abrimos a todo el país; si la isapre
+  // lockeada no calza, cruzamos a las 7 isapres.
   let cambioIsapre = false;
   let aviso: string | undefined;
-  let candidatos = isapreLock
-    ? precios.filter((p) => p.isapre === isapreLock && filtro(p))
-    : precios.filter(filtro);
 
+  function planesQueCumplen(opts: {
+    region: string | null;
+    clinica: string | null;
+    isapre: string | null;
+  }): PlanCalc[] {
+    return precios.filter(
+      (p) =>
+        (!opts.isapre || p.isapre === opts.isapre) &&
+        (!opts.region || planEnRegion(p, opts.region)) &&
+        (!opts.clinica || planMatcheaClinica(p, opts.clinica)),
+    );
+  }
+
+  // Nivel 1: todo (isapre lock + región + clínica). El caso ideal.
+  let candidatos = planesQueCumplen({
+    region: regionBucket,
+    clinica: clinicaFiltro,
+    isapre: isapreLock,
+  });
+
+  // Nivel 2: si había isapre lockeada y no calzó, abrimos a las 7 isapres
+  // manteniendo región + clínica.
+  if (candidatos.length === 0 && isapreLock) {
+    const cross = planesQueCumplen({
+      region: regionBucket,
+      clinica: clinicaFiltro,
+      isapre: null,
+    });
+    if (cross.length > 0) {
+      candidatos = cross;
+      cambioIsapre = true;
+      aviso =
+        `${CAT[isapreLock].label} no tiene un plan que calce con tu clínica/zona, ` +
+        `así que busqué entre las 7 isapres y te dejo las mejores opciones.`;
+      isapreLock = null;
+    }
+  }
+
+  // Nivel 3: si seguimos sin candidatos y hay clínica preferente que no aparece
+  // en ningún plan en esa región, mantenemos la región pero soltamos la clínica
+  // (libre elección). Avisamos qué isapres SÍ la tienen en otra región.
+  if (candidatos.length === 0 && clinicaFiltro) {
+    const sinClinica = planesQueCumplen({
+      region: regionBucket,
+      clinica: null,
+      isapre: isapreLock,
+    });
+    if (sinClinica.length > 0) {
+      candidatos = sinClinica;
+      const otras = isapresConClinica(clinicaFiltro, isapreLock);
+      const sufijo = otras.length
+        ? ` ${otras.length === 1 ? "La que sí la incluye" : "Las que sí la incluyen"} en su red preferente: ${otras.join(", ")}.`
+        : "";
+      aviso =
+        `${clinicaFiltro} no aparece en la red preferente de ninguna isapre ` +
+        `en ${regionBucket ?? "tu zona"}. Te muestro buenas opciones donde igual ` +
+        `puedes atenderte ahí con cobertura de Libre Elección.${sufijo}`;
+    }
+  }
+
+  // Nivel 4: ni región ni clínica encontraron nada. Soltamos región (que la
+  // gente igual viaje o use telemedicina) y mostramos los mejores planes
+  // a nivel país, anclados al presupuesto.
   if (candidatos.length === 0) {
-    // Sin candidatos: si la isapre estaba "lockeada", probamos cross-isapre.
-    if (isapreLock) {
-      const todos = precios.filter(filtro);
-      if (todos.length > 0) {
-        candidatos = todos;
-        isapreLock = null;
-        cambioIsapre = true;
-        aviso =
-          `La isapre pedida no calzaba con tu zona o clínica, ` +
-          `así que busqué la mejor opción entre todas.`;
-      }
+    candidatos = planesQueCumplen({
+      region: null,
+      clinica: null,
+      isapre: isapreLock,
+    });
+    if (candidatos.length > 0 && (regionBucket || clinicaFiltro)) {
+      const detalle = regionBucket && clinicaFiltro
+        ? `tu zona ni ${clinicaFiltro}`
+        : (regionBucket ?? clinicaFiltro);
+      aviso = aviso ??
+        `No encontré planes que calcen exactamente con ${detalle}. ` +
+        `Te dejo las mejores 3 opciones ajustadas a tu presupuesto; ` +
+        `el ejecutivo revisa el detalle por clínica al cierre.`;
     }
-    if (candidatos.length === 0) {
-      const dondeFalla = preferida
-        ? `con la clínica indicada ("${preferida}")`
-        : `en ${regionBucket ?? "tu zona"}`;
-      return {
-        isapre: isapreLock ? CAT[isapreLock].label : "—",
-        cambio_de_isapre: false,
-        valor_uf: valorUF,
-        cotizacion_7_pesos: Math.round(target7),
-        cotizacion_7_fmt: pesos(target7),
-        aviso:
-          `No encontré una red ${dondeFalla} en las isapres que manejo. ` +
-          `Mejor te dejo con un ejecutivo del equipo para revisarlo caso a caso.`,
-        opciones: [],
-        nota: "",
-      };
-    }
+  }
+
+  // Garantía final: si por alguna razón seguimos sin candidatos, devolvemos
+  // los 3 planes más cercanos al 7% del catálogo completo. NUNCA opciones
+  // vacías — el chat siempre cotiza algo.
+  if (candidatos.length === 0) {
+    candidatos = precios;
+    aviso = aviso ??
+      `Te dejo 3 opciones generales ajustadas a tu presupuesto; el ejecutivo ` +
+      `revisa la cobertura específica de tu clínica y zona al cierre.`;
   }
 
   // Línea de planes a anclar al presupuesto:
