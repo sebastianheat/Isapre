@@ -1,5 +1,4 @@
 import { guardarLead, type Lead } from "@/lib/leads";
-import { enviarLeadPorEmail } from "@/lib/email";
 
 export const runtime = "nodejs";
 export const maxDuration = 15;
@@ -62,13 +61,6 @@ export async function POST(req: Request) {
   } catch (err) {
     console.error("Error guardando lead:", err);
     return Response.json({ ok: false, error: "Error guardando el lead." }, { status: 500 });
-  }
-
-  // El email es complementario: si falla, el lead igual quedó en KV/HEAT.
-  try {
-    await enviarLeadPorEmail(lead);
-  } catch (err) {
-    console.error("Error enviando email del lead:", err);
   }
 
   return Response.json({ ok: true });

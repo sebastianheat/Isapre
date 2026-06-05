@@ -1,4 +1,5 @@
 import { kvSet } from "./store";
+import { enviarLeadPorEmail } from "./email";
 
 export interface Lead {
   nombre: string;
@@ -16,7 +17,10 @@ export interface Lead {
   origen?: string;
 }
 
-// Guarda el lead y, si HEAT está configurado, lo empuja al CRM para el equipo.
+// Guarda el lead en KV y, en paralelo, lo empuja a HEAT (CRM) y manda email
+// a info@nuevaisapre.cl. Las 3 ramas son independientes: si una falla, las
+// otras igual se ejecutan. KV es la fuente de verdad — HEAT y email son
+// complementarios.
 export async function guardarLead(lead: Lead): Promise<void> {
   const registro = { ...lead, fecha: new Date().toISOString() };
   const id = `lead:${lead.telefono || lead.rut || Date.now()}`;
@@ -26,6 +30,11 @@ export async function guardarLead(lead: Lead): Promise<void> {
     await pushToHeat(lead);
   } catch (e) {
     console.error("Push a HEAT falló:", e);
+  }
+  try {
+    await enviarLeadPorEmail(lead);
+  } catch (e) {
+    console.error("Email del lead falló:", e);
   }
 }
 
