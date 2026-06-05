@@ -55,18 +55,32 @@ export default function RominaChat() {
     setError("");
     setLoading(true);
     if (taRef.current) taRef.current.style.height = "auto";
+    // El backend puede tardar hasta 60s en cotizaciones con detalle por
+    // clínica. Damos un margen amplio (70s) para no abortar antes que él.
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 70_000);
     try {
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ messages: next }),
+        signal: controller.signal,
       });
-      const data = await res.json();
-      if (!res.ok) setError(data.error || "Algo falló. Intenta de nuevo.");
-      else setMessages((m) => [...m, { role: "assistant", content: data.reply }]);
-    } catch {
-      setError("Sin conexión. Intenta de nuevo.");
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        setError(data.error || "Algo falló. Intenta de nuevo en un momento.");
+      } else {
+        setMessages((m) => [...m, { role: "assistant", content: data.reply }]);
+      }
+    } catch (e) {
+      const isAbort = e instanceof DOMException && e.name === "AbortError";
+      setError(
+        isAbort
+          ? "Está tardando más de lo normal. Intenta de nuevo en un momento."
+          : "Sin conexión. Intenta de nuevo.",
+      );
     } finally {
+      clearTimeout(timeoutId);
       setLoading(false);
     }
   }

@@ -2,7 +2,10 @@ import Anthropic from "@anthropic-ai/sdk";
 import { responderTurno, type ChatMessage } from "@/lib/agent";
 
 export const runtime = "nodejs";
-export const maxDuration = 30;
+// Las respuestas con 3 opciones + detalle por clínica con Opus llegan a
+// 15-25s. Damos margen hasta 60s para evitar 504 cuando el modelo elige
+// una respuesta más detallada (que el frontend leía como "Sin conexión").
+export const maxDuration = 60;
 
 export async function POST(req: Request) {
   if (!process.env.ANTHROPIC_API_KEY) {
