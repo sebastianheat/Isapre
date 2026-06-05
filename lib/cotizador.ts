@@ -364,9 +364,11 @@ export function cotizar(
     presupuestoMax && presupuestoMax > 0 ? presupuestoMax : target7;
 
   // Cascada de filtros: del más estricto al más laxo. Nunca devolvemos
-  // opciones vacías — si no encontramos con clínica, probamos sin clínica;
-  // si no hay nada en la región, abrimos a todo el país; si la isapre
-  // lockeada no calza, cruzamos a las 7 isapres.
+  // opciones vacías. Si el cliente pidió una isapre por nombre, AGOTAMOS
+  // primero los fallbacks DENTRO de esa isapre (soltamos clínica → soltamos
+  // región) antes de cruzar a las otras 6 isapres. Para el cliente eso es lo
+  // intuitivo: "mejores planes NMV con clínica X" debe devolver 3 NMV aunque
+  // X no esté en preferente, no cambiar de isapre por sorpresa.
   let cambioIsapre = false;
   let aviso: string | undefined;
 
@@ -390,8 +392,45 @@ export function cotizar(
     isapre: isapreLock,
   });
 
-  // Nivel 2: si había isapre lockeada y no calzó, abrimos a las 7 isapres
-  // manteniendo región + clínica.
+  // Nivel 2 (solo si hay isapre lock): mantener la isapre, soltar la clínica.
+  // Resultado típico: 3 planes de la isapre pedida en la región, con cobertura
+  // de Libre Elección para la clínica pedida.
+  if (candidatos.length === 0 && isapreLock && clinicaFiltro) {
+    const sinClinicaMismaIsapre = planesQueCumplen({
+      region: regionBucket,
+      clinica: null,
+      isapre: isapreLock,
+    });
+    if (sinClinicaMismaIsapre.length > 0) {
+      candidatos = sinClinicaMismaIsapre;
+      const otras = isapresConClinica(clinicaFiltro, isapreLock);
+      const sufijo = otras.length
+        ? ` ${otras.length === 1 ? "La que sí la incluye" : "Las que sí la incluyen"} en su red preferente: ${otras.join(", ")}.`
+        : "";
+      aviso =
+        `${CAT[isapreLock].label} no incluye ${clinicaFiltro} en su red preferente. ` +
+        `Te dejo 3 planes de ${CAT[isapreLock].label} en ${regionBucket ?? "tu zona"} ` +
+        `donde igual puedes atenderte ahí con cobertura de Libre Elección.${sufijo}`;
+    }
+  }
+
+  // Nivel 3 (solo si hay isapre lock): mantener la isapre, soltar región también.
+  if (candidatos.length === 0 && isapreLock) {
+    const soloIsapre = planesQueCumplen({
+      region: null,
+      clinica: null,
+      isapre: isapreLock,
+    });
+    if (soloIsapre.length > 0) {
+      candidatos = soloIsapre;
+      aviso = aviso ??
+        `${CAT[isapreLock].label} no tiene red preferente en ${regionBucket ?? "tu zona"}. ` +
+        `Te dejo los 3 mejores planes de ${CAT[isapreLock].label} ajustados a tu presupuesto.`;
+    }
+  }
+
+  // Nivel 4 (cross-isapre): si la isapre pedida no calzó ni siquiera con todo
+  // suelto (raro), abrimos a las 7 isapres con la clínica/región original.
   if (candidatos.length === 0 && isapreLock) {
     const cross = planesQueCumplen({
       region: regionBucket,
@@ -402,24 +441,24 @@ export function cotizar(
       candidatos = cross;
       cambioIsapre = true;
       aviso =
-        `${CAT[isapreLock].label} no tiene un plan que calce con tu clínica/zona, ` +
+        `${CAT[isapreLock].label} no tiene planes disponibles para tus datos, ` +
         `así que busqué entre las 7 isapres y te dejo las mejores opciones.`;
       isapreLock = null;
     }
   }
 
-  // Nivel 3: si seguimos sin candidatos y hay clínica preferente que no aparece
-  // en ningún plan en esa región, mantenemos la región pero soltamos la clínica
-  // (libre elección). Avisamos qué isapres SÍ la tienen en otra región.
+  // Nivel 5 (cross-isapre sin isapre lock): si NO había isapre lockeada y el
+  // filtro completo no encontró, soltamos clínica manteniendo región y avisamos
+  // qué isapres SÍ tienen esa clínica.
   if (candidatos.length === 0 && clinicaFiltro) {
     const sinClinica = planesQueCumplen({
       region: regionBucket,
       clinica: null,
-      isapre: isapreLock,
+      isapre: null,
     });
     if (sinClinica.length > 0) {
       candidatos = sinClinica;
-      const otras = isapresConClinica(clinicaFiltro, isapreLock);
+      const otras = isapresConClinica(clinicaFiltro, null);
       const sufijo = otras.length
         ? ` ${otras.length === 1 ? "La que sí la incluye" : "Las que sí la incluyen"} en su red preferente: ${otras.join(", ")}.`
         : "";
@@ -430,14 +469,13 @@ export function cotizar(
     }
   }
 
-  // Nivel 4: ni región ni clínica encontraron nada. Soltamos región (que la
-  // gente igual viaje o use telemedicina) y mostramos los mejores planes
-  // a nivel país, anclados al presupuesto.
+  // Nivel 6: ni región ni clínica encontraron nada. Soltamos región y mostramos
+  // los mejores planes a nivel país, anclados al presupuesto.
   if (candidatos.length === 0) {
     candidatos = planesQueCumplen({
       region: null,
       clinica: null,
-      isapre: isapreLock,
+      isapre: null,
     });
     if (candidatos.length > 0 && (regionBucket || clinicaFiltro)) {
       const detalle = regionBucket && clinicaFiltro
