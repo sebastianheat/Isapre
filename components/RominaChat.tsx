@@ -71,6 +71,18 @@ export default function RominaChat() {
         setError(data.error || "Algo falló. Intenta de nuevo en un momento.");
       } else {
         setMessages((m) => [...m, { role: "assistant", content: data.reply }]);
+        // Si el chat capturó un lead en este turno (Romina llamó registrar_lead
+        // exitosamente), disparamos la misma conversión de Google Ads que el
+        // form de la landing. Métricas unificadas: 1 lead = 1 conversión sin
+        // importar el canal.
+        if (data.leadCapturado) {
+          const sendTo = process.env.NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_SEND_TO;
+          type Gtag = (cmd: string, event: string, params: Record<string, unknown>) => void;
+          const gtag = (window as unknown as { gtag?: Gtag }).gtag;
+          if (sendTo && typeof gtag === "function") {
+            gtag("event", "conversion", { send_to: sendTo, value: 1.0, currency: "CLP" });
+          }
+        }
       }
     } catch (e) {
       const isAbort = e instanceof DOMException && e.name === "AbortError";

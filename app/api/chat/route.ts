@@ -31,8 +31,8 @@ export async function POST(req: Request) {
   }
 
   try {
-    const reply = await responderTurno(history);
-    return Response.json({ reply });
+    const { reply, leadCapturado } = await responderTurno(history);
+    return Response.json({ reply, leadCapturado });
   } catch (err) {
     if (err instanceof Anthropic.RateLimitError) {
       return Response.json(

@@ -105,16 +105,26 @@ function aplanarUrls(text: string): string {
     .replace(/\[([^\]]+)\]\(mailto:([^)\s]+)\)/g, "$1 $2");
 }
 
+// Resultado de un turno: el texto de respuesta + flag de si en este turno se
+// registró exitosamente un lead (para que el frontend dispare la conversión
+// de Google Ads). El flag solo es true cuando el tool registrar_lead aceptó
+// los datos y los guardó (no cuando devolvió error por falta de contacto).
+export interface TurnoResultado {
+  reply: string;
+  leadCapturado: boolean;
+}
+
 // Procesa un turno: corre el loop de tool-use de Claude y devuelve el texto de respuesta.
 export async function responderTurno(
   history: ChatMessage[],
   ctx?: { telefono?: string },
-): Promise<string> {
+): Promise<TurnoResultado> {
   const client = new Anthropic();
   const messages: Anthropic.MessageParam[] = history.map((m) => ({
     role: m.role,
     content: m.content,
   }));
+  let leadCapturado = false;
 
   for (let i = 0; i < 5; i++) {
     const response = await client.messages.create({
@@ -132,7 +142,7 @@ export async function responderTurno(
           .map((b) => b.text)
           .join("\n")
           .trim() || "Perdona, ¿me repites eso?";
-      return aplanarUrls(raw);
+      return { reply: aplanarUrls(raw), leadCapturado };
     }
 
     messages.push({ role: "assistant", content: response.content });
@@ -204,6 +214,7 @@ export async function responderTurno(
             clinicaPreferida: input.clinica_preferida,
             origen: ctx?.telefono ? "whatsapp-chat" : "web-chat",
           });
+          leadCapturado = true;
           toolResults.push({
             type: "tool_result",
             tool_use_id: block.id,
@@ -216,5 +227,8 @@ export async function responderTurno(
     messages.push({ role: "user", content: toolResults });
   }
 
-  return "Disculpa, se me complicó esto. ¿Me das de nuevo tu edad y sueldo líquido?";
+  return {
+    reply: "Disculpa, se me complicó esto. ¿Me das de nuevo tu edad y sueldo líquido?",
+    leadCapturado,
+  };
 }

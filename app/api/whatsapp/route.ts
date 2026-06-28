@@ -36,10 +36,13 @@ async function procesarMensaje(msg: any): Promise<void> {
 
     const historial = await getHistorial(from);
     historial.push({ role: "user", content: texto });
-    const reply = await responderTurno(historial, { telefono: from });
+    const { reply } = await responderTurno(historial, { telefono: from });
     historial.push({ role: "assistant", content: reply });
     await guardarHistorial(from, historial);
     await enviarWhatsApp(from, reply);
+    // Nota: leadCapturado no se usa en WhatsApp — no hay browser ni gtag.
+    // Las conversiones desde WhatsApp se trackean con la extensión "Click to
+    // WhatsApp" de Google Ads, independiente de este flujo.
   } catch (e) {
     console.error("Error procesando mensaje de WhatsApp:", e);
   }
