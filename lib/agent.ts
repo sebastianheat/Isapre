@@ -218,7 +218,7 @@ export async function responderTurno(
             : ctx?.gclid
               ? ("google-ads" as const)
               : ("web-organico" as const);
-          await guardarLead({
+          const resultado = await guardarLead({
             nombre: input.nombre ?? "",
             rut: input.rut ?? "",
             telefono,
@@ -235,17 +235,27 @@ export async function responderTurno(
             gclid: ctx?.gclid,
             canal,
           });
-          leadCapturado = true;
-          leadDatos = {
-            email,
-            telefono,
-            nombre: input.nombre,
-            region: input.region,
-          };
+          // Solo contamos como conversión si fue un lead nuevo. Si era un
+          // cliente ya existente (Titi usando el chat para buscar planes de
+          // un cliente conocido), actualizamos el lead pero NO disparamos
+          // conversión de Google Ads ni mandamos email duplicado.
+          leadCapturado = resultado.esNuevo;
+          if (resultado.esNuevo) {
+            leadDatos = {
+              email,
+              telefono,
+              nombre: input.nombre,
+              region: input.region,
+            };
+          }
           toolResults.push({
             type: "tool_result",
             tool_use_id: block.id,
-            content: JSON.stringify({ ok: true }),
+            content: JSON.stringify({
+              ok: true,
+              esNuevo: resultado.esNuevo,
+              contactos: resultado.lead.contactos,
+            }),
           });
         }
       }

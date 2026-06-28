@@ -24,16 +24,32 @@ export interface Lead {
   // Canal y tracking de Google Ads.
   canal?: CanalLead;
   gclid?: string;
-  // Fecha ISO, seteada al guardar.
+  // Fecha ISO, seteada al guardar (primera vez).
   fecha?: string;
+  // Última actualización (se actualiza en cada upsert).
+  actualizado?: string;
+  // Cuántas veces el mismo cliente apareció (útil para ver si Titi lo buscó
+  // varias veces, o si un mismo lead apareció por form y por chat).
+  contactos?: number;
 }
 
 const INDEX_KEY = "leads:by-date";
 const LEAD_TTL_SECONDS = 60 * 60 * 24 * 60; // 60 días
 
+// Índices secundarios para dedupe: mapean email/rut/telefono normalizado al ID.
+function keyByEmail(email: string): string {
+  return `lead:by-email:${email.trim().toLowerCase()}`;
+}
+function keyByRut(rut: string): string {
+  // RUT sin puntos ni guion para matchear distintos formatos del mismo RUT.
+  return `lead:by-rut:${rut.replace(/[.\-\s]/g, "").toLowerCase()}`;
+}
+function keyByTelefono(telefono: string): string {
+  return `lead:by-telefono:+${telefono.replace(/[^0-9]/g, "").replace(/^56/, "56")}`;
+}
+
 function generarId(lead: Lead): string {
-  // Único por canal + identificador del cliente + timestamp. Suma timestamp al
-  // final para que múltiples leads del mismo cliente no se pisen.
+  // Único por canal + identificador del cliente + timestamp.
   const base = lead.telefono || lead.rut || "anon";
   return `lead:${base}:${Date.now()}`;
 }
@@ -45,19 +61,69 @@ function inferirCanal(lead: Lead): CanalLead {
   return "web-organico";
 }
 
-// Guarda el lead en KV y, en paralelo, lo empuja a HEAT (CRM) y manda email
-// a info@nuevaisapre.cl. Las 3 ramas son independientes: si una falla, las
-// otras igual se ejecutan. KV es la fuente de verdad — HEAT y email son
-// complementarios.
-export async function guardarLead(lead: Lead): Promise<Lead> {
+// Busca un lead existente por email, rut o telefono (en ese orden de prioridad
+// — email es el más confiable). Devuelve el lead completo o null si es nuevo.
+export async function buscarLeadExistente(
+  query: { email?: string; rut?: string; telefono?: string },
+): Promise<Lead | null> {
+  const keys: string[] = [];
+  if (query.email) keys.push(keyByEmail(query.email));
+  if (query.rut) keys.push(keyByRut(query.rut));
+  if (query.telefono) keys.push(keyByTelefono(query.telefono));
+
+  for (const k of keys) {
+    const id = await kvGet(k);
+    if (id) {
+      const l = await obtenerLead(id);
+      if (l) return l;
+    }
+  }
+  return null;
+}
+
+// Resultado del upsert: el lead final + si fue nuevo o ya existía.
+export interface GuardarLeadResultado {
+  lead: Lead;
+  esNuevo: boolean;
+}
+
+// Guarda el lead haciendo UPSERT: si ya existe (por email/rut/telefono), lo
+// actualiza con los datos nuevos (no destructivo — campos vacíos no pisan los
+// que ya estaban). Solo si es nuevo: KV + HEAT + email + cuenta como conversión.
+// Si es update: actualiza KV y manda email solo si cambiaron datos clave
+// (para que el equipo vea actividad), pero no dispara conversión.
+export async function guardarLead(lead: Lead): Promise<GuardarLeadResultado> {
+  const existente = await buscarLeadExistente({
+    email: lead.email,
+    rut: lead.rut,
+    telefono: lead.telefono,
+  });
+
+  if (existente) {
+    // Update: mergea datos nuevos sin pisar datos antiguos válidos.
+    return await actualizarLead(existente, lead);
+  } else {
+    return await crearLead(lead);
+  }
+}
+
+async function crearLead(lead: Lead): Promise<GuardarLeadResultado> {
   const fecha = new Date().toISOString();
   const id = generarId(lead);
   const canal = inferirCanal(lead);
-  const registro: Lead = { ...lead, id, fecha, canal };
+  const registro: Lead = {
+    ...lead,
+    id,
+    fecha,
+    actualizado: fecha,
+    canal,
+    contactos: 1,
+  };
   await kvSet(id, JSON.stringify(registro), LEAD_TTL_SECONDS);
-  // Índice por fecha (score = ms epoch) para listar más reciente primero.
   await kvZAdd(INDEX_KEY, Date.parse(fecha), id);
-  console.log("LEAD capturado:", JSON.stringify(registro));
+  // Índices secundarios para dedupe en próximas búsquedas.
+  await guardarIndicesSecundarios(registro);
+  console.log("LEAD nuevo:", JSON.stringify(registro));
   try {
     await pushToHeat(registro);
   } catch (e) {
@@ -68,7 +134,48 @@ export async function guardarLead(lead: Lead): Promise<Lead> {
   } catch (e) {
     console.error("Email del lead falló:", e);
   }
-  return registro;
+  return { lead: registro, esNuevo: true };
+}
+
+async function actualizarLead(existente: Lead, nuevo: Lead): Promise<GuardarLeadResultado> {
+  // Mergeo no destructivo: los datos nuevos sobreescriben solo si no están vacíos.
+  // contactos++ para llevar la cuenta de cuántas veces el mismo cliente apareció.
+  const mergeado: Lead = {
+    ...existente,
+    nombre: nuevo.nombre || existente.nombre,
+    rut: nuevo.rut || existente.rut,
+    isapre: nuevo.isapre || existente.isapre,
+    plan: nuevo.plan || existente.plan,
+    region: nuevo.region || existente.region,
+    telefono: nuevo.telefono || existente.telefono,
+    email: nuevo.email || existente.email,
+    edad: nuevo.edad ?? existente.edad,
+    sueldoLiquido: nuevo.sueldoLiquido ?? existente.sueldoLiquido,
+    previsionActual: nuevo.previsionActual || existente.previsionActual,
+    cargasResumen: nuevo.cargasResumen || existente.cargasResumen,
+    clinicaPreferida: nuevo.clinicaPreferida || existente.clinicaPreferida,
+    gclid: nuevo.gclid || existente.gclid,
+    actualizado: new Date().toISOString(),
+    contactos: (existente.contactos || 1) + 1,
+  };
+  if (!existente.id) {
+    console.error("Lead existente sin id, no se puede actualizar:", existente);
+    return { lead: mergeado, esNuevo: false };
+  }
+  await kvSet(existente.id, JSON.stringify(mergeado), LEAD_TTL_SECONDS);
+  await guardarIndicesSecundarios(mergeado);
+  console.log("LEAD actualizado (contactos=" + mergeado.contactos + "):", JSON.stringify(mergeado));
+  // NO mandamos email ni cuenta como conversión: ya es un cliente conocido.
+  return { lead: mergeado, esNuevo: false };
+}
+
+async function guardarIndicesSecundarios(lead: Lead): Promise<void> {
+  if (!lead.id) return;
+  const ops: Promise<unknown>[] = [];
+  if (lead.email) ops.push(kvSet(keyByEmail(lead.email), lead.id, LEAD_TTL_SECONDS));
+  if (lead.rut) ops.push(kvSet(keyByRut(lead.rut), lead.id, LEAD_TTL_SECONDS));
+  if (lead.telefono) ops.push(kvSet(keyByTelefono(lead.telefono), lead.id, LEAD_TTL_SECONDS));
+  await Promise.all(ops).catch(() => {});
 }
 
 export async function obtenerLead(id: string): Promise<Lead | null> {
@@ -77,8 +184,15 @@ export async function obtenerLead(id: string): Promise<Lead | null> {
 }
 
 export async function eliminarLead(id: string): Promise<void> {
+  const lead = await obtenerLead(id);
   await kvDel(id);
   await kvZRem(INDEX_KEY, id);
+  // Limpia índices secundarios también.
+  if (lead) {
+    if (lead.email) await kvDel(keyByEmail(lead.email));
+    if (lead.rut) await kvDel(keyByRut(lead.rut));
+    if (lead.telefono) await kvDel(keyByTelefono(lead.telefono));
+  }
 }
 
 export async function listarLeads(limit = 200): Promise<Lead[]> {
@@ -90,7 +204,11 @@ export async function listarLeads(limit = 200): Promise<Lead[]> {
 
   if (ids.size < limit) {
     const scanned = await kvScanKeys("lead:*", limit * 2);
-    for (const k of scanned) ids.add(k);
+    // Filtramos los índices secundarios (lead:by-email/by-rut/by-telefono)
+    // — solo nos interesan los leads "principales".
+    for (const k of scanned) {
+      if (!k.startsWith("lead:by-")) ids.add(k);
+    }
   }
 
   const leads: Lead[] = [];

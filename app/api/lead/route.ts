@@ -60,12 +60,16 @@ export async function POST(req: Request) {
     canal: gclid ? "google-ads" : "web-organico",
   };
 
+  let esNuevo = true;
   try {
-    await guardarLead(lead);
+    const r = await guardarLead(lead);
+    esNuevo = r.esNuevo;
   } catch (err) {
     console.error("Error guardando lead:", err);
     return Response.json({ ok: false, error: "Error guardando el lead." }, { status: 500 });
   }
 
-  return Response.json({ ok: true });
+  // esNuevo: true → cliente nuevo, dispara conversión Google Ads en el cliente.
+  // esNuevo: false → ya existía (mismo email/rut/teléfono), no contar conversión.
+  return Response.json({ ok: true, esNuevo });
 }

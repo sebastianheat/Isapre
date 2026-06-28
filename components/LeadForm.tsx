@@ -133,25 +133,23 @@ export default function LeadForm() {
           gclid,
         }),
       });
+      const jr = await res.json().catch(() => ({}));
       if (!res.ok) {
-        const j = await res.json().catch(() => ({}));
-        throw new Error(j.error || `Error ${res.status}`);
+        throw new Error(jr.error || `Error ${res.status}`);
       }
-      // Dispara la conversión de Google Ads con Enhanced Conversions:
-      // mandamos email/teléfono/nombre hasheados SHA-256 (cliente-side, los
-      // datos en claro NUNCA salen del browser) para que Google atribuya
-      // mejor el click → conversión.
-      const sendTo = process.env.NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_SEND_TO;
-      if (sendTo) {
-        await dispararConversionEnhanced(sendTo, {
-          email: f.email,
-          telefono: f.telefono,
-          nombre: f.nombre,
-          region: f.region,
-        }, 1, "CLP").catch(() => {
-          // Si Enhanced Conversions falla por algo (ej. crypto.subtle bloqueado),
-          // no rompemos el flujo del usuario — el lead ya quedó guardado.
-        });
+      // Solo dispara la conversión de Google Ads si el backend confirmó que
+      // es un lead NUEVO (no un cliente ya conocido que está re-llenando el
+      // form). Evita inflar artificialmente la métrica con duplicados.
+      if (jr.esNuevo !== false) {
+        const sendTo = process.env.NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_SEND_TO;
+        if (sendTo) {
+          await dispararConversionEnhanced(sendTo, {
+            email: f.email,
+            telefono: f.telefono,
+            nombre: f.nombre,
+            region: f.region,
+          }, 1, "CLP").catch(() => {});
+        }
       }
       setEnviado(true);
     } catch (err) {
