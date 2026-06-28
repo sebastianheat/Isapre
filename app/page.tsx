@@ -93,6 +93,7 @@ export default function Page() {
 
       <footer className="footer">
         <span>© {new Date().getFullYear()} nuevaisapre.cl · Asesoría certificada en isapres</span>
+        <a href="/admin" className="footer-admin-link">Acceso ejecutivos</a>
       </footer>
 
       <ChatWidget />
