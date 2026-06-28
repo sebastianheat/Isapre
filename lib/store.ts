@@ -118,6 +118,39 @@ export async function kvZRem(key: string, member: string): Promise<void> {
   catch { memZSets.get(key)?.delete(member); }
 }
 
+// SCAN para listar todas las keys que coincidan con un pattern (ej. "lead:*").
+// Usa SCAN con cursor para iterar — no bloquea el server como KEYS *.
+// Devuelve todas las keys que matchean.
+export async function kvScanKeys(pattern: string, max = 1000): Promise<string[]> {
+  if (!remoto) {
+    return [...memStrings.keys()].filter((k) => {
+      // Match simple de glob: solo "*" al final.
+      if (pattern.endsWith("*")) return k.startsWith(pattern.slice(0, -1));
+      return k === pattern;
+    });
+  }
+  const keys: string[] = [];
+  let cursor = "0";
+  try {
+    do {
+      const r = (await cmd(["SCAN", cursor, "MATCH", pattern, "COUNT", "200"])) as
+        | [string, string[]]
+        | null;
+      if (!r) break;
+      cursor = r[0];
+      keys.push(...(r[1] ?? []));
+      if (keys.length >= max) break;
+    } while (cursor !== "0");
+  } catch {
+    // fallback in-memory
+    return [...memStrings.keys()].filter((k) => {
+      if (pattern.endsWith("*")) return k.startsWith(pattern.slice(0, -1));
+      return k === pattern;
+    });
+  }
+  return keys;
+}
+
 // Devuelve los miembros del ZSET ordenados de mayor a menor score (más reciente primero).
 export async function kvZRevRange(key: string, start = 0, stop = -1): Promise<string[]> {
   if (!remoto) {

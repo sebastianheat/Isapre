@@ -31,7 +31,7 @@ export async function enviarLeadPorEmail(lead: Lead): Promise<void> {
 
   const html = `
   <div style="font-family: -apple-system, system-ui, sans-serif; color: #0F172A; max-width: 560px;">
-    <h2 style="color: #0D47A1; margin: 0 0 12px;">Nuevo lead desde beta.nuevaisapre.cl</h2>
+    <h2 style="color: #0D47A1; margin: 0 0 12px;">Nuevo lead desde nuevaisapre.cl</h2>
     <p style="color: #475569; margin: 0 0 18px;">
       ${esc(lead.nombre)} pidió cotización el ${new Date().toLocaleString("es-CL", { timeZone: "America/Santiago" })}.
     </p>
@@ -56,7 +56,7 @@ export async function enviarLeadPorEmail(lead: Lead): Promise<void> {
   </div>`;
 
   const text = [
-    `Nuevo lead desde beta.nuevaisapre.cl`,
+    `Nuevo lead desde nuevaisapre.cl`,
     ``,
     `Nombre: ${lead.nombre}`,
     `RUT: ${lead.rut}`,

@@ -1,4 +1,4 @@
-import { kvSet, kvGet, kvDel, kvZAdd, kvZRem, kvZRevRange } from "./store";
+import { kvSet, kvGet, kvDel, kvZAdd, kvZRem, kvZRevRange, kvScanKeys } from "./store";
 import { enviarLeadPorEmail } from "./email";
 
 // Canal de origen del lead: cómo llegó el cliente. "google-ads" cuando hay
@@ -82,13 +82,31 @@ export async function eliminarLead(id: string): Promise<void> {
 }
 
 export async function listarLeads(limit = 200): Promise<Lead[]> {
-  const ids = await kvZRevRange(INDEX_KEY, 0, limit - 1);
+  // Fuente primaria: ZSET indexado por fecha. Si por algún motivo está vacío
+  // (leads viejos sin index, escritura al ZSET falló, etc.), fallback a SCAN
+  // de keys lead:* para no perder ningún lead.
+  const idsFromIndex = await kvZRevRange(INDEX_KEY, 0, limit - 1);
+  const ids = new Set<string>(idsFromIndex);
+
+  if (ids.size < limit) {
+    const scanned = await kvScanKeys("lead:*", limit * 2);
+    for (const k of scanned) ids.add(k);
+  }
+
   const leads: Lead[] = [];
   for (const id of ids) {
     const l = await obtenerLead(id);
     if (l) leads.push(l);
   }
-  return leads;
+  // Re-curar el ZSET con cualquier lead que faltaba (reindex perezoso).
+  for (const l of leads) {
+    if (l.id && l.fecha && !idsFromIndex.includes(l.id)) {
+      await kvZAdd(INDEX_KEY, Date.parse(l.fecha), l.id).catch(() => {});
+    }
+  }
+  // Orden final: fecha desc.
+  leads.sort((a, b) => (b.fecha ?? "").localeCompare(a.fecha ?? ""));
+  return leads.slice(0, limit);
 }
 
 // Empuja el lead a HEAT/GoHighLevel: upsert de contacto + opportunity en el
