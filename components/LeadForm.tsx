@@ -127,6 +127,14 @@ export default function LeadForm() {
         const j = await res.json().catch(() => ({}));
         throw new Error(j.error || `Error ${res.status}`);
       }
+      // Dispara el evento de conversión de Google Ads. send_to viene de env
+      // pública (set en Vercel). Si no está configurado, no-op silencioso.
+      const sendTo = process.env.NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_SEND_TO;
+      type Gtag = (cmd: string, event: string, params: Record<string, unknown>) => void;
+      const gtag = (window as unknown as { gtag?: Gtag }).gtag;
+      if (sendTo && typeof gtag === "function") {
+        gtag("event", "conversion", { send_to: sendTo, value: 1.0, currency: "CLP" });
+      }
       setEnviado(true);
     } catch (err) {
       const msg = err instanceof Error ? err.message : "Error inesperado";
