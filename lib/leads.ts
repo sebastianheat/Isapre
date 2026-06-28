@@ -1,7 +1,13 @@
-import { kvSet } from "./store";
+import { kvSet, kvGet, kvDel, kvZAdd, kvZRem, kvZRevRange } from "./store";
 import { enviarLeadPorEmail } from "./email";
 
+// Canal de origen del lead: cómo llegó el cliente. "google-ads" cuando hay
+// gclid en la URL (vino de un anuncio), "web-organico" cuando no, y
+// "whatsapp" cuando llegó por el bot de WhatsApp.
+export type CanalLead = "google-ads" | "web-organico" | "whatsapp";
+
 export interface Lead {
+  id?: string; // se setea al guardar; clave única tipo "lead:..."
   nombre: string;
   rut: string;
   isapre?: string;
@@ -15,27 +21,74 @@ export interface Lead {
   cargasResumen?: string;
   clinicaPreferida?: string;
   origen?: string;
+  // Canal y tracking de Google Ads.
+  canal?: CanalLead;
+  gclid?: string;
+  // Fecha ISO, seteada al guardar.
+  fecha?: string;
+}
+
+const INDEX_KEY = "leads:by-date";
+const LEAD_TTL_SECONDS = 60 * 60 * 24 * 60; // 60 días
+
+function generarId(lead: Lead): string {
+  // Único por canal + identificador del cliente + timestamp. Suma timestamp al
+  // final para que múltiples leads del mismo cliente no se pisen.
+  const base = lead.telefono || lead.rut || "anon";
+  return `lead:${base}:${Date.now()}`;
+}
+
+function inferirCanal(lead: Lead): CanalLead {
+  if (lead.canal) return lead.canal;
+  if (lead.gclid) return "google-ads";
+  if (lead.origen === "whatsapp-chat") return "whatsapp";
+  return "web-organico";
 }
 
 // Guarda el lead en KV y, en paralelo, lo empuja a HEAT (CRM) y manda email
 // a info@nuevaisapre.cl. Las 3 ramas son independientes: si una falla, las
 // otras igual se ejecutan. KV es la fuente de verdad — HEAT y email son
 // complementarios.
-export async function guardarLead(lead: Lead): Promise<void> {
-  const registro = { ...lead, fecha: new Date().toISOString() };
-  const id = `lead:${lead.telefono || lead.rut || Date.now()}`;
-  await kvSet(id, JSON.stringify(registro), 60 * 60 * 24 * 60);
+export async function guardarLead(lead: Lead): Promise<Lead> {
+  const fecha = new Date().toISOString();
+  const id = generarId(lead);
+  const canal = inferirCanal(lead);
+  const registro: Lead = { ...lead, id, fecha, canal };
+  await kvSet(id, JSON.stringify(registro), LEAD_TTL_SECONDS);
+  // Índice por fecha (score = ms epoch) para listar más reciente primero.
+  await kvZAdd(INDEX_KEY, Date.parse(fecha), id);
   console.log("LEAD capturado:", JSON.stringify(registro));
   try {
-    await pushToHeat(lead);
+    await pushToHeat(registro);
   } catch (e) {
     console.error("Push a HEAT falló:", e);
   }
   try {
-    await enviarLeadPorEmail(lead);
+    await enviarLeadPorEmail(registro);
   } catch (e) {
     console.error("Email del lead falló:", e);
   }
+  return registro;
+}
+
+export async function obtenerLead(id: string): Promise<Lead | null> {
+  const raw = await kvGet(id);
+  return raw ? (JSON.parse(raw) as Lead) : null;
+}
+
+export async function eliminarLead(id: string): Promise<void> {
+  await kvDel(id);
+  await kvZRem(INDEX_KEY, id);
+}
+
+export async function listarLeads(limit = 200): Promise<Lead[]> {
+  const ids = await kvZRevRange(INDEX_KEY, 0, limit - 1);
+  const leads: Lead[] = [];
+  for (const id of ids) {
+    const l = await obtenerLead(id);
+    if (l) leads.push(l);
+  }
+  return leads;
 }
 
 // Empuja el lead a HEAT/GoHighLevel: upsert de contacto + opportunity en el
@@ -61,7 +114,7 @@ async function pushToHeat(lead: Lead): Promise<void> {
       email: lead.email,
       phone: lead.telefono ? `+${lead.telefono.replace(/^\+/, "")}` : undefined,
       source: lead.origen ?? "Romina",
-      tags: ["escalar_ejecutivo", "interesado"],
+      tags: ["escalar_ejecutivo", "interesado", `canal:${lead.canal ?? "web-organico"}`],
       customFields: [
         { key: "rut", value: lead.rut },
         { key: "isapre_solicitada", value: lead.isapre ?? "" },
@@ -72,6 +125,8 @@ async function pushToHeat(lead: Lead): Promise<void> {
         { key: "prevision_actual", value: lead.previsionActual ?? "" },
         { key: "cargas", value: lead.cargasResumen ?? "" },
         { key: "clinica_preferida", value: lead.clinicaPreferida ?? "" },
+        { key: "canal", value: lead.canal ?? "" },
+        { key: "gclid", value: lead.gclid ?? "" },
       ],
     }),
   });

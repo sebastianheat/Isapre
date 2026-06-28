@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { capturarGclidDeUrl, obtenerGclid } from "@/lib/gclid";
 
 interface Msg {
   role: "user" | "assistant";
@@ -46,6 +47,11 @@ export default function RominaChat() {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
   }, [messages, loading]);
 
+  // Captura el gclid al abrir el chat (si vino de Google Ads).
+  useEffect(() => {
+    capturarGclidDeUrl();
+  }, []);
+
   async function send() {
     const text = input.trim();
     if (!text || loading) return;
@@ -63,7 +69,7 @@ export default function RominaChat() {
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: next }),
+        body: JSON.stringify({ messages: next, gclid: obtenerGclid() }),
         signal: controller.signal,
       });
       const data = await res.json().catch(() => ({}));

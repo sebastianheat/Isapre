@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { CLINICAS_POR_REGION } from "@/lib/clinicasPorRegion";
+import { capturarGclidDeUrl, obtenerGclid } from "@/lib/gclid";
 
 const REGIONES = [
   "Arica y Parinacota",
@@ -92,6 +93,12 @@ export default function LeadForm() {
     return () => document.removeEventListener("mousedown", onDocClick);
   }, []);
 
+  // Captura el gclid de la URL al montar (si vino de Google Ads) y lo persiste
+  // en sessionStorage para que sobreviva navegación dentro de la sesión.
+  useEffect(() => {
+    capturarGclidDeUrl();
+  }, []);
+
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
@@ -105,6 +112,7 @@ export default function LeadForm() {
     }
     setEnviando(true);
     try {
+      const gclid = obtenerGclid();
       const res = await fetch("/api/lead", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -120,7 +128,8 @@ export default function LeadForm() {
           cargas_cantidad: Number(f.cargas_cantidad) || 0,
           cargas_edades: f.cargas_edades,
           clinica_preferida: f.clinicas_preferidas.join(", "),
-          origen: "landing-beta",
+          origen: "landing-form",
+          gclid,
         }),
       });
       if (!res.ok) {

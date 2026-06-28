@@ -1,0 +1,118 @@
+"use client";
+
+import { useMemo, useState } from "react";
+import Link from "next/link";
+import type { Lead, CanalLead } from "@/lib/leads";
+
+type Filtro = "todos" | CanalLead;
+
+const FILTROS: { id: Filtro; label: string }[] = [
+  { id: "todos", label: "Todos" },
+  { id: "google-ads", label: "Google Ads" },
+  { id: "web-organico", label: "Web orgánico" },
+  { id: "whatsapp", label: "WhatsApp" },
+];
+
+function tagCanal(canal?: string) {
+  if (canal === "google-ads") return <span className="tag green">📢 Google Ads</span>;
+  if (canal === "whatsapp") return <span className="tag green">💬 WhatsApp</span>;
+  return <span className="tag gray">🌐 Web orgánico</span>;
+}
+
+function tagOrigen(origen?: string) {
+  if (origen === "landing-form") return <span className="tag">📋 Formulario</span>;
+  if (origen === "web-chat") return <span className="tag">💭 Chat Romina</span>;
+  if (origen === "whatsapp-chat") return <span className="tag">📱 WhatsApp</span>;
+  return origen ? <span className="tag gray">{origen}</span> : null;
+}
+
+function formatearFecha(iso?: string) {
+  if (!iso) return "";
+  try {
+    return new Date(iso).toLocaleString("es-CL", {
+      day: "2-digit",
+      month: "short",
+      hour: "2-digit",
+      minute: "2-digit",
+      timeZone: "America/Santiago",
+    });
+  } catch {
+    return iso;
+  }
+}
+
+export default function LeadsList({ leads }: { leads: Lead[] }) {
+  const [filtro, setFiltro] = useState<Filtro>("todos");
+  const [query, setQuery] = useState("");
+
+  const filtrados = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    return leads.filter((l) => {
+      if (filtro !== "todos" && (l.canal ?? "web-organico") !== filtro) return false;
+      if (!q) return true;
+      return (
+        l.nombre?.toLowerCase().includes(q) ||
+        l.rut?.toLowerCase().includes(q) ||
+        l.email?.toLowerCase().includes(q) ||
+        l.telefono?.toLowerCase().includes(q)
+      );
+    });
+  }, [leads, filtro, query]);
+
+  return (
+    <>
+      <h1 className="admin-h1">{leads.length} lead{leads.length === 1 ? "" : "s"}</h1>
+      <input
+        className="admin-search"
+        type="search"
+        placeholder="Buscar por nombre, RUT, email o teléfono…"
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+      />
+      <div className="admin-filters">
+        {FILTROS.map((f) => (
+          <button
+            key={f.id}
+            className={`pill ${filtro === f.id ? "active" : ""}`}
+            onClick={() => setFiltro(f.id)}
+          >
+            {f.label}
+          </button>
+        ))}
+      </div>
+
+      {filtrados.length === 0 ? (
+        <div className="admin-empty">
+          {leads.length === 0
+            ? "Todavía no hay leads. Cuando llegue el primero aparece acá."
+            : "No hay leads que coincidan con el filtro."}
+        </div>
+      ) : (
+        filtrados.map((lead) => (
+          <Link
+            key={lead.id}
+            href={`/admin/leads/${encodeURIComponent(lead.id || "")}`}
+            className="admin-card admin-card-link"
+          >
+            <div className="lead-card-row">
+              <div style={{ minWidth: 0, flex: 1 }}>
+                <div className="lead-card-name">{lead.nombre || "Sin nombre"}</div>
+                <div className="lead-card-meta">
+                  {lead.region || "—"}
+                  {lead.edad ? ` · ${lead.edad} años` : ""}
+                  {lead.telefono ? ` · ${lead.telefono}` : ""}
+                </div>
+              </div>
+              <div className="lead-card-date">{formatearFecha(lead.fecha)}</div>
+            </div>
+            <div className="lead-card-tags">
+              {tagCanal(lead.canal)}
+              {tagOrigen(lead.origen)}
+              {lead.isapre && <span className="tag orange">{lead.isapre}</span>}
+            </div>
+          </Link>
+        ))
+      )}
+    </>
+  );
+}

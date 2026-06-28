@@ -5,7 +5,10 @@ const URL_ = process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL |
 const TOKEN = process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN || "";
 const remoto = !!(URL_ && TOKEN);
 
-const mem = new Map<string, string>();
+// Estado en-memoria para el fallback. Soporta strings, sets y sorted sets.
+const memStrings = new Map<string, string>();
+const memSets = new Map<string, Set<string>>();
+const memZSets = new Map<string, Map<string, number>>();
 
 async function cmd(args: string[]): Promise<unknown> {
   const res = await fetch(URL_, {
@@ -18,23 +21,39 @@ async function cmd(args: string[]): Promise<unknown> {
 }
 
 export async function kvGet(key: string): Promise<string | null> {
-  if (!remoto) return mem.get(key) ?? null;
+  if (!remoto) return memStrings.get(key) ?? null;
   try {
     return ((await cmd(["GET", key])) as string | null) ?? null;
   } catch {
-    return mem.get(key) ?? null;
+    return memStrings.get(key) ?? null;
   }
 }
 
+// ttlSeconds=0 → sin expiración (para usuarios y leads persistentes).
 export async function kvSet(key: string, value: string, ttlSeconds = 86400): Promise<void> {
   if (!remoto) {
-    mem.set(key, value);
+    memStrings.set(key, value);
     return;
   }
   try {
-    await cmd(["SET", key, value, "EX", String(ttlSeconds)]);
+    if (ttlSeconds > 0) await cmd(["SET", key, value, "EX", String(ttlSeconds)]);
+    else await cmd(["SET", key, value]);
   } catch {
-    mem.set(key, value);
+    memStrings.set(key, value);
+  }
+}
+
+export async function kvDel(key: string): Promise<void> {
+  if (!remoto) {
+    memStrings.delete(key);
+    memSets.delete(key);
+    memZSets.delete(key);
+    return;
+  }
+  try {
+    await cmd(["DEL", key]);
+  } catch {
+    memStrings.delete(key);
   }
 }
 
@@ -43,4 +62,74 @@ export async function kvMarcarUnaVez(key: string, ttlSeconds = 3600): Promise<bo
   if (await kvGet(key)) return false;
   await kvSet(key, "1", ttlSeconds);
   return true;
+}
+
+// ===== Sets =====
+export async function kvSAdd(key: string, member: string): Promise<void> {
+  if (!remoto) {
+    let s = memSets.get(key);
+    if (!s) { s = new Set(); memSets.set(key, s); }
+    s.add(member);
+    return;
+  }
+  try { await cmd(["SADD", key, member]); }
+  catch {
+    let s = memSets.get(key);
+    if (!s) { s = new Set(); memSets.set(key, s); }
+    s.add(member);
+  }
+}
+
+export async function kvSRem(key: string, member: string): Promise<void> {
+  if (!remoto) { memSets.get(key)?.delete(member); return; }
+  try { await cmd(["SREM", key, member]); }
+  catch { memSets.get(key)?.delete(member); }
+}
+
+export async function kvSMembers(key: string): Promise<string[]> {
+  if (!remoto) return [...(memSets.get(key) ?? [])];
+  try {
+    const r = await cmd(["SMEMBERS", key]);
+    return Array.isArray(r) ? (r as string[]) : [];
+  } catch {
+    return [...(memSets.get(key) ?? [])];
+  }
+}
+
+// ===== Sorted Sets (para índices ordenados por timestamp) =====
+export async function kvZAdd(key: string, score: number, member: string): Promise<void> {
+  if (!remoto) {
+    let z = memZSets.get(key);
+    if (!z) { z = new Map(); memZSets.set(key, z); }
+    z.set(member, score);
+    return;
+  }
+  try { await cmd(["ZADD", key, String(score), member]); }
+  catch {
+    let z = memZSets.get(key);
+    if (!z) { z = new Map(); memZSets.set(key, z); }
+    z.set(member, score);
+  }
+}
+
+export async function kvZRem(key: string, member: string): Promise<void> {
+  if (!remoto) { memZSets.get(key)?.delete(member); return; }
+  try { await cmd(["ZREM", key, member]); }
+  catch { memZSets.get(key)?.delete(member); }
+}
+
+// Devuelve los miembros del ZSET ordenados de mayor a menor score (más reciente primero).
+export async function kvZRevRange(key: string, start = 0, stop = -1): Promise<string[]> {
+  if (!remoto) {
+    const z = memZSets.get(key);
+    if (!z) return [];
+    const sorted = [...z.entries()].sort((a, b) => b[1] - a[1]).map((e) => e[0]);
+    return sorted.slice(start, stop === -1 ? undefined : stop + 1);
+  }
+  try {
+    const r = await cmd(["ZREVRANGE", key, String(start), String(stop)]);
+    return Array.isArray(r) ? (r as string[]) : [];
+  } catch {
+    return [];
+  }
 }

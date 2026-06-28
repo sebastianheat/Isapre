@@ -15,7 +15,7 @@ export async function POST(req: Request) {
     );
   }
 
-  let body: { messages?: ChatMessage[] };
+  let body: { messages?: ChatMessage[]; gclid?: string | null };
   try {
     body = await req.json();
   } catch {
@@ -30,8 +30,10 @@ export async function POST(req: Request) {
     return Response.json({ error: "No hay mensajes." }, { status: 400 });
   }
 
+  const gclid = body.gclid?.trim() || undefined;
+
   try {
-    const { reply, leadCapturado } = await responderTurno(history);
+    const { reply, leadCapturado } = await responderTurno(history, { gclid });
     return Response.json({ reply, leadCapturado });
   } catch (err) {
     if (err instanceof Anthropic.RateLimitError) {

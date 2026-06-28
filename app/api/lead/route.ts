@@ -16,6 +16,7 @@ interface FormPayload {
   cargas_edades?: string;
   clinica_preferida?: string;
   origen?: string;
+  gclid?: string | null;
 }
 
 export async function POST(req: Request) {
@@ -42,6 +43,7 @@ export async function POST(req: Request) {
       ? `${body.cargas_cantidad} carga(s)${body.cargas_edades ? ` — edades: ${body.cargas_edades}` : ""}`
       : "";
 
+  const gclid = body.gclid?.trim() || undefined;
   const lead: Lead = {
     nombre,
     rut,
@@ -54,6 +56,8 @@ export async function POST(req: Request) {
     cargasResumen,
     clinicaPreferida: body.clinica_preferida,
     origen: body.origen ?? "landing-form",
+    gclid,
+    canal: gclid ? "google-ads" : "web-organico",
   };
 
   try {
