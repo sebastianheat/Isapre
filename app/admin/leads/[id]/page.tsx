@@ -1,11 +1,11 @@
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { obtenerSesion } from "@/lib/auth";
-import { getUsuario } from "@/lib/usuarios";
 import { obtenerLead } from "@/lib/leads";
 import AdminShell from "@/components/AdminShell";
 import LeadDetailActions from "@/components/LeadDetailActions";
 
+export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 function row(label: string, value?: React.ReactNode) {
@@ -31,8 +31,6 @@ function tagCanal(canal?: string) {
 export default async function LeadDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const sesion = await obtenerSesion();
   if (!sesion) redirect("/admin");
-  const u = await getUsuario(sesion.email);
-  if (!u) redirect("/admin");
 
   const { id } = await params;
   const lead = await obtenerLead(decodeURIComponent(id));
@@ -43,7 +41,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
     : "—";
 
   return (
-    <AdminShell title="Detalle de lead" userEmail={u.email} role={u.role} passwordEsSemilla={u.passwordEsSemilla}>
+    <AdminShell title="Detalle de lead" userEmail={sesion.email} role={sesion.role}>
       <Link href="/admin/leads" className="admin-back">← Volver a la lista</Link>
 
       <h1 className="admin-h1" style={{ marginBottom: 4 }}>{lead.nombre || "Sin nombre"}</h1>
@@ -98,7 +96,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
         </div>
       </div>
 
-      <LeadDetailActions leadId={lead.id || ""} role={u.role} />
+      <LeadDetailActions leadId={lead.id || ""} role={sesion.role} />
     </AdminShell>
   );
 }

@@ -2,13 +2,12 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import type { ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 
 interface Props {
   title: string;
   userEmail: string;
   role: "superadmin" | "ejecutivo";
-  passwordEsSemilla?: boolean;
   children: ReactNode;
 }
 
@@ -18,9 +17,20 @@ const NAV = [
   { href: "/admin/perfil", label: "Perfil", ico: "👤" },
 ];
 
-export default function AdminShell({ title, userEmail, role, passwordEsSemilla, children }: Props) {
+export default function AdminShell({ title, userEmail, role, children }: Props) {
   const pathname = usePathname();
   const router = useRouter();
+  const [usaSemilla, setUsaSemilla] = useState(false);
+
+  // Verifica si la password actual sigue siendo la semilla (la inicial) para
+  // mostrar el banner amarillo. Se hace en cliente para no acoplar el render
+  // del page al KV.
+  useEffect(() => {
+    fetch("/api/admin/me")
+      .then((r) => r.json())
+      .then((d) => setUsaSemilla(!!d?.user?.passwordEsSemilla))
+      .catch(() => {});
+  }, []);
 
   async function logout() {
     await fetch("/api/admin/logout", { method: "POST" });
@@ -51,7 +61,7 @@ export default function AdminShell({ title, userEmail, role, passwordEsSemilla, 
       </header>
 
       <main className="admin-content">
-        {passwordEsSemilla && (
+        {usaSemilla && (
           <div className="admin-msg warn">
             ⚠️ Estás usando la contraseña por defecto. Cámbiala en{" "}
             <Link href="/admin/perfil" style={{ color: "inherit", textDecoration: "underline" }}>
