@@ -1,0 +1,288 @@
+Soy dueño de nuevaisapre.cl, un comparador independiente de las 7 isapres de Chile (Nueva Masvida, Banmédica, Colmena, Consalud, Cruz Blanca, Vida Tres, Esencial). El sitio compara los 1.782 planes oficiales y muestra los 3 mejores según sueldo, edad y clínica del cliente. Cierre por WhatsApp con ejecutivo real, activación 24-72 hs.
+
+Necesito que me guíes click-por-click en Google Ads (ads.google.com) para configurar una campaña Search hot-buyer con todo este material que ya tengo armado. Cuenta de Google Ads ya existe, Customer ID: 102-420-6439. El tag de conversión "Cotización completada (Form Submit)" ya está activo y midiendo (AW-18172962346/YOF7CJHyyrAcEKrMxdlD), con Enhanced Conversions también activadas vía Google tag.
+
+Hacé los pasos en este orden, dándome los clicks exactos en la UI actual de Google Ads en español (2026). Esperá mi confirmación entre paso y paso. Si hay algo en la UI que no encuentro, pediré screenshot.
+
+================================================================================
+OBJETIVO DE COSTO POR LEAD (CPA)
+================================================================================
+
+Mi target es $2.500 CLP por formulario completado. Esto es agresivo para el vertical isapre Chile (CPCs típicos $1.500-2.500). Los competidores (cambiarisapre.cl, cotizarisapreonline.cl, tuplan360.cl, etc.) están en ese rango después de meses de optimización. Yo pago $11.000 CLP cuando compro leads a otros, así que la economía me cierra desde $5.000 CLP hacia abajo.
+
+Plan de bidding por etapas:
+- Semanas 1-2: "Maximize Conversions" con MAX CPC manual cap de $1.500 (evitar pujas explosivas durante aprendizaje). Budget diario $20.000 CLP. Mi expectativa real: CPA $5.000-12.000 mientras Google aprende.
+- Semana 3-4 (cuando junte 30+ conversiones): pasar a "Target CPA" empezando en $5.000 CLP.
+- Semana 5+: bajar Target CPA $500 por semana hasta llegar a $2.500-3.000 (no más rápido, si no Google deja de servir impresiones).
+
+Optimizaciones para acelerar el llegado al CPA target:
+1. AUDIENCIAS: agregar "In-market: Insurance > Health Insurance" + "Affinity: Health & Fitness" como segmentos de audiencia (NO targeting estricto, solo observación al inicio, después bid adjustment positivo +20% en las que mejor convierten).
+2. SCHEDULE: pausar de 23:00 a 07:00 (CTR baja mucho de madrugada).
+3. UBICACIÓN: las primeras 2 semanas solo Región Metropolitana + Valparaíso + Concepción (las 3 más densas). Cuando estabilice CPA agregar todo Chile.
+4. DISPOSITIVOS: bid adjustment +10% en mobile (la landing ya está mobile-optimizada y la mayoría busca isapre desde el celular).
+5. QUALITY SCORE objetivo 7+/10: ads relevantes (los 3 variantes abajo), landing alineada con keyword (nuevaisapre.cl ya menciona "cotiza", "comparar", "7 isapres"), CTR esperado >5%.
+
+================================================================================
+PASO 1 — Crear lista de NEGATIVE KEYWORDS compartida (5 min)
+================================================================================
+
+Nombre de la lista: "ISAPRE NEGATIVES"
+Aplicar a todas las campañas del proyecto isapre.
+
+Lista (60+ negative keywords, match broad):
+
+fonasa
+gratis
+empleo
+trabajo
+trabajos
+gerente
+cargo
+sueldo
+postular
+oferta laboral
+opiniones
+malas
+reclamo
+queja
+demanda
+sernac
+denuncia
+estafa
+salir
+retirarme
+desafiliacion
+desafiliarme
+anular
+escolar
+auge
+ges
+hospital publico
+consultorio
+isapre estatal
+isapre publica
+chile atiende
+hijo
+embarazada
+preexistencia
+preexistencias
+licencia medica
+licencia
+imed
+boucher
+boletas
+historial
+sucursal
+oficina
+contacto telefono
+contactarse
+correo
+fono isapre
+mascotas
+veterinaria
+dental seguro
+isapre dental
+plan dental
+optica
+oftalmologia
+psicologo
+psicologa
+psiquiatra
+tarjeta
+credito
+cuenta
+debito
+prestamo
+seguro auto
+seguro hogar
+seguro vida
+afp
+afps
+prevision afp
+jubilacion
+pension
+
+================================================================================
+PASO 2 — Crear campaña Search "Hot Buyer" con 3 ad groups (10 min)
+================================================================================
+
+Tipo: Search
+Objetivo: Generar clientes potenciales (Leads)
+Conversión seleccionada: "Cotización completada (Form Submit)"
+Estrategia de puja inicial: "Maximizar conversiones" con cap manual CPC $1.500 CLP
+Budget diario: $20.000 CLP
+Ubicación: Región Metropolitana + Valparaíso + Concepción (todo Chile cuando estabilice)
+Idioma: Español
+Programación de anuncios: 07:00-23:00 todos los días
+Dispositivos: bid adjustment +10% mobile
+Lista de keywords negativas compartida: aplicar "ISAPRE NEGATIVES"
+
+Ad group 1 — "Cotizar / Comparar"
+Keywords:
+  Phrase: cotizar isapre, cotizar isapres, cotizar plan isapre, comparar isapres, comparar planes isapre
+  Exact: [cotizar isapre], [cotizar isapres], [cotizar plan de isapre], [comparar isapres]
+Max CPC sugerido: $2.000 (será limitado por el cap de la campaña a $1.500)
+
+Ad group 2 — "Cambiar / Contratar"
+Keywords:
+  Phrase: cambiarse de isapre, cambiarme de isapre, cambio de isapre, contratar isapre, afiliarme a isapre, afiliacion isapre, afiliarse isapre
+  Exact: [cambiar de isapre], [contratar isapre]
+Max CPC: $1.800
+
+Ad group 3 — "Branded NMV" (defensivo)
+Keywords (phrase): nueva masvida, isapre nueva masvida
+Max CPC: $800
+
+Audiencias en MODO OBSERVACIÓN (no targeting estricto):
+- In-market: Insurance > Health Insurance
+- Affinity: Health & Fitness Enthusiasts
+
+================================================================================
+PASO 3 — Crear 3 Responsive Search Ads en cada ad group (15 min)
+================================================================================
+
+Final URL: https://nuevaisapre.cl/?utm_source=googleads&utm_medium=cpc&utm_campaign=search-hot-buyer&utm_content=variant_A
+(cambia variant_A por _B o _C en cada variante)
+Display path 1: cotizar
+Display path 2: isapres
+
+--------------------------------------------------------------------------------
+VARIANTE A — Especificidad y autoridad
+--------------------------------------------------------------------------------
+
+Headlines (12, hasta 30 chars c/u):
+
+Cotiza tu Isapre en 30 segundos
+Las 7 Isapres · 1.782 Planes
+Asesoría Real · 100% Gratis
+Sin Alza 2025-2026 · NMV
+Compara las 7 Isapres Oficiales
+% Exacto por Clínica · Garantizado
+Tu Mejor Plan de Salud · Hoy
+Catálogos Oficiales · Sin Costo
+Activación 100% Online 24-72 hs
+WhatsApp con Ejecutivo Real
+Cotizar Plan Isapre · Gratis
+Ahorra en tu Plan de Isapre
+
+Descriptions (4, hasta 90 chars c/u):
+
+Comparamos las 7 isapres oficiales y te mostramos los 3 mejores planes para tu sueldo y clínica. Un ejecutivo te contacta por WhatsApp.
+
+Catálogos oficiales con porcentaje exacto por clínica. Cierre 100% online en 24-72 hs. Sin papeleo ni filas.
+
+1.782 planes de las 7 isapres comparados al instante. Asesoría 100% gratis, sin compromiso. Sin alza de precios 2025-2026.
+
+Calcula tu 7% legal y mira al instante qué planes te calzan. Tu mejor opción ajustada a tu bolsillo, en segundos.
+
+--------------------------------------------------------------------------------
+VARIANTE B — Bolsillo + urgencia (mi recomendada)
+--------------------------------------------------------------------------------
+
+Headlines (12):
+
+Tu 7% Legal Cubre Mejor Plan
+Cotiza tus 3 Mejores Opciones
+WhatsApp con Ejecutivo Real
+Ahorra Hasta $50.000 al Mes
+Mejor Plan Isapre para tu Sueldo
+Asesoría Gratis · Sin Compromiso
+Las 7 Isapres en un Click
+Activación en 24-72 Horas
+Cotiza Sin Pedir Apellido Materno
+Catálogos Oficiales · Precios Reales
+Tu Mejor Cobertura · Hoy
+Sin Alza 2025-2026 con NMV
+
+Descriptions (4):
+
+Mira al instante qué planes de las 7 isapres caben en tu 7% legal. Cobertura exacta por clínica. Asesoría gratis.
+
+Sin alza 2025-2026 con Nueva Masvida. Activación en 24-72 hs, 100% online, cero papeleo. WhatsApp con asesor real.
+
+Te mostramos los 3 planes que mejor calzan con tu sueldo, edad y clínica. Cierra con ejecutivo por WhatsApp.
+
+Ahorra eligiendo el plan que más te conviene. Comparamos los 1.782 planes oficiales en tiempo real.
+
+--------------------------------------------------------------------------------
+VARIANTE C — Bajo friction
+--------------------------------------------------------------------------------
+
+Headlines (12):
+
+Mira tu Mejor Plan al Instante
+30 Segundos · 1.782 Planes
+Sin Llamadas Eternas
+Compara Isapres Sin Dar el RUT
+Calcula tu 7% Legal · Gratis
+Las 7 Isapres en una Sola Web
+Cotiza sin Compromiso Hoy
+Tu Plan Ideal en 3 Clicks
+Asesoría WhatsApp si Quieres
+Cobertura Real · Por Clínica
+Plan a Medida · 100% Online
+Nueva Isapre · Comparador Oficial
+
+Descriptions (4):
+
+Te mostramos las 3 mejores opciones de las 7 isapres ajustadas a tu bolsillo. Asesor por WhatsApp solo si tú lo pides.
+
+Cobertura por clínica con porcentajes reales. Asesoría 100% gratis, sin costo ni compromiso. Sin alza 2025-2026.
+
+Compara las 7 isapres en 30 segundos. Mira al instante qué planes te calzan según tu sueldo y clínica preferida.
+
+1.782 planes comparados al instante. Cierre 100% online en 24-72 hs si decides afiliarte. Cero papeleo.
+
+================================================================================
+PASO 4 — Activos del anuncio (sitelinks, callouts, structured snippets)
+================================================================================
+
+4 SITELINKS (Texto del enlace | Descripción línea 1 | Descripción línea 2 | URL final):
+
+Cotizar mi plan ahora | Tu mejor opción en | 30 segundos · Gratis | https://nuevaisapre.cl/#form
+Comparar las 7 isapres | NMV, Banmédica, Colmena | Consalud, Vida Tres, Esencial | https://nuevaisapre.cl/#ventajas
+Cómo funciona | Llenas el form, vemos | tu mejor plan, te contactamos | https://nuevaisapre.cl/#como-funciona
+Chatear con Romina | Asistente IA + asesor real | Disponible 24/7 | https://nuevaisapre.cl/
+
+6 CALLOUTS:
+
+1.782 planes comparados
+Las 7 isapres oficiales
+Cobertura real por clínica
+Sin alza 2025-2026
+Activación 24-72 hs
+WhatsApp con ejecutivo real
+
+STRUCTURED SNIPPETS:
+
+Tipo "Marcas":
+Nueva Masvida
+Banmédica
+Colmena
+Consalud
+Cruz Blanca
+Vida Tres
+Esencial
+
+Tipo "Catálogo de servicios":
+Cotización gratis
+Comparación de isapres
+Cambio de isapre
+Afiliación online
+Asesoría por WhatsApp
+Cobertura por clínica
+
+================================================================================
+MÉTRICAS OBJETIVO PARA PRIMERAS 2 SEMANAS
+================================================================================
+
+- CTR: >5% en hot buyer keywords
+- Conversion rate (form + chat): 5-10%
+- CPA inicial: $5.000-12.000 CLP (mientras Google aprende)
+- CPA objetivo a 4-6 semanas: $2.500-3.500 CLP
+- Quality Score: 7+/10
+
+================================================================================
+EMPEZÁ AHORA POR EL PASO 1 (negative keywords).
+Dame las indicaciones de UI exactas, esperá mi "ok" antes de pasar al PASO 2.
+================================================================================
