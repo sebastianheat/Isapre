@@ -33,8 +33,8 @@ export async function POST(req: Request) {
   const gclid = body.gclid?.trim() || undefined;
 
   try {
-    const { reply, leadCapturado } = await responderTurno(history, { gclid });
-    return Response.json({ reply, leadCapturado });
+    const { reply, leadCapturado, leadDatos } = await responderTurno(history, { gclid });
+    return Response.json({ reply, leadCapturado, leadDatos });
   } catch (err) {
     if (err instanceof Anthropic.RateLimitError) {
       return Response.json(

@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { CLINICAS_POR_REGION } from "@/lib/clinicasPorRegion";
 import { capturarGclidDeUrl, obtenerGclid } from "@/lib/gclid";
+import { dispararConversionEnhanced } from "@/lib/enhancedConversions";
 
 const REGIONES = [
   "Arica y Parinacota",
@@ -136,13 +137,21 @@ export default function LeadForm() {
         const j = await res.json().catch(() => ({}));
         throw new Error(j.error || `Error ${res.status}`);
       }
-      // Dispara el evento de conversión de Google Ads. send_to viene de env
-      // pública (set en Vercel). Si no está configurado, no-op silencioso.
+      // Dispara la conversión de Google Ads con Enhanced Conversions:
+      // mandamos email/teléfono/nombre hasheados SHA-256 (cliente-side, los
+      // datos en claro NUNCA salen del browser) para que Google atribuya
+      // mejor el click → conversión.
       const sendTo = process.env.NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_SEND_TO;
-      type Gtag = (cmd: string, event: string, params: Record<string, unknown>) => void;
-      const gtag = (window as unknown as { gtag?: Gtag }).gtag;
-      if (sendTo && typeof gtag === "function") {
-        gtag("event", "conversion", { send_to: sendTo, value: 1.0, currency: "CLP" });
+      if (sendTo) {
+        await dispararConversionEnhanced(sendTo, {
+          email: f.email,
+          telefono: f.telefono,
+          nombre: f.nombre,
+          region: f.region,
+        }, 1, "CLP").catch(() => {
+          // Si Enhanced Conversions falla por algo (ej. crypto.subtle bloqueado),
+          // no rompemos el flujo del usuario — el lead ya quedó guardado.
+        });
       }
       setEnviado(true);
     } catch (err) {

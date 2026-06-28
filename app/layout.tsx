@@ -32,7 +32,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 function gtag(){dataLayer.push(arguments);}
                 window.gtag = gtag;
                 gtag('js', new Date());
-                gtag('config', '${GOOGLE_ADS_ID}');
+                gtag('set', 'allow_enhanced_conversions', true);
+                gtag('config', '${GOOGLE_ADS_ID}', { allow_enhanced_conversions: true });
               `}
             </Script>
           </>

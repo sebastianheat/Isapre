@@ -109,9 +109,20 @@ function aplanarUrls(text: string): string {
 // registró exitosamente un lead (para que el frontend dispare la conversión
 // de Google Ads). El flag solo es true cuando el tool registrar_lead aceptó
 // los datos y los guardó (no cuando devolvió error por falta de contacto).
+//
+// Cuando leadCapturado=true, leadDatos trae los identificadores para que el
+// frontend los hashee y mande con Enhanced Conversions. Los datos en claro
+// SOLO viajan al browser del usuario que originó el lead (que ya los conoce)
+// — no se exponen a terceros.
 export interface TurnoResultado {
   reply: string;
   leadCapturado: boolean;
+  leadDatos?: {
+    email?: string;
+    telefono?: string;
+    nombre?: string;
+    region?: string;
+  };
 }
 
 // Procesa un turno: corre el loop de tool-use de Claude y devuelve el texto de respuesta.
@@ -125,6 +136,7 @@ export async function responderTurno(
     content: m.content,
   }));
   let leadCapturado = false;
+  let leadDatos: TurnoResultado["leadDatos"];
 
   for (let i = 0; i < 5; i++) {
     const response = await client.messages.create({
@@ -142,7 +154,7 @@ export async function responderTurno(
           .map((b) => b.text)
           .join("\n")
           .trim() || "Perdona, ¿me repites eso?";
-      return { reply: aplanarUrls(raw), leadCapturado };
+      return { reply: aplanarUrls(raw), leadCapturado, leadDatos };
     }
 
     messages.push({ role: "assistant", content: response.content });
@@ -224,6 +236,12 @@ export async function responderTurno(
             canal,
           });
           leadCapturado = true;
+          leadDatos = {
+            email,
+            telefono,
+            nombre: input.nombre,
+            region: input.region,
+          };
           toolResults.push({
             type: "tool_result",
             tool_use_id: block.id,
@@ -239,5 +257,6 @@ export async function responderTurno(
   return {
     reply: "Disculpa, se me complicó esto. ¿Me das de nuevo tu edad y sueldo líquido?",
     leadCapturado,
+    leadDatos,
   };
 }
