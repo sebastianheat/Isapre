@@ -345,7 +345,12 @@ async function crearOportunidad(
 export async function actualizarLead(
   id: string,
   cambios: Partial<
-    Pick<Lead, "etapa" | "asignadoA" | "nombre" | "isapre" | "plan" | "calidad" | "exportadoOffline">
+    Pick<
+      Lead,
+      | "etapa" | "asignadoA" | "nombre" | "isapre" | "plan" | "calidad" | "exportadoOffline"
+      | "telefono" | "email" | "rut" | "region" | "edad" | "sueldoLiquido"
+      | "previsionActual" | "clinicaPreferida" | "cargasResumen"
+    >
   >,
 ): Promise<Lead | null> {
   const actual = await obtenerLead(id);
@@ -356,6 +361,12 @@ export async function actualizarLead(
     actualizado: new Date().toISOString(),
   };
   await kvSet(id, JSON.stringify(merged), LEAD_TTL_SECONDS);
+  // Si cambió algún dato de contacto, re-indexamos para que el dedupe siga
+  // encontrando a este lead por sus valores nuevos. Los índices viejos
+  // quedan apuntando al mismo id (inofensivo).
+  if (cambios.email || cambios.rut || cambios.telefono) {
+    await guardarIndicesSecundarios(merged);
+  }
   return merged;
 }
 

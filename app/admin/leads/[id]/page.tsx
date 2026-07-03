@@ -6,6 +6,7 @@ import { listarUsuarios } from "@/lib/usuarios";
 import AdminShell from "@/components/AdminShell";
 import LeadDetailActions from "@/components/LeadDetailActions";
 import LeadPipeline from "@/components/LeadPipeline";
+import LeadEditForm from "@/components/LeadEditForm";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -56,6 +57,8 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
       </div>
 
       <LeadPipeline initialLead={lead} usuarios={usuarios} miEmail={sesion.email} />
+
+      <LeadEditForm initialLead={lead} />
 
       <div className="lead-detail-section">
         <h3>Contacto</h3>

@@ -85,6 +85,12 @@ export default function PipelineBoard({
     }
   }
 
+  function saltarAColumna(etapaId: string) {
+    document
+      .getElementById(`col-${etapaId}`)
+      ?.scrollIntoView({ behavior: "smooth", inline: "start", block: "nearest" });
+  }
+
   return (
     <>
       <h1 className="admin-h1">Pipeline · {filtrados.length} lead{filtrados.length === 1 ? "" : "s"}</h1>
@@ -95,7 +101,7 @@ export default function PipelineBoard({
         value={busqueda}
         onChange={(e) => setBusqueda(e.target.value)}
       />
-      <div className="admin-filters" style={{ marginBottom: 14 }}>
+      <div className="admin-filters" style={{ marginBottom: 10 }}>
         <button
           className={`pill ${filtroMios ? "active" : ""}`}
           onClick={() => setFiltroMios((v) => !v)}
@@ -104,12 +110,33 @@ export default function PipelineBoard({
         </button>
       </div>
 
+      {/* Strip de etapas: muestra las 7 de un vistazo con su conteo; click
+          scrollea el tablero hasta esa columna. Resuelve la invisibilidad
+          del scroll horizontal. */}
+      <div className="pipeline-strip">
+        {ETAPAS.map((e) => {
+          const n = porEtapa.get(e.id)?.length ?? 0;
+          return (
+            <button
+              key={e.id}
+              className="pipeline-strip-chip"
+              style={{ borderColor: e.color, color: n > 0 ? e.color : "var(--admin-text-soft)" }}
+              onClick={() => saltarAColumna(e.id)}
+              title={`Ir a ${e.label}`}
+            >
+              {e.icon} {e.label} <strong>{n}</strong>
+            </button>
+          );
+        })}
+      </div>
+      <p className="pipeline-hint">← Desliza el tablero para recorrer las 7 etapas →</p>
+
       <div className="pipeline-board">
         {ETAPAS.map((etapa) => {
           const items = porEtapa.get(etapa.id) ?? [];
           const total = items.reduce((sum, l) => sum + (l.sueldoLiquido ?? 0), 0);
           return (
-            <div key={etapa.id} className="pipeline-column">
+            <div key={etapa.id} id={`col-${etapa.id}`} className="pipeline-column">
               <div
                 className="pipeline-column-header"
                 style={{ borderTopColor: etapa.color }}
@@ -156,8 +183,23 @@ function PipelineCard({
   const proxRec = proximoRecordatorio(lead);
   const proxRecFmt = proxRec ? formatearFechaCorta(proxRec) : null;
   const calidad = CALIDADES.find((c) => c.id === lead.calidad);
+  // Tooltip nativo con la ficha completa (hover en desktop).
+  const tooltip = [
+    lead.nombre,
+    lead.telefono ? `📞 ${lead.telefono}` : null,
+    lead.email ? `✉ ${lead.email}` : null,
+    lead.rut ? `RUT ${lead.rut}` : null,
+    lead.region ? `📍 ${lead.region}${lead.edad ? ` · ${lead.edad} años` : ""}` : null,
+    lead.sueldoLiquido ? `💰 $${lead.sueldoLiquido.toLocaleString("es-CL")} líquido` : null,
+    lead.previsionActual ? `Previsión actual: ${lead.previsionActual}` : null,
+    lead.clinicaPreferida ? `🏥 ${lead.clinicaPreferida}` : null,
+    lead.cargasResumen ? `👨‍👩‍👧 ${lead.cargasResumen}` : null,
+    calidad ? `Calidad: ${calidad.icon} ${calidad.label}` : null,
+  ]
+    .filter(Boolean)
+    .join("\n");
   return (
-    <div className="pipeline-card">
+    <div className="pipeline-card" title={tooltip}>
       <Link
         href={`/admin/leads/${encodeURIComponent(lead.id ?? "")}`}
         className="pipeline-card-link"
@@ -167,12 +209,17 @@ function PipelineCard({
           {lead.nombre || "Sin nombre"}
           {vencido && <span className="pipeline-card-badge">⚠️</span>}
         </div>
-        {lead.telefono && (
-          <div className="pipeline-card-meta">📞 {lead.telefono}</div>
+        <div className="pipeline-card-meta">📞 {lead.telefono || "sin teléfono"}</div>
+        {(lead.region || lead.edad) && (
+          <div className="pipeline-card-meta">
+            📍 {lead.region ?? "—"}{lead.edad ? ` · ${lead.edad} años` : ""}
+          </div>
         )}
-        {lead.email && (
-          <div className="pipeline-card-meta">✉ {lead.email}</div>
-        )}
+        {lead.sueldoLiquido ? (
+          <div className="pipeline-card-meta">
+            💰 ${lead.sueldoLiquido.toLocaleString("es-CL")}
+          </div>
+        ) : null}
         {lead.isapre && (
           <div className="pipeline-card-tag">{lead.isapre}</div>
         )}

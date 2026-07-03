@@ -187,13 +187,45 @@
 }
 
 /* Pipeline / Kanban board */
+.pipeline-strip {
+  display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 6px;
+}
+.pipeline-strip-chip {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 5px 10px; border-radius: 999px;
+  background: #fff; border: 1.5px solid var(--admin-border);
+  font-size: 12px; font-weight: 600; font-family: inherit;
+  cursor: pointer; transition: transform .1s;
+}
+.pipeline-strip-chip:hover { transform: translateY(-1px); }
+.pipeline-strip-chip strong {
+  background: #F1F5F9; border-radius: 999px; padding: 0 7px; font-size: 11px;
+  color: var(--admin-text);
+}
+.pipeline-hint {
+  font-size: 12px; color: var(--admin-text-soft);
+  text-align: center; margin-bottom: 8px;
+}
 .pipeline-board {
   display: flex;
   gap: 12px;
   overflow-x: auto;
-  padding-bottom: 12px;
-  scroll-snap-type: x mandatory;
+  padding: 2px 2px 6px;
+  scroll-snap-type: x proximity;
   -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;              /* Firefox: barra siempre visible */
+  scrollbar-color: #94A3B8 #EDF1F7;
+}
+/* Chrome/Safari: scrollbar horizontal siempre visible para que se note
+   que hay más columnas a la derecha. */
+.pipeline-board::-webkit-scrollbar { height: 10px; }
+.pipeline-board::-webkit-scrollbar-track { background: #EDF1F7; border-radius: 999px; }
+.pipeline-board::-webkit-scrollbar-thumb { background: #94A3B8; border-radius: 999px; }
+.pipeline-board::-webkit-scrollbar-thumb:hover { background: #64748B; }
+/* Espaciador al final para que la última columna cierre con aire y sus
+   bordes redondeados se vean completos. */
+.pipeline-board::after {
+  content: ""; flex: 0 0 4px;
 }
 .pipeline-column {
   flex: 0 0 280px;
