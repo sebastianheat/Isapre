@@ -146,7 +146,7 @@ export async function guardarLead(lead: Lead): Promise<GuardarLeadResultado> {
 
   if (existente) {
     // Update: mergea datos nuevos sin pisar datos antiguos válidos.
-    return await actualizarLead(existente, lead);
+    return await mergearLead(existente, lead);
   } else {
     return await crearLead(lead);
   }
@@ -182,7 +182,7 @@ async function crearLead(lead: Lead): Promise<GuardarLeadResultado> {
   return { lead: registro, esNuevo: true };
 }
 
-async function actualizarLead(existente: Lead, nuevo: Lead): Promise<GuardarLeadResultado> {
+async function mergearLead(existente: Lead, nuevo: Lead): Promise<GuardarLeadResultado> {
   // Mergeo no destructivo: los datos nuevos sobreescriben solo si no están vacíos.
   // contactos++ para llevar la cuenta de cuántas veces el mismo cliente apareció.
   const mergeado: Lead = {
