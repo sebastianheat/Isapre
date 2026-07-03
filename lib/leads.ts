@@ -6,6 +6,46 @@ import { enviarLeadPorEmail } from "./email";
 // "whatsapp" cuando llegó por el bot de WhatsApp.
 export type CanalLead = "google-ads" | "web-organico" | "whatsapp";
 
+// Etapa del lead en el pipeline. Se puede mover manualmente desde el panel.
+export type EtapaLead =
+  | "nuevo"
+  | "contactando"
+  | "cotizado"
+  | "pendiente"
+  | "agendado"
+  | "ganado"
+  | "perdido";
+
+export const ETAPAS: { id: EtapaLead; label: string; icon: string; color: string }[] = [
+  { id: "nuevo",        label: "Nuevo",             icon: "🆕", color: "#3B82F6" },
+  { id: "contactando",  label: "Contactando",       icon: "📞", color: "#F59E0B" },
+  { id: "cotizado",     label: "Cotización enviada", icon: "📄", color: "#8B5CF6" },
+  { id: "pendiente",    label: "Pendiente respuesta", icon: "⏳", color: "#EAB308" },
+  { id: "agendado",     label: "Agendado",          icon: "📅", color: "#06B6D4" },
+  { id: "ganado",       label: "Ganado ✓",          icon: "🏆", color: "#10B981" },
+  { id: "perdido",      label: "Perdido",           icon: "✕",  color: "#EF4444" },
+];
+
+// Nota manual del ejecutivo sobre el lead (observaciones, resultados de
+// llamada, etc.). Se muestran en orden cronológico en el detalle.
+export interface NotaLead {
+  id: string;
+  texto: string;
+  fecha: string; // ISO
+  autor: string; // email del ejecutivo
+}
+
+// Recordatorio programado (ej. "llamar el 15 sep 10am"). El cron
+// /api/cron/recordatorios revisa periódicamente los pendientes y notifica.
+export interface RecordatorioLead {
+  id: string;
+  fecha: string; // ISO cuando debe dispararse
+  mensaje: string;
+  notificado: boolean;
+  creadoPor: string; // email del ejecutivo
+  creadoEn: string; // ISO
+}
+
 export interface Lead {
   id?: string; // se setea al guardar; clave única tipo "lead:..."
   nombre: string;
@@ -31,6 +71,11 @@ export interface Lead {
   // Cuántas veces el mismo cliente apareció (útil para ver si Titi lo buscó
   // varias veces, o si un mismo lead apareció por form y por chat).
   contactos?: number;
+  // Pipeline / CRM manual.
+  etapa?: EtapaLead;
+  asignadoA?: string; // email del ejecutivo asignado
+  notas?: NotaLead[];
+  recordatorios?: RecordatorioLead[];
 }
 
 const INDEX_KEY = "leads:by-date";
@@ -319,4 +364,103 @@ async function crearOportunidad(
   if (!res.ok) {
     throw new Error(`HEAT opportunity ${res.status}: ${await res.text()}`);
   }
+}
+
+// ===== Pipeline / CRM manual =====
+
+// Actualiza campos "editables" del lead desde el panel admin (etapa,
+// asignadoA, nombre, etc.). NO toca las claves de índice ni el email
+// hasheado. Devuelve el lead actualizado.
+export async function actualizarLead(
+  id: string,
+  cambios: Partial<Pick<Lead, "etapa" | "asignadoA" | "nombre" | "isapre" | "plan">>,
+): Promise<Lead | null> {
+  const actual = await obtenerLead(id);
+  if (!actual) return null;
+  const merged: Lead = {
+    ...actual,
+    ...cambios,
+    actualizado: new Date().toISOString(),
+  };
+  await kvSet(id, JSON.stringify(merged), LEAD_TTL_SECONDS);
+  return merged;
+}
+
+function newId(): string {
+  return `${Date.now()}-${Math.floor(Math.random() * 1e6)}`;
+}
+
+export async function agregarNota(
+  leadId: string,
+  texto: string,
+  autor: string,
+): Promise<Lead | null> {
+  const lead = await obtenerLead(leadId);
+  if (!lead) return null;
+  const nota: NotaLead = {
+    id: newId(),
+    texto: texto.trim(),
+    fecha: new Date().toISOString(),
+    autor,
+  };
+  const notas = [...(lead.notas ?? []), nota];
+  const merged: Lead = { ...lead, notas, actualizado: nota.fecha };
+  await kvSet(leadId, JSON.stringify(merged), LEAD_TTL_SECONDS);
+  return merged;
+}
+
+export async function eliminarNota(leadId: string, notaId: string): Promise<Lead | null> {
+  const lead = await obtenerLead(leadId);
+  if (!lead) return null;
+  const notas = (lead.notas ?? []).filter((n) => n.id !== notaId);
+  const merged: Lead = { ...lead, notas, actualizado: new Date().toISOString() };
+  await kvSet(leadId, JSON.stringify(merged), LEAD_TTL_SECONDS);
+  return merged;
+}
+
+export async function agregarRecordatorio(
+  leadId: string,
+  fechaISO: string,
+  mensaje: string,
+  creadoPor: string,
+): Promise<Lead | null> {
+  const lead = await obtenerLead(leadId);
+  if (!lead) return null;
+  const rec: RecordatorioLead = {
+    id: newId(),
+    fecha: fechaISO,
+    mensaje: mensaje.trim(),
+    notificado: false,
+    creadoPor,
+    creadoEn: new Date().toISOString(),
+  };
+  const recordatorios = [...(lead.recordatorios ?? []), rec];
+  const merged: Lead = { ...lead, recordatorios, actualizado: rec.creadoEn };
+  await kvSet(leadId, JSON.stringify(merged), LEAD_TTL_SECONDS);
+  return merged;
+}
+
+export async function eliminarRecordatorio(
+  leadId: string,
+  recId: string,
+): Promise<Lead | null> {
+  const lead = await obtenerLead(leadId);
+  if (!lead) return null;
+  const recordatorios = (lead.recordatorios ?? []).filter((r) => r.id !== recId);
+  const merged: Lead = { ...lead, recordatorios, actualizado: new Date().toISOString() };
+  await kvSet(leadId, JSON.stringify(merged), LEAD_TTL_SECONDS);
+  return merged;
+}
+
+// Marca un recordatorio como notificado (lo usa el cron después de mandarlo).
+export async function marcarRecordatorioNotificado(
+  leadId: string,
+  recId: string,
+): Promise<void> {
+  const lead = await obtenerLead(leadId);
+  if (!lead) return;
+  const recordatorios = (lead.recordatorios ?? []).map((r) =>
+    r.id === recId ? { ...r, notificado: true } : r,
+  );
+  await kvSet(leadId, JSON.stringify({ ...lead, recordatorios }), LEAD_TTL_SECONDS);
 }

@@ -12,6 +12,7 @@ interface Props {
 }
 
 const NAV = [
+  { href: "/admin/pipeline", label: "Pipeline", ico: "📊" },
   { href: "/admin/leads", label: "Leads", ico: "📋" },
   { href: "/admin/usuarios", label: "Usuarios", ico: "👥", superadminOnly: true },
   { href: "/admin/perfil", label: "Perfil", ico: "👤" },

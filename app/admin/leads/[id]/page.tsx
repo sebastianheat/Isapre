@@ -2,8 +2,10 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { obtenerSesion } from "@/lib/auth";
 import { obtenerLead } from "@/lib/leads";
+import { listarUsuarios } from "@/lib/usuarios";
 import AdminShell from "@/components/AdminShell";
 import LeadDetailActions from "@/components/LeadDetailActions";
+import LeadPipeline from "@/components/LeadPipeline";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -36,6 +38,9 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
   const lead = await obtenerLead(decodeURIComponent(id));
   if (!lead) notFound();
 
+  // Cargamos usuarios (para el dropdown de "asignado a") — no bloquea si falla.
+  const usuarios = await listarUsuarios().catch(() => []);
+
   const fechaLegible = lead.fecha
     ? new Date(lead.fecha).toLocaleString("es-CL", { timeZone: "America/Santiago" })
     : "—";
@@ -49,6 +54,8 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
         {tagCanal(lead.canal)}
         {lead.origen && <span className="tag">{lead.origen}</span>}
       </div>
+
+      <LeadPipeline initialLead={lead} usuarios={usuarios} miEmail={sesion.email} />
 
       <div className="lead-detail-section">
         <h3>Contacto</h3>
