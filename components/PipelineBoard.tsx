@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type { Lead } from "@/lib/leads";
@@ -42,6 +42,19 @@ export default function PipelineBoard({
   const [leads, setLeads] = useState<Lead[]>(initialLeads);
   const [filtroMios, setFiltroMios] = useState(false);
   const [busqueda, setBusqueda] = useState("");
+  // Modo compacto ("adelgazar columnas"): persiste entre sesiones.
+  const [compacto, setCompacto] = useState(false);
+  useEffect(() => {
+    try {
+      setCompacto(window.localStorage.getItem("pipeline_compacto") === "1");
+    } catch { /* no-op */ }
+  }, []);
+  function toggleCompacto() {
+    setCompacto((v) => {
+      try { window.localStorage.setItem("pipeline_compacto", v ? "0" : "1"); } catch { /* no-op */ }
+      return !v;
+    });
+  }
 
   const filtrados = useMemo(() => {
     const q = busqueda.trim().toLowerCase();
@@ -108,6 +121,13 @@ export default function PipelineBoard({
         >
           {filtroMios ? "Mostrar todos" : "Solo mis leads"}
         </button>
+        <button
+          className={`pill ${compacto ? "active" : ""}`}
+          onClick={toggleCompacto}
+          title="Columnas más finas para ver más de un vistazo"
+        >
+          {compacto ? "↔ Columnas normales" : "⇹ Compactar columnas"}
+        </button>
       </div>
 
       {/* Strip de etapas: muestra las 7 de un vistazo con su conteo; click
@@ -131,7 +151,7 @@ export default function PipelineBoard({
       </div>
       <p className="pipeline-hint">← Desliza el tablero para recorrer las 7 etapas →</p>
 
-      <div className="pipeline-board">
+      <div className={`pipeline-board ${compacto ? "compact" : ""}`}>
         {ETAPAS.map((etapa) => {
           const items = porEtapa.get(etapa.id) ?? [];
           const total = items.reduce((sum, l) => sum + (l.sueldoLiquido ?? 0), 0);
@@ -139,13 +159,18 @@ export default function PipelineBoard({
             <div key={etapa.id} id={`col-${etapa.id}`} className="pipeline-column">
               <div
                 className="pipeline-column-header"
-                style={{ borderTopColor: etapa.color }}
+                style={{ borderTopColor: etapa.color, background: etapa.color + "10" }}
               >
-                <span>
+                <span style={{ color: etapa.color }}>
                   <span style={{ marginRight: 6 }}>{etapa.icon}</span>
                   <strong>{etapa.label}</strong>
                 </span>
-                <span className="pipeline-column-count">{items.length}</span>
+                <span
+                  className="pipeline-column-count"
+                  style={{ background: etapa.color + "22", color: etapa.color }}
+                >
+                  {items.length}
+                </span>
               </div>
               <div className="pipeline-column-body">
                 {items.length === 0 && (

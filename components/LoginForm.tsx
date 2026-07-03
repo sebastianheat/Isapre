@@ -36,6 +36,7 @@ export default function LoginForm() {
 
   return (
     <form className="admin-form" onSubmit={submit}>
+      <div className="admin-login-logo">N</div>
       <h1>Panel de ejecutivos</h1>
       <p style={{ textAlign: "center", color: "var(--admin-text-soft)", fontSize: 13, marginBottom: 16 }}>
         Nueva Isapre · Acceso interno

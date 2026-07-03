@@ -9,8 +9,8 @@ export default async function AdminLoginPage() {
   const sesion = await obtenerSesion();
   if (sesion) redirect("/admin/leads");
   return (
-    <div className="admin-shell" style={{ paddingBottom: 0, alignItems: "center", justifyContent: "center", display: "flex", minHeight: "100dvh" }}>
-      <div className="admin-content" style={{ maxWidth: 460 }}>
+    <div className="admin-login-bg">
+      <div className="admin-login-card">
         <LoginForm />
       </div>
     </div>

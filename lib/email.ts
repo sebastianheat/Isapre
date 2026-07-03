@@ -166,3 +166,50 @@ export async function enviarRecordatorioPorEmail(
   });
   if (error) throw new Error(`Resend recordatorio: ${error.message ?? JSON.stringify(error)}`);
 }
+
+// Manda el CSV semanal de conversiones offline como adjunto a info@. Lo
+// dispara el cron /api/cron/export-semanal cada lunes. Titi solo tiene que
+// descargar el adjunto y subirlo en Google Ads → Conversiones → Subidas.
+export async function enviarCsvOfflinePorEmail(
+  csv: string,
+  cantidad: number,
+): Promise<void> {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) return;
+  const resend = new Resend(apiKey);
+  const fecha = new Date().toLocaleDateString("es-CL", { timeZone: "America/Santiago" });
+
+  const html = `
+  <div style="font-family: -apple-system, system-ui, sans-serif; color: #0F172A; max-width: 560px;">
+    <h2 style="color: #0D47A1; margin: 0 0 12px;">📊 CSV semanal de conversiones — Google Ads</h2>
+    <p style="color: #475569;">
+      Adjunto va el CSV con <strong>${cantidad} lead${cantidad === 1 ? "" : "s"} calificado${cantidad === 1 ? "" : "s"}</strong>
+      de la semana, listo para subir a Google Ads.
+    </p>
+    <ol style="color: #0F172A; font-size: 14px; line-height: 1.7;">
+      <li>Descargar el archivo adjunto</li>
+      <li>Google Ads → <strong>Objetivos → Conversiones → Subidas</strong></li>
+      <li><strong>+ Subir archivo</strong> → elegir el CSV → <strong>Aplicar</strong></li>
+    </ol>
+    <p style="color: #475569; font-size: 12px; margin-top: 18px;">
+      Esto le enseña a Google qué clicks terminan en leads vendibles, para que
+      optimice la campaña hacia esos perfiles. Si no hay leads nuevos que subir,
+      este correo no llega.
+    </p>
+  </div>`;
+
+  const { error } = await resend.emails.send({
+    from: REMITENTE,
+    to: [DESTINO],
+    subject: `📊 CSV Google Ads: ${cantidad} conversión${cantidad === 1 ? "" : "es"} calificada${cantidad === 1 ? "" : "s"} (${fecha})`,
+    html,
+    text: `Adjunto CSV con ${cantidad} leads calificados. Subir en Google Ads → Objetivos → Conversiones → Subidas.`,
+    attachments: [
+      {
+        filename: `offline-conversions-${new Date().toISOString().slice(0, 10)}.csv`,
+        content: Buffer.from(csv, "utf-8"),
+      },
+    ],
+  });
+  if (error) throw new Error(`Resend CSV: ${error.message ?? JSON.stringify(error)}`);
+}
