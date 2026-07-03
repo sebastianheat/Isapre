@@ -3,7 +3,7 @@
 // silencioso para no romper el flujo del formulario.
 
 import { Resend } from "resend";
-import type { Lead } from "./leads";
+import type { Lead, RecordatorioLead } from "./leads";
 
 const DESTINO = process.env.LEAD_EMAIL_TO || "info@nuevaisapre.cl";
 const REMITENTE = process.env.LEAD_EMAIL_FROM || "Romina <leads@nuevaisapre.cl>";
@@ -87,4 +87,82 @@ function row(label: string, value: string): string {
     <td style="padding: 8px 12px 8px 0; color: #475569; border-bottom: 1px solid #E2E8F0; vertical-align: top; width: 38%;">${label}</td>
     <td style="padding: 8px 0; border-bottom: 1px solid #E2E8F0;"><strong>${value}</strong></td>
   </tr>`;
+}
+
+// Manda un email con un recordatorio pendiente. Destino: asignadoA si existe,
+// sino info@nuevaisapre.cl. Se dispara desde el cron /api/cron/recordatorios.
+export async function enviarRecordatorioPorEmail(
+  lead: Lead,
+  recordatorio: RecordatorioLead,
+): Promise<void> {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) return;
+  const resend = new Resend(apiKey);
+  const destino = lead.asignadoA || DESTINO;
+  const site = process.env.NEXT_PUBLIC_SITE_URL || "https://nuevaisapre.cl";
+  const linkLead = `${site}/admin/leads/${encodeURIComponent(lead.id ?? "")}`;
+  const fechaProg = new Date(recordatorio.fecha).toLocaleString("es-CL", {
+    timeZone: "America/Santiago",
+    day: "2-digit",
+    month: "long",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+  const wa = lead.telefono
+    ? `https://wa.me/${lead.telefono.replace(/[^0-9]/g, "")}`
+    : null;
+
+  const html = `
+  <div style="font-family: -apple-system, system-ui, sans-serif; color: #0F172A; max-width: 560px;">
+    <h2 style="color: #B45309; margin: 0 0 12px;">🔔 Recordatorio · ${esc(lead.nombre)}</h2>
+    <p style="color: #475569; margin: 0 0 18px;">
+      Programado para <strong>${esc(fechaProg)}</strong>.
+    </p>
+    <div style="background: #FEF3C7; border: 1px solid #F59E0B; border-radius: 8px; padding: 14px 16px; margin-bottom: 18px; font-size: 15px;">
+      ${esc(recordatorio.mensaje)}
+    </div>
+    <table style="border-collapse: collapse; width: 100%; font-size: 14px;">
+      <tbody>
+        ${row("Cliente", esc(lead.nombre))}
+        ${row("WhatsApp", wa ? `<a href="${wa}" style="color:#0D47A1;">${esc(lead.telefono)}</a>` : esc(lead.telefono))}
+        ${row("Email", esc(lead.email))}
+        ${row("Región", esc(lead.region))}
+        ${row("Isapre de interés", esc(lead.isapre))}
+        ${row("Etapa actual", esc(lead.etapa))}
+      </tbody>
+    </table>
+    <p style="margin-top: 20px;">
+      <a href="${linkLead}" style="display:inline-block; padding:10px 18px; background:#0D47A1; color:#fff; text-decoration:none; border-radius:8px; font-weight:600;">
+        Abrir lead en el panel
+      </a>
+    </p>
+    <p style="color: #475569; font-size: 12px; margin-top: 20px;">
+      Creado por ${esc(recordatorio.creadoPor)}.
+    </p>
+  </div>`;
+
+  const text = [
+    `Recordatorio: ${lead.nombre}`,
+    `Programado para: ${fechaProg}`,
+    ``,
+    recordatorio.mensaje,
+    ``,
+    `Cliente: ${lead.nombre}`,
+    `WhatsApp: ${lead.telefono ?? "—"}`,
+    `Email: ${lead.email ?? "—"}`,
+    `Etapa: ${lead.etapa ?? "—"}`,
+    ``,
+    `Abrir lead: ${linkLead}`,
+  ].join("\n");
+
+  const { error } = await resend.emails.send({
+    from: REMITENTE,
+    to: [destino],
+    cc: destino === DESTINO ? undefined : [DESTINO],
+    replyTo: DESTINO,
+    subject: `🔔 Recordatorio: ${lead.nombre} — ${recordatorio.mensaje.slice(0, 50)}`,
+    html,
+    text,
+  });
+  if (error) throw new Error(`Resend recordatorio: ${error.message ?? JSON.stringify(error)}`);
 }
