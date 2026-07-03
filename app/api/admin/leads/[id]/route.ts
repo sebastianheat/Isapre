@@ -1,5 +1,11 @@
 import { obtenerSesion } from "@/lib/auth";
-import { obtenerLead, eliminarLead, actualizarLead, type EtapaLead } from "@/lib/leads";
+import {
+  obtenerLead,
+  eliminarLead,
+  actualizarLead,
+  type EtapaLead,
+  type CalidadLead,
+} from "@/lib/leads";
 
 export const runtime = "nodejs";
 
@@ -17,7 +23,7 @@ export async function PATCH(req: Request, ctx: { params: Promise<{ id: string }>
   const sesion = await obtenerSesion();
   if (!sesion) return Response.json({ error: "No autorizado" }, { status: 401 });
   const { id } = await ctx.params;
-  let body: { etapa?: string; asignadoA?: string | null };
+  let body: { etapa?: string; asignadoA?: string | null; calidad?: string };
   try {
     body = await req.json();
   } catch {
@@ -32,6 +38,10 @@ export async function PATCH(req: Request, ctx: { params: Promise<{ id: string }>
   }
   if (typeof body.asignadoA !== "undefined") {
     cambios.asignadoA = body.asignadoA?.toString().trim() || undefined;
+  }
+  const calidadesValidas: CalidadLead[] = ["calificado", "marginal", "no_calificado"];
+  if (body.calidad && calidadesValidas.includes(body.calidad as CalidadLead)) {
+    cambios.calidad = body.calidad as CalidadLead;
   }
   const lead = await actualizarLead(decodeURIComponent(id), cambios);
   if (!lead) return Response.json({ error: "Lead no encontrado" }, { status: 404 });

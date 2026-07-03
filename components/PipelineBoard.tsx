@@ -3,8 +3,9 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import type { Lead, EtapaLead } from "@/lib/leads";
-import { ETAPAS } from "@/lib/leads";
+import type { Lead } from "@/lib/leads";
+import type { EtapaLead } from "@/lib/pipeline";
+import { ETAPAS, CALIDADES } from "@/lib/pipeline";
 
 function formatearFechaCorta(iso?: string) {
   if (!iso) return "";
@@ -154,6 +155,7 @@ function PipelineCard({
   const vencido = tieneVencido(lead);
   const proxRec = proximoRecordatorio(lead);
   const proxRecFmt = proxRec ? formatearFechaCorta(proxRec) : null;
+  const calidad = CALIDADES.find((c) => c.id === lead.calidad);
   return (
     <div className="pipeline-card">
       <Link
@@ -161,6 +163,7 @@ function PipelineCard({
         className="pipeline-card-link"
       >
         <div className="pipeline-card-name">
+          {calidad && <span title={calidad.label}>{calidad.icon}</span>}
           {lead.nombre || "Sin nombre"}
           {vencido && <span className="pipeline-card-badge">⚠️</span>}
         </div>

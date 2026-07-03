@@ -3,8 +3,28 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import type { Lead, CanalLead } from "@/lib/leads";
+import { ETAPAS, CALIDADES } from "@/lib/pipeline";
 
 type Filtro = "todos" | CanalLead;
+
+function tagEtapa(etapa?: string) {
+  const e = ETAPAS.find((x) => x.id === (etapa ?? "nuevo")) ?? ETAPAS[0];
+  return (
+    <span className="tag" style={{ background: e.color + "22", color: e.color }}>
+      {e.icon} {e.label}
+    </span>
+  );
+}
+
+function tagCalidad(calidad?: string) {
+  const c = CALIDADES.find((x) => x.id === calidad);
+  if (!c) return null;
+  return (
+    <span className="tag" style={{ background: c.color + "22", color: c.color }}>
+      {c.icon} {c.label}
+    </span>
+  );
+}
 
 const FILTROS: { id: Filtro; label: string }[] = [
   { id: "todos", label: "Todos" },
@@ -106,6 +126,8 @@ export default function LeadsList({ leads }: { leads: Lead[] }) {
               <div className="lead-card-date">{formatearFecha(lead.fecha)}</div>
             </div>
             <div className="lead-card-tags">
+              {tagEtapa(lead.etapa)}
+              {tagCalidad(lead.calidad)}
               {tagCanal(lead.canal)}
               {tagOrigen(lead.origen)}
               {lead.isapre && <span className="tag orange">{lead.isapre}</span>}

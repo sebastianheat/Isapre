@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import type { Lead, NotaLead, RecordatorioLead, EtapaLead } from "@/lib/leads";
-import { ETAPAS } from "@/lib/leads";
+import type { Lead } from "@/lib/leads";
+import type { NotaLead, RecordatorioLead, EtapaLead, CalidadLead } from "@/lib/pipeline";
+import { ETAPAS, CALIDADES } from "@/lib/pipeline";
 import type { UsuarioPublico } from "@/lib/usuarios";
 
 function formatearFecha(iso?: string) {
@@ -58,6 +59,26 @@ export default function LeadPipeline({
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ etapa }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "No se pudo actualizar");
+      setLead(data.lead);
+      router.refresh();
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Error");
+    } finally {
+      setGuardando(false);
+    }
+  }
+
+  async function cambiarCalidad(calidad: CalidadLead) {
+    setGuardando(true);
+    setError("");
+    try {
+      const res = await fetch(`/api/admin/leads/${leadId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ calidad }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "No se pudo actualizar");
@@ -217,6 +238,37 @@ export default function LeadPipeline({
               ))}
             </select>
           </label>
+          <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+            <span style={{ color: "var(--admin-text-soft)", fontSize: 13 }}>
+              Calidad del lead (alimenta la optimización de Google Ads)
+            </span>
+            <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+              {CALIDADES.map((c) => {
+                const activa = lead.calidad === c.id;
+                return (
+                  <button
+                    key={c.id}
+                    type="button"
+                    disabled={guardando}
+                    onClick={() => cambiarCalidad(c.id)}
+                    style={{
+                      padding: "7px 12px",
+                      borderRadius: 999,
+                      fontSize: 13,
+                      fontWeight: 600,
+                      cursor: "pointer",
+                      fontFamily: "inherit",
+                      border: `1.5px solid ${activa ? c.color : "var(--admin-border)"}`,
+                      background: activa ? c.color + "22" : "#fff",
+                      color: activa ? c.color : "var(--admin-text-soft)",
+                    }}
+                  >
+                    {c.icon} {c.label}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
         </div>
       </div>
 

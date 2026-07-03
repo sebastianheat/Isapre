@@ -6,45 +6,12 @@ import { enviarLeadPorEmail } from "./email";
 // "whatsapp" cuando llegó por el bot de WhatsApp.
 export type CanalLead = "google-ads" | "web-organico" | "whatsapp";
 
-// Etapa del lead en el pipeline. Se puede mover manualmente desde el panel.
-export type EtapaLead =
-  | "nuevo"
-  | "contactando"
-  | "cotizado"
-  | "pendiente"
-  | "agendado"
-  | "ganado"
-  | "perdido";
-
-export const ETAPAS: { id: EtapaLead; label: string; icon: string; color: string }[] = [
-  { id: "nuevo",        label: "Nuevo",             icon: "🆕", color: "#3B82F6" },
-  { id: "contactando",  label: "Contactando",       icon: "📞", color: "#F59E0B" },
-  { id: "cotizado",     label: "Cotización enviada", icon: "📄", color: "#8B5CF6" },
-  { id: "pendiente",    label: "Pendiente respuesta", icon: "⏳", color: "#EAB308" },
-  { id: "agendado",     label: "Agendado",          icon: "📅", color: "#06B6D4" },
-  { id: "ganado",       label: "Ganado ✓",          icon: "🏆", color: "#10B981" },
-  { id: "perdido",      label: "Perdido",           icon: "✕",  color: "#EF4444" },
-];
-
-// Nota manual del ejecutivo sobre el lead (observaciones, resultados de
-// llamada, etc.). Se muestran en orden cronológico en el detalle.
-export interface NotaLead {
-  id: string;
-  texto: string;
-  fecha: string; // ISO
-  autor: string; // email del ejecutivo
-}
-
-// Recordatorio programado (ej. "llamar el 15 sep 10am"). El cron
-// /api/cron/recordatorios revisa periódicamente los pendientes y notifica.
-export interface RecordatorioLead {
-  id: string;
-  fecha: string; // ISO cuando debe dispararse
-  mensaje: string;
-  notificado: boolean;
-  creadoPor: string; // email del ejecutivo
-  creadoEn: string; // ISO
-}
+// Tipos/constantes del pipeline viven en lib/pipeline.ts (módulo client-safe,
+// sin dependencias de servidor). Acá los re-exportamos para mantener la API
+// de este módulo hacia el resto del backend.
+import type { EtapaLead, CalidadLead, NotaLead, RecordatorioLead } from "./pipeline";
+export type { EtapaLead, CalidadLead, NotaLead, RecordatorioLead } from "./pipeline";
+export { ETAPAS, CALIDADES } from "./pipeline";
 
 export interface Lead {
   id?: string; // se setea al guardar; clave única tipo "lead:..."
@@ -76,6 +43,10 @@ export interface Lead {
   asignadoA?: string; // email del ejecutivo asignado
   notas?: NotaLead[];
   recordatorios?: RecordatorioLead[];
+  // Calificación manual para el export de conversiones offline a Google Ads.
+  calidad?: CalidadLead;
+  // Marca de la última vez que este lead se incluyó en un export offline.
+  exportadoOffline?: string; // ISO
 }
 
 const INDEX_KEY = "leads:by-date";
@@ -373,7 +344,9 @@ async function crearOportunidad(
 // hasheado. Devuelve el lead actualizado.
 export async function actualizarLead(
   id: string,
-  cambios: Partial<Pick<Lead, "etapa" | "asignadoA" | "nombre" | "isapre" | "plan">>,
+  cambios: Partial<
+    Pick<Lead, "etapa" | "asignadoA" | "nombre" | "isapre" | "plan" | "calidad" | "exportadoOffline">
+  >,
 ): Promise<Lead | null> {
   const actual = await obtenerLead(id);
   if (!actual) return null;
