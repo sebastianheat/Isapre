@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { capturarGclidDeUrl, obtenerGclid } from "@/lib/gclid";
+import { capturarGclidDeUrl, obtenerGclid, obtenerFbclid } from "@/lib/gclid";
 import { dispararConversionEnhanced } from "@/lib/enhancedConversions";
 
 interface Msg {
@@ -70,7 +70,7 @@ export default function RominaChat() {
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: next, gclid: obtenerGclid() }),
+        body: JSON.stringify({ messages: next, gclid: obtenerGclid(), fbclid: obtenerFbclid() }),
         signal: controller.signal,
       });
       const data = await res.json().catch(() => ({}));

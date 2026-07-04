@@ -27,6 +27,8 @@ function clp(n?: number) {
 
 function tagCanal(canal?: string) {
   if (canal === "google-ads") return <span className="tag green">📢 Google Ads</span>;
+  if (canal === "meta-ads")
+    return <span className="tag" style={{ background: "#1877F222", color: "#1877F2" }}>📘 Meta Ads</span>;
   if (canal === "whatsapp") return <span className="tag green">💬 WhatsApp</span>;
   return <span className="tag gray">🌐 Web orgánico</span>;
 }
@@ -101,6 +103,8 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
           {row("Canal", lead.canal || "web-organico")}
           {row("Origen", lead.origen)}
           {row("gclid (Google Ads)", lead.gclid || "—")}
+          {row("fbclid (Meta)", lead.fbclid || "—")}
+          {row("Meta Lead ID", lead.metaLeadId || "—")}
           {row("Fecha", fechaLegible)}
           {row("ID interno", <code style={{ fontSize: 11 }}>{lead.id}</code>)}
         </div>

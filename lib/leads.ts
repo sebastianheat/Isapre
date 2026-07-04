@@ -2,9 +2,9 @@ import { kvSet, kvGet, kvDel, kvZAdd, kvZRem, kvZRevRange, kvScanKeys } from "./
 import { enviarLeadPorEmail } from "./email";
 
 // Canal de origen del lead: cómo llegó el cliente. "google-ads" cuando hay
-// gclid en la URL (vino de un anuncio), "web-organico" cuando no, y
-// "whatsapp" cuando llegó por el bot de WhatsApp.
-export type CanalLead = "google-ads" | "web-organico" | "whatsapp";
+// gclid en la URL, "meta-ads" cuando hay fbclid o vino de un Lead Ad de
+// Facebook/Instagram, "whatsapp" por el bot, "web-organico" el resto.
+export type CanalLead = "google-ads" | "meta-ads" | "web-organico" | "whatsapp";
 
 // Tipos/constantes del pipeline viven en lib/pipeline.ts (módulo client-safe,
 // sin dependencias de servidor). Acá los re-exportamos para mantener la API
@@ -28,9 +28,11 @@ export interface Lead {
   cargasResumen?: string;
   clinicaPreferida?: string;
   origen?: string;
-  // Canal y tracking de Google Ads.
+  // Canal y tracking de anuncios.
   canal?: CanalLead;
-  gclid?: string;
+  gclid?: string;   // Google Ads click ID
+  fbclid?: string;  // Meta (Facebook/Instagram) click ID
+  metaLeadId?: string; // ID del lead en Meta Lead Ads (formularios instantáneos)
   // Fecha ISO, seteada al guardar (primera vez).
   fecha?: string;
   // Última actualización (se actualiza en cada upsert).
@@ -73,6 +75,7 @@ function generarId(lead: Lead): string {
 function inferirCanal(lead: Lead): CanalLead {
   if (lead.canal) return lead.canal;
   if (lead.gclid) return "google-ads";
+  if (lead.fbclid || lead.metaLeadId) return "meta-ads";
   if (lead.origen === "whatsapp-chat") return "whatsapp";
   return "web-organico";
 }
@@ -108,7 +111,17 @@ export interface GuardarLeadResultado {
 // que ya estaban). Solo si es nuevo: KV + HEAT + email + cuenta como conversión.
 // Si es update: actualiza KV y manda email solo si cambiaron datos clave
 // (para que el equipo vea actividad), pero no dispara conversión.
-export async function guardarLead(lead: Lead): Promise<GuardarLeadResultado> {
+export interface GuardarLeadOpciones {
+  // No empujar a HEAT/GHL. Se usa para leads de Meta Lead Ads: van directo
+  // al panel + email, sin CRM (evita duplicados si GHL también sincroniza
+  // los formularios de Meta por su lado).
+  omitirHeat?: boolean;
+}
+
+export async function guardarLead(
+  lead: Lead,
+  opciones?: GuardarLeadOpciones,
+): Promise<GuardarLeadResultado> {
   const existente = await buscarLeadExistente({
     email: lead.email,
     rut: lead.rut,
@@ -119,11 +132,11 @@ export async function guardarLead(lead: Lead): Promise<GuardarLeadResultado> {
     // Update: mergea datos nuevos sin pisar datos antiguos válidos.
     return await mergearLead(existente, lead);
   } else {
-    return await crearLead(lead);
+    return await crearLead(lead, opciones);
   }
 }
 
-async function crearLead(lead: Lead): Promise<GuardarLeadResultado> {
+async function crearLead(lead: Lead, opciones?: GuardarLeadOpciones): Promise<GuardarLeadResultado> {
   const fecha = new Date().toISOString();
   const id = generarId(lead);
   const canal = inferirCanal(lead);
@@ -140,10 +153,12 @@ async function crearLead(lead: Lead): Promise<GuardarLeadResultado> {
   // Índices secundarios para dedupe en próximas búsquedas.
   await guardarIndicesSecundarios(registro);
   console.log("LEAD nuevo:", JSON.stringify(registro));
-  try {
-    await pushToHeat(registro);
-  } catch (e) {
-    console.error("Push a HEAT falló:", e);
+  if (!opciones?.omitirHeat) {
+    try {
+      await pushToHeat(registro);
+    } catch (e) {
+      console.error("Push a HEAT falló:", e);
+    }
   }
   try {
     await enviarLeadPorEmail(registro);
@@ -171,6 +186,8 @@ async function mergearLead(existente: Lead, nuevo: Lead): Promise<GuardarLeadRes
     cargasResumen: nuevo.cargasResumen || existente.cargasResumen,
     clinicaPreferida: nuevo.clinicaPreferida || existente.clinicaPreferida,
     gclid: nuevo.gclid || existente.gclid,
+    fbclid: nuevo.fbclid || existente.fbclid,
+    metaLeadId: nuevo.metaLeadId || existente.metaLeadId,
     actualizado: new Date().toISOString(),
     contactos: (existente.contactos || 1) + 1,
   };

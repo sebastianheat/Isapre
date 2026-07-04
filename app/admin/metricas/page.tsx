@@ -91,6 +91,7 @@ export default async function MetricasPage() {
   // Distribuciones
   const canales = [
     { id: "google-ads", label: "📢 Google Ads", color: "#2563EB" },
+    { id: "meta-ads", label: "📘 Meta Ads", color: "#7C3AED" },
     { id: "web-organico", label: "🌐 Web orgánico", color: "#0891B2" },
     { id: "whatsapp", label: "💬 WhatsApp", color: "#059669" },
   ].map((c) => ({

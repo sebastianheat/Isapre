@@ -128,7 +128,7 @@ export interface TurnoResultado {
 // Procesa un turno: corre el loop de tool-use de Claude y devuelve el texto de respuesta.
 export async function responderTurno(
   history: ChatMessage[],
-  ctx?: { telefono?: string; gclid?: string },
+  ctx?: { telefono?: string; gclid?: string; fbclid?: string },
 ): Promise<TurnoResultado> {
   const client = new Anthropic();
   const messages: Anthropic.MessageParam[] = history.map((m) => ({
@@ -211,13 +211,14 @@ export async function responderTurno(
             }),
           });
         } else {
-          // Canal: si vino por WhatsApp → whatsapp. Si fue web chat con gclid
-          // → google-ads. Si fue web chat sin gclid → web-organico.
+          // Canal: WhatsApp > gclid (Google) > fbclid (Meta) > orgánico.
           const canal = ctx?.telefono
             ? ("whatsapp" as const)
             : ctx?.gclid
               ? ("google-ads" as const)
-              : ("web-organico" as const);
+              : ctx?.fbclid
+                ? ("meta-ads" as const)
+                : ("web-organico" as const);
           const resultado = await guardarLead({
             nombre: input.nombre ?? "",
             rut: input.rut ?? "",
@@ -233,6 +234,7 @@ export async function responderTurno(
             clinicaPreferida: input.clinica_preferida,
             origen: ctx?.telefono ? "whatsapp-chat" : "web-chat",
             gclid: ctx?.gclid,
+            fbclid: ctx?.fbclid,
             canal,
           });
           // Solo contamos como conversión si fue un lead nuevo. Si era un

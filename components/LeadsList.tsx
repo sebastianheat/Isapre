@@ -29,12 +29,15 @@ function tagCalidad(calidad?: string) {
 const FILTROS: { id: Filtro; label: string }[] = [
   { id: "todos", label: "Todos" },
   { id: "google-ads", label: "Google Ads" },
+  { id: "meta-ads", label: "Meta Ads" },
   { id: "web-organico", label: "Web orgánico" },
   { id: "whatsapp", label: "WhatsApp" },
 ];
 
 function tagCanal(canal?: string) {
   if (canal === "google-ads") return <span className="tag green">📢 Google Ads</span>;
+  if (canal === "meta-ads")
+    return <span className="tag" style={{ background: "#1877F222", color: "#1877F2" }}>📘 Meta Ads</span>;
   if (canal === "whatsapp") return <span className="tag green">💬 WhatsApp</span>;
   return <span className="tag gray">🌐 Web orgánico</span>;
 }
@@ -43,6 +46,7 @@ function tagOrigen(origen?: string) {
   if (origen === "landing-form") return <span className="tag">📋 Formulario</span>;
   if (origen === "web-chat") return <span className="tag">💭 Chat Romina</span>;
   if (origen === "whatsapp-chat") return <span className="tag">📱 WhatsApp</span>;
+  if (origen === "meta-leadform") return <span className="tag">📘 Form instantáneo</span>;
   return origen ? <span className="tag gray">{origen}</span> : null;
 }
 

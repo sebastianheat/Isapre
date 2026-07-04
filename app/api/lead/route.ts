@@ -17,6 +17,7 @@ interface FormPayload {
   clinica_preferida?: string;
   origen?: string;
   gclid?: string | null;
+  fbclid?: string | null;
 }
 
 export async function POST(req: Request) {
@@ -44,6 +45,7 @@ export async function POST(req: Request) {
       : "";
 
   const gclid = body.gclid?.trim() || undefined;
+  const fbclid = body.fbclid?.trim() || undefined;
   const lead: Lead = {
     nombre,
     rut,
@@ -57,7 +59,8 @@ export async function POST(req: Request) {
     clinicaPreferida: body.clinica_preferida,
     origen: body.origen ?? "landing-form",
     gclid,
-    canal: gclid ? "google-ads" : "web-organico",
+    fbclid,
+    canal: gclid ? "google-ads" : fbclid ? "meta-ads" : "web-organico",
   };
 
   let esNuevo = true;

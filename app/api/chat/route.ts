@@ -15,7 +15,7 @@ export async function POST(req: Request) {
     );
   }
 
-  let body: { messages?: ChatMessage[]; gclid?: string | null };
+  let body: { messages?: ChatMessage[]; gclid?: string | null; fbclid?: string | null };
   try {
     body = await req.json();
   } catch {
@@ -31,9 +31,10 @@ export async function POST(req: Request) {
   }
 
   const gclid = body.gclid?.trim() || undefined;
+  const fbclid = body.fbclid?.trim() || undefined;
 
   try {
-    const { reply, leadCapturado, leadDatos } = await responderTurno(history, { gclid });
+    const { reply, leadCapturado, leadDatos } = await responderTurno(history, { gclid, fbclid });
     return Response.json({ reply, leadCapturado, leadDatos });
   } catch (err) {
     if (err instanceof Anthropic.RateLimitError) {

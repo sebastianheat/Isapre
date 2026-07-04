@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { CLINICAS_POR_REGION } from "@/lib/clinicasPorRegion";
-import { capturarGclidDeUrl, obtenerGclid } from "@/lib/gclid";
+import { capturarGclidDeUrl, obtenerGclid, obtenerFbclid } from "@/lib/gclid";
 import { dispararConversionEnhanced } from "@/lib/enhancedConversions";
 
 const REGIONES = [
@@ -131,6 +131,7 @@ export default function LeadForm() {
           clinica_preferida: f.clinicas_preferidas.join(", "),
           origen: "landing-form",
           gclid,
+          fbclid: obtenerFbclid(),
         }),
       });
       const jr = await res.json().catch(() => ({}));
