@@ -289,6 +289,18 @@
 .pipeline-strip {
   display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 6px;
 }
+/* Mobile: el strip va en UNA fila deslizable (en vez de 4 filas que comen
+   media pantalla). */
+@media (max-width: 640px) {
+  .pipeline-strip {
+    flex-wrap: nowrap; overflow-x: auto;
+    padding-bottom: 4px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .pipeline-strip::-webkit-scrollbar { display: none; }
+  .pipeline-strip-chip { flex-shrink: 0; }
+}
 .pipeline-strip-chip {
   display: inline-flex; align-items: center; gap: 5px;
   padding: 5px 10px; border-radius: 999px;
@@ -404,7 +416,13 @@
   background: #fff; border: 1px solid var(--admin-border);
   border-radius: 10px; overflow: hidden;
   box-shadow: 0 1px 2px rgba(15,23,42,.04);
+  /* CRÍTICO: sin esto, flexbox comprime las cards para "hacer caber" todas
+     en la altura de la columna, recortando el contenido (nombre a la mitad,
+     teléfono/sueldo invisibles). Con esto la columna scrollea en vez de
+     aplastar. */
+  flex-shrink: 0;
 }
+.pipeline-empty { flex-shrink: 0; }
 .pipeline-card-link {
   display: block; padding: 10px 12px;
   color: inherit; text-decoration: none;
