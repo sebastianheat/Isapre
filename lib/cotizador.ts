@@ -24,6 +24,10 @@ interface PlanRaw {
   amb_pct: number;
   prest_hosp: string[];
   prest_amb: string[];
+  // Nombre de archivo del PDF verificado en el hosting (catálogos 2026+).
+  // null = se comprobó que NO existe; undefined = catálogo antiguo sin el
+  // campo, en cuyo caso asumimos {codigo}.pdf como antes.
+  pdf?: string | null;
 }
 type Catalogos = Record<string, { label: string; ges_uf: number; planes: PlanRaw[] }>;
 const CAT = catalogos as Catalogos;
@@ -604,7 +608,10 @@ export function cotizar(
       precio_pesos_fmt: pesos(p.precioPesos),
       excedente_pesos: Math.round(p.precioPesos - target7),
       excedente_fmt: pesos(p.precioPesos - target7),
-      pdf_url: PDF_BASE ? `${PDF_BASE}/${p.isapre}/${p.codigo}.pdf` : null,
+      pdf_url: (() => {
+        const archivo = p.pdf === undefined ? `${p.codigo}.pdf` : p.pdf;
+        return PDF_BASE && archivo ? `${PDF_BASE}/${p.isapre}/${archivo}` : null;
+      })(),
       cobertura_por_clinica: det
         ? {
             hospitalaria: det.hosp,
