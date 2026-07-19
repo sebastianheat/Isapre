@@ -3,7 +3,7 @@ import ChatWidget from "@/components/ChatWidget";
 
 const VENTAJAS = [
   { ico: "🏥", t: "+5.000 prestadores", s: "Red amplia en todo Chile" },
-  { ico: "📋", t: "1.782 planes comparados", s: "Las 7 isapres del mercado" },
+  { ico: "📋", t: "2.183 planes comparados", s: "Las 7 isapres del mercado" },
   { ico: "🤝", t: "Asesoría 100% gratis", s: "Sin compromiso ni cargos ocultos" },
   { ico: "🔒", t: "Sin alza 2025-2026", s: "Compromiso público de Nueva Masvida" },
   { ico: "⚡", t: "Activación 24-72 h", s: "100% online, sin papeleo" },
@@ -41,7 +41,7 @@ export default function Page() {
               Encuentra tu <span className="hl">mejor plan de isapre</span> en 30 segundos.
             </h1>
             <p>
-              Comparamos en tiempo real los <strong>1.782 planes</strong> de las 7 isapres y
+              Comparamos en tiempo real los <strong>2.183 planes</strong> de las 7 isapres y
               elegimos los 3 que mejor te calzan según tu <strong>presupuesto</strong>, edad y
               clínica de preferencia. Cierra por WhatsApp con tu ejecutiva.
             </p>

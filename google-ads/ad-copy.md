@@ -20,7 +20,7 @@ Display paths:
 
 ```
 Cotiza tu Isapre en 30 segundos
-Las 7 Isapres · 1.782 Planes
+Las 7 Isapres · 2.183 Planes
 Asesoría Real · 100% Gratis
 Sin Alza 2025-2026 · NMV
 Compara las 7 Isapres Oficiales
@@ -44,7 +44,7 @@ Catálogos oficiales con porcentaje exacto por clínica. Cierre 100% online en 2
 ```
 
 ```
-1.782 planes de las 7 isapres comparados al instante. Asesoría 100% gratis, sin compromiso. Sin alza de precios 2025-2026.
+2.183 planes de las 7 isapres comparados al instante. Asesoría 100% gratis, sin compromiso. Sin alza de precios 2025-2026.
 ```
 
 ```
@@ -87,7 +87,7 @@ Te mostramos los 3 planes que mejor calzan con tu sueldo, edad y clínica. Cierr
 ```
 
 ```
-Ahorra eligiendo el plan que más te conviene. Comparamos los 1.782 planes oficiales en tiempo real.
+Ahorra eligiendo el plan que más te conviene. Comparamos los 2.183 planes oficiales en tiempo real.
 ```
 
 ---
@@ -98,7 +98,7 @@ Ahorra eligiendo el plan que más te conviene. Comparamos los 1.782 planes ofici
 
 ```
 Mira tu Mejor Plan al Instante
-30 Segundos · 1.782 Planes
+30 Segundos · 2.183 Planes
 Sin Llamadas Eternas
 Compara Isapres Sin Dar el RUT
 Calcula tu 7% Legal · Gratis
@@ -126,7 +126,7 @@ Compara las 7 isapres en 30 segundos. Mira al instante qué planes te calzan seg
 ```
 
 ```
-1.782 planes comparados al instante. Cierre 100% online en 24-72 hs si decides afiliarte. Cero papeleo.
+2.183 planes comparados al instante. Cierre 100% online en 24-72 hs si decides afiliarte. Cero papeleo.
 ```
 
 ---
@@ -145,7 +145,7 @@ Compara las 7 isapres en 30 segundos. Mira al instante qué planes te calzan seg
 ## Callouts (6 — rotar todos)
 
 ```
-1.782 planes comparados
+2.183 planes comparados
 Las 7 isapres oficiales
 Cobertura real por clínica
 Sin alza 2025-2026

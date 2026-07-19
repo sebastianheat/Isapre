@@ -3,7 +3,7 @@
 Archivos para configurar la campaña de Google Ads basada en el análisis de la
 competencia chilena (cambiarisapre.cl, cotizarisapreonline.cl, tuplan360.cl,
 elige-tuplan.cl, etc.) — diferenciándonos por especificidad ("las 7 isapres",
-"1.782 planes", "% real por clínica") y compromiso ("sin alza 2025-2026").
+"2.183 planes", "% real por clínica") y compromiso ("sin alza 2025-2026").
 
 ## Cómo usar cada archivo
 

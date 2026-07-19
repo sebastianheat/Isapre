@@ -18,7 +18,7 @@ const GOOGLE_ADS_ID = process.env.NEXT_PUBLIC_GOOGLE_ADS_ID;
 export const metadata: Metadata = {
   title: "Cotiza tu Isapre en 30 segundos · nuevaisapre.cl",
   description:
-    "Comparamos los 1.782 planes de las 7 isapres y te mostramos los 3 mejores para tu bolsillo. Asesoría gratuita por WhatsApp.",
+    "Comparamos los 2.183 planes de las 7 isapres y te mostramos los 3 mejores para tu bolsillo. Asesoría gratuita por WhatsApp.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
