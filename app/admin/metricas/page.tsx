@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { obtenerSesion } from "@/lib/auth";
 import { listarLeads, type Lead } from "@/lib/leads";
+import { filtrarLeadsVisibles } from "@/lib/acceso";
 import { ETAPAS, CALIDADES, type EtapaLead, type CalidadLead } from "@/lib/pipeline";
 import AdminShell from "@/components/AdminShell";
 
@@ -45,7 +46,8 @@ export default async function MetricasPage() {
   const sesion = await obtenerSesion();
   if (!sesion) redirect("/admin");
 
-  const leads = await listarLeads(500);
+  // El ejecutivo ve las métricas de SU cartera; el superadmin, las globales.
+  const leads = filtrarLeadsVisibles(sesion, await listarLeads(500));
   const ahora = Date.now();
   const hace14 = ahora - 14 * DIA_MS;
   const hace28 = ahora - 28 * DIA_MS;

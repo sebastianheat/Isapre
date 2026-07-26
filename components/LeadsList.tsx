@@ -65,7 +65,15 @@ function formatearFecha(iso?: string) {
   }
 }
 
-export default function LeadsList({ leads }: { leads: Lead[] }) {
+export default function LeadsList({
+  leads,
+  mostrarAsignado = false,
+  nombresUsuarios = {},
+}: {
+  leads: Lead[];
+  mostrarAsignado?: boolean;
+  nombresUsuarios?: Record<string, string>;
+}) {
   const [filtro, setFiltro] = useState<Filtro>("todos");
   const [query, setQuery] = useState("");
 
@@ -135,6 +143,14 @@ export default function LeadsList({ leads }: { leads: Lead[] }) {
               {tagCanal(lead.canal)}
               {tagOrigen(lead.origen)}
               {lead.isapre && <span className="tag orange">{lead.isapre}</span>}
+              {mostrarAsignado && lead.asignadoA && (
+                <span className="tag" style={{ background: "#0D47A122", color: "#0D47A1" }}>
+                  👤 {nombresUsuarios[lead.asignadoA] || lead.asignadoA}
+                </span>
+              )}
+              {mostrarAsignado && !lead.asignadoA && (
+                <span className="tag gray">👤 Sin asignar</span>
+              )}
             </div>
           </Link>
         ))

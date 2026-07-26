@@ -3,6 +3,7 @@ import { notFound, redirect } from "next/navigation";
 import { obtenerSesion } from "@/lib/auth";
 import { obtenerLead } from "@/lib/leads";
 import { listarUsuarios } from "@/lib/usuarios";
+import { puedeVerLead } from "@/lib/acceso";
 import AdminShell from "@/components/AdminShell";
 import LeadDetailActions from "@/components/LeadDetailActions";
 import LeadPipeline from "@/components/LeadPipeline";
@@ -39,10 +40,13 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
 
   const { id } = await params;
   const lead = await obtenerLead(decodeURIComponent(id));
-  if (!lead) notFound();
+  // Un ejecutivo solo puede abrir leads asignados a él; para él, el resto
+  // no existe (ni por URL directa).
+  if (!lead || !puedeVerLead(sesion, lead)) notFound();
 
-  // Cargamos usuarios (para el dropdown de "asignado a") — no bloquea si falla.
-  const usuarios = await listarUsuarios().catch(() => []);
+  // Usuarios para el dropdown de "asignado a" (solo lo usa el superadmin).
+  const usuarios =
+    sesion.role === "superadmin" ? await listarUsuarios().catch(() => []) : [];
 
   const fechaLegible = lead.fecha
     ? new Date(lead.fecha).toLocaleString("es-CL", { timeZone: "America/Santiago" })
@@ -58,7 +62,12 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
         {lead.origen && <span className="tag">{lead.origen}</span>}
       </div>
 
-      <LeadPipeline initialLead={lead} usuarios={usuarios} miEmail={sesion.email} />
+      <LeadPipeline
+        initialLead={lead}
+        usuarios={usuarios}
+        miEmail={sesion.email}
+        puedeAsignar={sesion.role === "superadmin"}
+      />
 
       <LeadEditForm initialLead={lead} />
 

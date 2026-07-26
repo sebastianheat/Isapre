@@ -34,9 +34,11 @@ function proximoRecordatorio(lead: Lead): string | null {
 export default function PipelineBoard({
   initialLeads,
   miEmail: _miEmail,
+  esSuperadmin = true,
 }: {
   initialLeads: Lead[];
   miEmail: string;
+  esSuperadmin?: boolean;
 }) {
   const router = useRouter();
   const [leads, setLeads] = useState<Lead[]>(initialLeads);
@@ -115,12 +117,14 @@ export default function PipelineBoard({
         onChange={(e) => setBusqueda(e.target.value)}
       />
       <div className="admin-filters" style={{ marginBottom: 10 }}>
-        <button
-          className={`pill ${filtroMios ? "active" : ""}`}
-          onClick={() => setFiltroMios((v) => !v)}
-        >
-          {filtroMios ? "Mostrar todos" : "Solo mis leads"}
-        </button>
+        {esSuperadmin && (
+          <button
+            className={`pill ${filtroMios ? "active" : ""}`}
+            onClick={() => setFiltroMios((v) => !v)}
+          >
+            {filtroMios ? "Mostrar todos" : "Solo mis leads"}
+          </button>
+        )}
         <button
           className={`pill ${compacto ? "active" : ""}`}
           onClick={toggleCompacto}
@@ -180,6 +184,7 @@ export default function PipelineBoard({
                   <PipelineCard
                     key={lead.id}
                     lead={lead}
+                    mostrarAsignado={esSuperadmin}
                     onMover={(nueva) => lead.id && moverLead(lead.id, nueva)}
                   />
                 ))}
@@ -200,9 +205,11 @@ export default function PipelineBoard({
 function PipelineCard({
   lead,
   onMover,
+  mostrarAsignado = true,
 }: {
   lead: Lead;
   onMover: (nueva: EtapaLead) => void;
+  mostrarAsignado?: boolean;
 }) {
   const vencido = tieneVencido(lead);
   const proxRec = proximoRecordatorio(lead);
@@ -253,7 +260,7 @@ function PipelineCard({
             🔔 {proxRecFmt}
           </div>
         )}
-        {lead.asignadoA && (
+        {mostrarAsignado && lead.asignadoA && (
           <div className="pipeline-card-asignado">👤 {lead.asignadoA}</div>
         )}
       </Link>

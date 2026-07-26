@@ -36,10 +36,12 @@ export default function LeadPipeline({
   initialLead,
   usuarios,
   miEmail,
+  puedeAsignar = true,
 }: {
   initialLead: Lead;
   usuarios: UsuarioPublico[];
   miEmail: string;
+  puedeAsignar?: boolean;
 }) {
   const router = useRouter();
   const [lead, setLead] = useState<Lead>(initialLead);
@@ -219,24 +221,30 @@ export default function LeadPipeline({
           </label>
           <label style={{ display: "flex", flexDirection: "column", gap: 6 }}>
             <span style={{ color: "var(--admin-text-soft)", fontSize: 13 }}>Asignado a</span>
-            <select
-              value={lead.asignadoA ?? ""}
-              onChange={(e) => cambiarAsignado(e.target.value)}
-              disabled={guardando}
-              style={{
-                width: "100%", padding: "8px 10px", fontSize: 15,
-                border: "1px solid var(--admin-border)", borderRadius: 8,
-                background: "#fff", fontFamily: "inherit",
-              }}
-            >
-              <option value="">Sin asignar</option>
-              {usuarios.map((u) => (
-                <option key={u.email} value={u.email}>
-                  {u.nombre ? `${u.nombre} (${u.email})` : u.email}
-                  {u.email === miEmail ? " · yo" : ""}
-                </option>
-              ))}
-            </select>
+            {puedeAsignar ? (
+              <select
+                value={lead.asignadoA ?? ""}
+                onChange={(e) => cambiarAsignado(e.target.value)}
+                disabled={guardando}
+                style={{
+                  width: "100%", padding: "8px 10px", fontSize: 15,
+                  border: "1px solid var(--admin-border)", borderRadius: 8,
+                  background: "#fff", fontFamily: "inherit",
+                }}
+              >
+                <option value="">Sin asignar</option>
+                {usuarios.map((u) => (
+                  <option key={u.email} value={u.email}>
+                    {u.nombre ? `${u.nombre} (${u.email})` : u.email}
+                    {u.email === miEmail ? " · yo" : ""}
+                  </option>
+                ))}
+              </select>
+            ) : (
+              <span className="tag" style={{ background: "#0D47A122", color: "#0D47A1", alignSelf: "flex-start", fontSize: 13 }}>
+                👤 {lead.asignadoA === miEmail ? "Tú" : lead.asignadoA || "Sin asignar"}
+              </span>
+            )}
           </label>
           <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
             <span style={{ color: "var(--admin-text-soft)", fontSize: 13 }}>

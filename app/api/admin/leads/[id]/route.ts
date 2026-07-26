@@ -6,6 +6,7 @@ import {
   type EtapaLead,
   type CalidadLead,
 } from "@/lib/leads";
+import { puedeVerLead } from "@/lib/acceso";
 
 export const runtime = "nodejs";
 
@@ -14,7 +15,11 @@ export async function GET(_req: Request, ctx: { params: Promise<{ id: string }> 
   if (!sesion) return Response.json({ error: "No autorizado" }, { status: 401 });
   const { id } = await ctx.params;
   const lead = await obtenerLead(decodeURIComponent(id));
-  if (!lead) return Response.json({ error: "Lead no encontrado" }, { status: 404 });
+  // Para un ejecutivo, un lead ajeno "no existe" (404, no 403: no filtramos
+  // información sobre qué IDs existen).
+  if (!lead || !puedeVerLead(sesion, lead)) {
+    return Response.json({ error: "Lead no encontrado" }, { status: 404 });
+  }
   return Response.json({ lead });
 }
 
@@ -42,6 +47,18 @@ export async function PATCH(req: Request, ctx: { params: Promise<{ id: string }>
     body = await req.json();
   } catch {
     return Response.json({ error: "Cuerpo inválido" }, { status: 400 });
+  }
+  // Un ejecutivo solo puede tocar leads que le fueron asignados, y no puede
+  // reasignarlos (ni quitárselos, ni robarse leads de otros).
+  const existente = await obtenerLead(decodeURIComponent(id));
+  if (!existente || !puedeVerLead(sesion, existente)) {
+    return Response.json({ error: "Lead no encontrado" }, { status: 404 });
+  }
+  if (typeof body.asignadoA !== "undefined" && sesion.role !== "superadmin") {
+    return Response.json(
+      { error: "Solo el superadmin puede asignar leads." },
+      { status: 403 },
+    );
   }
   const cambios: Parameters<typeof actualizarLead>[1] = {};
   const etapasValidas: EtapaLead[] = [
