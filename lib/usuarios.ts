@@ -73,21 +73,36 @@ export async function listarUsuarios(): Promise<UsuarioPublico[]> {
 // Devuelve el usuario si las credenciales son válidas. Si es la primera vez
 // que alguien intenta con el email semilla y la password semilla y no hay
 // usuario aún, lo crea como superadmin (seed lazy).
+//
+// Reset de emergencia: con ADMIN_SEED_FORCE=1 (env de Vercel — solo el dueño
+// de la cuenta puede setearla), el login con las credenciales semilla
+// SOBREESCRIBE la clave del superadmin aunque ya exista y ELIMINA todos los
+// demás usuarios del panel. Sirve para recuperar acceso o dejar un solo
+// usuario activo. Quitar el flag después de usarlo.
 export async function autenticar(email: string, password: string): Promise<Usuario | null> {
   const e = normEmail(email);
+  const seedForce = process.env.ADMIN_SEED_FORCE === "1";
   let u = await getUsuario(e);
 
-  if (!u && e === SEED_EMAIL && password === SEED_PASSWORD) {
+  if (e === SEED_EMAIL && password === SEED_PASSWORD && (!u || seedForce)) {
     const passwordHash = await hashPassword(SEED_PASSWORD);
     u = {
       email: e,
       passwordHash,
       role: "superadmin",
-      nombre: "Super Admin",
-      createdAt: new Date().toISOString(),
-      passwordEsSemilla: true,
+      nombre: u?.nombre || "Super Admin",
+      createdAt: u?.createdAt || new Date().toISOString(),
+      // El banner de "cambia tu clave" solo si sigue con la default.
+      passwordEsSemilla: SEED_PASSWORD === "123456",
     };
     await setUsuario(u);
+    if (seedForce) {
+      const otros = (await kvSMembers("users:index")).filter((x) => normEmail(x) !== e);
+      for (const otro of otros) await deleteUsuario(otro);
+      console.log(
+        `[admin] Reset de emergencia: superadmin ${e} restablecido, ${otros.length} usuario(s) eliminados.`,
+      );
+    }
     return u;
   }
 
