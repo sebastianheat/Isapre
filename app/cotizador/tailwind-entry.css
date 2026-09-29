@@ -1,0 +1,7 @@
+/* Entrada de Tailwind solo para las superficies nuevas del marketplace
+   (cotizador, /panel, extensiones de /admin). preflight está desactivado
+   en tailwind.config.ts — esto son solo utilidades atómicas, no un reset
+   global. Ver DESIGN.md. */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
