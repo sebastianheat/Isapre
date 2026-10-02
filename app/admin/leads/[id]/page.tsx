@@ -66,7 +66,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
       <LeadPipeline
         initialLead={lead}
         nombres={nombres}
-        ejecutivos={usuarios}
+        ejecutivos={usuarios.filter((u) => u.recibiendoLeads)}
         miEmail={sesion.email}
         puedeAsignar={sesion.role === "superadmin"}
       />

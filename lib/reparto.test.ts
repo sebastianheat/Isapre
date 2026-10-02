@@ -138,6 +138,29 @@ describe("asignarLead", () => {
   });
 });
 
+describe("interruptor recibiendoLeads (US-007)", () => {
+  it("no asigna ni reasigna a un ejecutivo con el interruptor apagado", async () => {
+    const c = await cargar();
+    await crearEjecutivo(c, INGRID, "Ingrid", 3, false);
+    await crearEjecutivo(c, SEBA, "Seba", 3);
+    const id = await crearLead(c);
+    expect(await c.reparto.asignarLead(id, INGRID, CYNTHIA)).toMatchObject({
+      ok: false, code: "no_recibe_leads",
+    });
+    expect(await c.credits.obtenerSaldo(INGRID)).toBe(3);
+    await c.reparto.asignarLead(id, SEBA, CYNTHIA);
+    expect(await c.reparto.reasignarLead(id, INGRID, CYNTHIA)).toMatchObject({ code: "no_recibe_leads" });
+    expect((await c.leads.obtenerLead(id))?.asignadoA).toBe(SEBA);
+  });
+
+  it("un ejecutivo sin el campo (previo a la Fase 1) sigue recibiendo leads", async () => {
+    const c = await cargar();
+    await crearEjecutivo(c, INGRID, "Ingrid", 1); // sin recibiendoLeads
+    const id = await crearLead(c);
+    expect((await c.reparto.asignarLead(id, INGRID, CYNTHIA)).ok).toBe(true);
+  });
+});
+
 describe("reasignarLead (US-006b)", () => {
   let c: Ctx;
   beforeEach(async () => {

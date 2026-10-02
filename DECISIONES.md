@@ -53,3 +53,17 @@ Mejoras y adaptaciones al plan aplicadas con criterio propio. Cada una indica qu
 17. **CTA "Regalar créditos" del estado vacío** lleva a `/admin/creditos?ejecutivo=…` con el ejecutivo
     preseleccionado. Los saldos listan a todos los usuarios (Cynthia es superadmin y ejecutiva a la vez).
 18. **Rutas de créditos solo para superadmin** (el ejecutivo ve su saldo en `/panel`, Fase posterior).
+
+## Sub-fase 1.3 — Interruptor "Recibir leads"
+
+19. **`recibiendoLeads` ausente = prendido** (`recibeLeads()` en `lib/usuarios.ts`). Los usuarios
+    existentes no tienen el campo; tratarlo como apagado dejaría el selector vacío el primer día.
+20. **El interruptor también se aplica en el servidor**, no solo en el selector: `asignarLead` y
+    `reasignarLead` rechazan (`no_recibe_leads`) a un ejecutivo en pausa aunque la petición llegue
+    por API con un email válido.
+21. **Interruptor en dos lugares:** `/admin/usuarios` (el superadmin lo cambia a cualquiera, estado
+    visible en la lista) y `/admin/perfil` (cada uno el suyo, como pide US-007: "interruptor en el
+    perfil"). `PATCH /api/admin/usuarios/[email]` deja a un ejecutivo tocar solo su propio estado.
+22. **Regresión de "calidad":** la lógica de calidad (`cambiarCalidad` en `LeadPipeline`, validación en
+    el `PATCH` del lead) no se modificó; el diff solo cambia el bloque de asignación y un comentario.
+    Verificado también en el navegador en 1.4.

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import type { UsuarioPublico } from "@/lib/usuarios";
+import RecibirLeadsToggle from "./RecibirLeadsToggle";
 
 export default function UsuariosPanel({
   initialUsuarios,
@@ -119,6 +120,9 @@ export default function UsuariosPanel({
                 Eliminar
               </button>
             )}
+          </div>
+          <div style={{ marginTop: 8 }}>
+            <RecibirLeadsToggle email={u.email} inicial={u.recibiendoLeads} />
           </div>
         </div>
       ))}

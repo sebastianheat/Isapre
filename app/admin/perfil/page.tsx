@@ -3,6 +3,8 @@ import { obtenerSesion } from "@/lib/auth";
 import { getUsuario } from "@/lib/usuarios";
 import AdminShell from "@/components/AdminShell";
 import CambiarPassword from "@/components/CambiarPassword";
+import RecibirLeadsToggle from "@/components/RecibirLeadsToggle";
+import { recibeLeads } from "@/lib/usuarios";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -32,6 +34,18 @@ export default async function PerfilPage() {
           <div style={{ fontWeight: 600 }}>{sesion.role === "superadmin" ? "Superadmin" : "Ejecutivo"}</div>
         </div>
       </div>
+
+      {u && (
+        <>
+          <h2 className="admin-h2">Recepción de leads</h2>
+          <div className="admin-card">
+            <RecibirLeadsToggle email={u.email} inicial={recibeLeads(u)} />
+            <p style={{ fontSize: 12, color: "var(--admin-text-soft)", marginTop: 6 }}>
+              Apágalo si estás de licencia o vacaciones: no aparecerás en el reparto de leads.
+            </p>
+          </div>
+        </>
+      )}
 
       <h2 className="admin-h2">Cambiar contraseña</h2>
       <CambiarPassword />

@@ -15,6 +15,9 @@ export interface Usuario {
   nombre?: string;
   createdAt: string;
   passwordEsSemilla?: boolean;
+  // Interruptor "recibir leads" (US-007). Ausente = prendido: los usuarios
+  // anteriores a la Fase 1 siguen apareciendo en el selector de reparto.
+  recibiendoLeads?: boolean;
 }
 
 export interface UsuarioPublico {
@@ -23,6 +26,7 @@ export interface UsuarioPublico {
   nombre?: string;
   createdAt: string;
   passwordEsSemilla?: boolean;
+  recibiendoLeads: boolean;
 }
 
 const SEED_EMAIL = (process.env.ADMIN_SEED_EMAIL || "info@nuevaisapre.cl").toLowerCase();
@@ -39,7 +43,24 @@ function publicView(u: Usuario): UsuarioPublico {
     nombre: u.nombre,
     createdAt: u.createdAt,
     passwordEsSemilla: u.passwordEsSemilla,
+    recibiendoLeads: recibeLeads(u),
   };
+}
+
+export function recibeLeads(u: Pick<Usuario, "recibiendoLeads">): boolean {
+  return u.recibiendoLeads !== false;
+}
+
+// Prende/apaga el interruptor "recibir leads". Devuelve null si no existe el usuario.
+export async function setRecibiendoLeads(
+  email: string,
+  recibiendoLeads: boolean,
+): Promise<UsuarioPublico | null> {
+  const u = await getUsuario(email);
+  if (!u) return null;
+  const actualizado: Usuario = { ...u, recibiendoLeads };
+  await setUsuario(actualizado);
+  return publicView(actualizado);
 }
 
 export async function getUsuario(email: string): Promise<Usuario | null> {

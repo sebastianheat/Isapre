@@ -8,7 +8,7 @@
 
 import { kvDel, kvMarcarUnaVez } from "./store";
 import { actualizarLead, estadoAsignacion, obtenerLead, type Lead } from "./leads";
-import { getUsuario } from "./usuarios";
+import { getUsuario, recibeLeads } from "./usuarios";
 import { descontarCredito, devolverCredito, registrarMovimiento } from "./credits-kv";
 
 const LOCK_TTL_SECONDS = 15;
@@ -20,6 +20,7 @@ export type CodigoRechazo =
   | "no_asignado"
   | "en_proceso"
   | "ejecutivo_invalido"
+  | "no_recibe_leads"
   | "mismo_ejecutivo"
   | "sin_saldo";
 
@@ -45,6 +46,10 @@ async function yaAsignado(lead: Lead): Promise<ResultadoReparto> {
   const email = lead.asignadoA ?? "";
   const nombre = email ? await nombreDe(email) : "otro ejecutivo";
   return rechazo("ya_asignado", `Este lead ya fue asignado a ${nombre}`, email || undefined);
+}
+
+function sinInterruptor(nombre: string): ResultadoReparto {
+  return rechazo("no_recibe_leads", `${nombre} tiene pausada la recepción de leads`);
 }
 
 // Cobra la asignación al ejecutivo. Si no tiene saldo y se permitió, asigna
@@ -133,6 +138,7 @@ export async function asignarLead(
 
       const ejecutivo = await getUsuario(ejecutivoEmail);
       if (!ejecutivo) return rechazo("ejecutivo_invalido", "El ejecutivo elegido no existe");
+      if (!recibeLeads(ejecutivo)) return sinInterruptor(ejecutivo.nombre || ejecutivo.email);
 
       const cobro = await cobrar(ejecutivo.email, leadId, actor, "Asignación de lead", opts.permitirSinSaldo);
       if (!cobro.ok) {
@@ -162,6 +168,7 @@ export async function reasignarLead(
 
     const nuevo = await getUsuario(nuevoEmail);
     if (!nuevo) return rechazo("ejecutivo_invalido", "El ejecutivo elegido no existe");
+    if (!recibeLeads(nuevo)) return sinInterruptor(nuevo.nombre || nuevo.email);
     if (nuevo.email.toLowerCase() === original.toLowerCase()) {
       return rechazo("mismo_ejecutivo", "El lead ya está asignado a ese ejecutivo", original);
     }
@@ -187,6 +194,7 @@ export function statusDeRechazo(code: CodigoRechazo): number {
   switch (code) {
     case "lead_no_encontrado": return 404;
     case "ejecutivo_invalido":
+    case "no_recibe_leads":
     case "mismo_ejecutivo": return 400;
     case "sin_saldo": return 422;
     default: return 409; // ya_asignado, no_asignado, en_proceso

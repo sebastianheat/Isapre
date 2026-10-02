@@ -16,8 +16,9 @@ export default async function RepartoPage() {
 
   const [leads, usuarios] = await Promise.all([listarLeadsSinAsignar(), listarUsuarios()]);
 
+  // Solo quienes tienen prendido "recibir leads" (US-007).
   const ejecutivos: EjecutivoOpcion[] = await Promise.all(
-    usuarios.map(async (u) => ({
+    usuarios.filter((u) => u.recibiendoLeads).map(async (u) => ({
       email: u.email,
       nombre: u.nombre || u.email,
       saldo: await obtenerSaldo(u.email),
