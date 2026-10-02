@@ -67,3 +67,10 @@ Mejoras y adaptaciones al plan aplicadas con criterio propio. Cada una indica qu
 22. **Regresión de "calidad":** la lógica de calidad (`cambiarCalidad` en `LeadPipeline`, validación en
     el `PATCH` del lead) no se modificó; el diff solo cambia el bloque de asignación y un comentario.
     Verificado también en el navegador en 1.4.
+
+## Sub-fase 1.4 — Validación
+
+23. **Comparación del CSV automatizada como test permanente** (`lib/offline.test.ts`): el CSV esperado se
+    capturó sobre el código previo a la Fase 1 y el test lo exige byte a byte (con y sin campos de
+    asignación en los leads). Cubre US-047 también para las próximas fases. `DUMP_CSV=ruta` escribe el CSV
+    para compararlo con `cmp`.
