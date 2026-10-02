@@ -9,6 +9,7 @@ const remoto = !!(URL_ && TOKEN);
 const memStrings = new Map<string, string>();
 const memSets = new Map<string, Set<string>>();
 const memZSets = new Map<string, Map<string, number>>();
+const memLists = new Map<string, string[]>();
 
 async function cmd(args: string[]): Promise<unknown> {
   const res = await fetch(URL_, {
@@ -48,6 +49,7 @@ export async function kvDel(key: string): Promise<void> {
     memStrings.delete(key);
     memSets.delete(key);
     memZSets.delete(key);
+    memLists.delete(key);
     return;
   }
   try {
@@ -57,11 +59,56 @@ export async function kvDel(key: string): Promise<void> {
   }
 }
 
-// Marca una clave una sola vez (para deduplicar webhooks). Devuelve true si es nueva.
+// Marca una clave una sola vez (dedupe de webhooks, lock de asignación).
+// Devuelve true si es nueva. En Upstash usa SET NX EX: una sola operación
+// atómica en el servidor (GET + SET separados dejaban una ventana en la que
+// dos requests simultáneos veían la clave libre).
 export async function kvMarcarUnaVez(key: string, ttlSeconds = 3600): Promise<boolean> {
-  if (await kvGet(key)) return false;
-  await kvSet(key, "1", ttlSeconds);
+  if (remoto) {
+    try {
+      return (await cmd(["SET", key, "1", "EX", String(ttlSeconds), "NX"])) === "OK";
+    } catch {
+      // cae al camino en memoria, igual que el resto de este módulo
+    }
+  }
+  if (memStrings.has(key)) return false;
+  memStrings.set(key, "1");
   return true;
+}
+
+// ===== Contadores y listas (créditos de la Fase 1) =====
+// A diferencia del resto del módulo, estos NO caen a memoria si Upstash falla
+// estando configurado: un saldo en memoria por instancia divergiría del real
+// en silencio. Mejor que la operación falle visiblemente.
+
+// Suma `delta` (puede ser negativo) al entero en `key` y devuelve el valor nuevo.
+export async function kvIncrBy(key: string, delta: number): Promise<number> {
+  if (!remoto) {
+    const nuevo = Number(memStrings.get(key) ?? 0) + delta;
+    memStrings.set(key, String(nuevo));
+    return nuevo;
+  }
+  return Number(await cmd(["INCRBY", key, String(delta)]));
+}
+
+// Agrega al inicio de la lista (el más reciente queda primero).
+export async function kvLPush(key: string, value: string): Promise<void> {
+  if (!remoto) {
+    const l = memLists.get(key) ?? [];
+    l.unshift(value);
+    memLists.set(key, l);
+    return;
+  }
+  await cmd(["LPUSH", key, value]);
+}
+
+export async function kvLRange(key: string, start = 0, stop = -1): Promise<string[]> {
+  if (!remoto) {
+    const l = memLists.get(key) ?? [];
+    return l.slice(start, stop === -1 ? undefined : stop + 1);
+  }
+  const r = await cmd(["LRANGE", key, String(start), String(stop)]);
+  return Array.isArray(r) ? (r as string[]) : [];
 }
 
 // ===== Sets =====

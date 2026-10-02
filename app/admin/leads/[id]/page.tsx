@@ -44,9 +44,10 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
   // no existe (ni por URL directa).
   if (!lead || !puedeVerLead(sesion, lead)) notFound();
 
-  // Usuarios para el dropdown de "asignado a" (solo lo usa el superadmin).
+  // Usuarios para el bloque "asignado a" / "Reasignar" (solo el superadmin).
   const usuarios =
     sesion.role === "superadmin" ? await listarUsuarios().catch(() => []) : [];
+  const nombres = Object.fromEntries(usuarios.map((u) => [u.email, u.nombre || u.email]));
 
   const fechaLegible = lead.fecha
     ? new Date(lead.fecha).toLocaleString("es-CL", { timeZone: "America/Santiago" })
@@ -64,7 +65,8 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
 
       <LeadPipeline
         initialLead={lead}
-        usuarios={usuarios}
+        nombres={nombres}
+        ejecutivos={usuarios}
         miEmail={sesion.email}
         puedeAsignar={sesion.role === "superadmin"}
       />

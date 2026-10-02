@@ -23,7 +23,9 @@ export async function GET(_req: Request, ctx: { params: Promise<{ id: string }> 
   return Response.json({ lead });
 }
 
-// Actualiza etapa y/o asignadoA de un lead (movimiento de pipeline).
+// Actualiza etapa, calidad y datos del cliente de un lead. La asignación NO
+// se cambia aquí: va por /api/admin/reparto/asignar y .../reasignar, que
+// mueven los créditos y toman el lock contra doble asignación.
 export async function PATCH(req: Request, ctx: { params: Promise<{ id: string }> }) {
   const sesion = await obtenerSesion();
   if (!sesion) return Response.json({ error: "No autorizado" }, { status: 401 });
@@ -54,10 +56,10 @@ export async function PATCH(req: Request, ctx: { params: Promise<{ id: string }>
   if (!existente || !puedeVerLead(sesion, existente)) {
     return Response.json({ error: "Lead no encontrado" }, { status: 404 });
   }
-  if (typeof body.asignadoA !== "undefined" && sesion.role !== "superadmin") {
+  if (typeof body.asignadoA !== "undefined") {
     return Response.json(
-      { error: "Solo el superadmin puede asignar leads." },
-      { status: 403 },
+      { error: "La asignación se cambia desde Reparto (asignar/reasignar)." },
+      { status: sesion.role === "superadmin" ? 400 : 403 },
     );
   }
   const cambios: Parameters<typeof actualizarLead>[1] = {};
@@ -66,9 +68,6 @@ export async function PATCH(req: Request, ctx: { params: Promise<{ id: string }>
   ];
   if (body.etapa && etapasValidas.includes(body.etapa as EtapaLead)) {
     cambios.etapa = body.etapa as EtapaLead;
-  }
-  if (typeof body.asignadoA !== "undefined") {
-    cambios.asignadoA = body.asignadoA?.toString().trim() || undefined;
   }
   const calidadesValidas: CalidadLead[] = ["calificado", "marginal", "no_calificado"];
   if (body.calidad && calidadesValidas.includes(body.calidad as CalidadLead)) {

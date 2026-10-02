@@ -13,6 +13,10 @@ import type { EtapaLead, CalidadLead, NotaLead, RecordatorioLead } from "./pipel
 export type { EtapaLead, CalidadLead, NotaLead, RecordatorioLead } from "./pipeline";
 export { ETAPAS, CALIDADES } from "./pipeline";
 
+// Estado del reparto del lead (marketplace, Fase 1). Los leads anteriores a
+// la Fase 1 no tienen el campo: se derivan con estadoAsignacion().
+export type EstadoAsignacion = "sin_asignar" | "asignado";
+
 export interface Lead {
   id?: string; // se setea al guardar; clave única tipo "lead:..."
   nombre: string;
@@ -43,6 +47,10 @@ export interface Lead {
   // Pipeline / CRM manual.
   etapa?: EtapaLead;
   asignadoA?: string; // email del ejecutivo asignado
+  assignmentStatus?: EstadoAsignacion;
+  // true si la asignación vigente descontó 1 crédito (false cuando se asignó
+  // "como regalo" a un ejecutivo sin saldo). Decide si reasignar devuelve crédito.
+  asignacionCobrada?: boolean;
   notas?: NotaLead[];
   recordatorios?: RecordatorioLead[];
   // Calificación manual para el export de conversiones offline a Google Ads.
@@ -147,6 +155,7 @@ async function crearLead(lead: Lead, opciones?: GuardarLeadOpciones): Promise<Gu
     actualizado: fecha,
     canal,
     contactos: 1,
+    assignmentStatus: lead.asignadoA ? "asignado" : "sin_asignar",
   };
   await kvSet(id, JSON.stringify(registro), LEAD_TTL_SECONDS);
   await kvZAdd(INDEX_KEY, Date.parse(fecha), id);
@@ -260,6 +269,29 @@ export async function listarLeads(limit = 200): Promise<Lead[]> {
   return leads.slice(0, limit);
 }
 
+// ===== Reparto (marketplace Fase 1) =====
+// La asignación y reasignación con créditos viven en lib/reparto.ts.
+
+// Un lead con asignadoA es "asignado" aunque no tenga el campo nuevo (leads
+// previos a la Fase 1, asignados a mano por email).
+export function estadoAsignacion(lead: Lead): EstadoAsignacion {
+  return lead.assignmentStatus ?? (lead.asignadoA ? "asignado" : "sin_asignar");
+}
+
+// Cola de reparto: leads sin asignar, el más antiguo primero. Se deriva de
+// listarLeads() en vez de mantener un índice aparte: así no hay backfill de
+// leads viejos ni riesgo de que el índice diverja del lead. Los leads ya
+// cerrados (ganado/perdido) no entran: no hay nada que repartir.
+export async function listarLeadsSinAsignar(limit = 500): Promise<Lead[]> {
+  const leads = await listarLeads(limit);
+  return leads
+    .filter(
+      (l) =>
+        estadoAsignacion(l) === "sin_asignar" && l.etapa !== "ganado" && l.etapa !== "perdido",
+    )
+    .sort((a, b) => (a.fecha ?? "").localeCompare(b.fecha ?? ""));
+}
+
 // Empuja el lead a HEAT/GoHighLevel: upsert de contacto + opportunity en el
 // pipeline configurado. Requiere HEAT_API_KEY y HEAT_LOCATION_ID; si están
 // HEAT_PIPELINE_ID + HEAT_STAGE_ID además crea la oportunidad en el pipeline.
@@ -364,7 +396,7 @@ export async function actualizarLead(
   cambios: Partial<
     Pick<
       Lead,
-      | "etapa" | "asignadoA" | "nombre" | "isapre" | "plan" | "calidad" | "exportadoOffline"
+      | "etapa" | "asignadoA" | "assignmentStatus" | "asignacionCobrada" | "nombre" | "isapre" | "plan" | "calidad" | "exportadoOffline"
       | "telefono" | "email" | "rut" | "region" | "edad" | "sueldoLiquido"
       | "previsionActual" | "clinicaPreferida" | "cargasResumen"
     >
