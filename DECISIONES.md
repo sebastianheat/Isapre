@@ -41,3 +41,15 @@ Mejoras y adaptaciones al plan aplicadas con criterio propio. Cada una indica qu
 12. **Nav inferior con 7 ítems para superadmin** (Reparto y Créditos): se compacta el padding en
     pantallas ≤480px para que quepan.
 13. **Tests nunca tocan Upstash real:** cada archivo de test borra las env de KV antes de importar el store.
+
+## Sub-fase 1.2 — Créditos mínimos
+
+14. **Validación del regalo en dos capas:** el formulario valida motivo/cantidad en el cliente (mensajes
+    de la spec) y la API + `regalarCreditos()` lo vuelven a validar. El motivo solo-espacios cuenta como vacío.
+15. **El saldo del historial se recalcula sumando los movimientos** (US-010: "recalculable desde el
+    historial"). Si el contador guardado diverge, la pantalla lo avisa en vez de ocultarlo.
+16. **Cada movimiento de asignación enlaza a su lead** (`ver lead`) y el historial muestra el nombre de
+    quien lo hizo, para poder auditar el día en menos de un minuto.
+17. **CTA "Regalar créditos" del estado vacío** lleva a `/admin/creditos?ejecutivo=…` con el ejecutivo
+    preseleccionado. Los saldos listan a todos los usuarios (Cynthia es superadmin y ejecutiva a la vez).
+18. **Rutas de créditos solo para superadmin** (el ejecutivo ve su saldo en `/panel`, Fase posterior).
