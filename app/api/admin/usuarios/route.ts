@@ -1,5 +1,7 @@
 import { obtenerSesion } from "@/lib/auth";
 import { listarUsuarios, crearUsuario } from "@/lib/usuarios";
+import { regalarCreditos } from "@/lib/credits-kv";
+import { CUPO_INICIAL } from "@/lib/importar-usuarios";
 
 export const runtime = "nodejs";
 
@@ -33,6 +35,12 @@ export async function POST(req: Request) {
   }
   try {
     const u = await crearUsuario({ email, password, role, nombre: body.nombre });
+    // Mismo cupo que la importación en lote: sin créditos no entra a la rueda.
+    if (role === "ejecutivo") {
+      await regalarCreditos({
+        email: u.email, cantidad: CUPO_INICIAL, motivo: `Cupo inicial de ${CUPO_INICIAL} leads`, por: sesion.email,
+      });
+    }
     return Response.json({ usuario: u });
   } catch (e) {
     const msg = e instanceof Error ? e.message : "Error al crear el usuario.";

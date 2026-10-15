@@ -44,6 +44,7 @@ export default function UsuariosPanel({
       if (!res.ok) setError(data.error || "No se pudo crear.");
       else {
         setUsuarios((prev) => [data.usuario, ...prev]);
+        if (data.usuario.role === "ejecutivo") setSaldos((prev) => ({ ...prev, [data.usuario.email]: CUPO_REACTIVACION }));
         setOk(`Usuario ${data.usuario.email} creado.`);
         setEmail(""); setPassword(""); setNombre(""); setRole("ejecutivo");
         setOpen(false);

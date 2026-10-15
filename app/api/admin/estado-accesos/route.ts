@@ -4,6 +4,7 @@
 
 import { timingSafeEqual } from "node:crypto";
 import { getUsuario, listarUsuarios } from "@/lib/usuarios";
+import { obtenerSaldo } from "@/lib/credits-kv";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -27,6 +28,7 @@ export async function GET(req: Request) {
         claveCambiada: !u?.passwordEsSemilla,
         passwordCambiadaEn: u?.passwordCambiadaEn ?? null,
         ultimoIngreso: u?.ultimoIngreso ?? null,
+        cupo: await obtenerSaldo(p.email),
       };
     }),
   );
