@@ -10,6 +10,14 @@ vi.hoisted(() => {
   delete process.env.HEAT_API_KEY;
 });
 
+const avisos = vi.hoisted(() => [] as { para: string; lead: string }[]);
+vi.mock("./email", () => ({
+  enviarLeadPorEmail: async () => {},
+  enviarLeadAsignado: async (lead: { nombre: string }, ejecutivo: { email: string }) => {
+    avisos.push({ para: ejecutivo.email, lead: lead.nombre });
+  },
+}));
+
 async function cargar() {
   vi.resetModules();
   const [leads, usuarios, credits, auto, importar] = await Promise.all([
@@ -44,6 +52,7 @@ describe("reparto automático round robin", () => {
   let c: Ctx;
   beforeEach(async () => {
     c = await cargar();
+    avisos.length = 0;
   });
 
   it("apagado por defecto: el lead nuevo queda sin asignar", async () => {
@@ -102,5 +111,22 @@ describe("reparto automático round robin", () => {
     expect(segundo.lead.asignadoA).toBe(primero.lead.asignadoA);
     expect(await c.credits.obtenerSaldo("a@x.cl")).toBe(4);
     expect(await c.credits.obtenerSaldo("b@x.cl")).toBe(5);
+  });
+
+  it("avisa por correo a cada ejecutivo el lead que le tocó", async () => {
+    await importar(c, 5, "a@x.cl", "b@x.cl");
+    await c.auto.setRepartoAutomatico(true);
+    const l1 = await nuevoLead(c);
+    const l2 = await nuevoLead(c);
+    expect(avisos).toEqual([
+      { para: "a@x.cl", lead: l1.nombre },
+      { para: "b@x.cl", lead: l2.nombre },
+    ]);
+  });
+
+  it("sin cupo no asigna ni manda correo", async () => {
+    await c.auto.setRepartoAutomatico(true);
+    await nuevoLead(c);
+    expect(avisos).toHaveLength(0);
   });
 });

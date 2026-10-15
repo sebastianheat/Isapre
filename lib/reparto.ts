@@ -10,6 +10,7 @@ import { kvDel, kvMarcarUnaVez } from "./store";
 import { actualizarLead, estadoAsignacion, obtenerLead, type Lead } from "./leads";
 import { getUsuario, recibeLeads } from "./usuarios";
 import { descontarCredito, devolverCredito, registrarMovimiento } from "./credits-kv";
+import { enviarLeadAsignado } from "./email";
 
 const LOCK_TTL_SECONDS = 15;
 const keyLock = (leadId: string) => `lock:asignacion:${leadId}`;
@@ -35,6 +36,15 @@ export interface OpcionesReparto {
 
 function rechazo(code: CodigoRechazo, mensaje: string, asignadoA?: string): ResultadoReparto {
   return { ok: false, code, mensaje, asignadoA };
+}
+
+// El correo es un aviso: si falla, la asignación ya quedó hecha y no se revierte.
+async function avisarEjecutivo(lead: Lead, ejecutivo: { email: string; nombre?: string }): Promise<void> {
+  try {
+    await enviarLeadAsignado(lead, ejecutivo);
+  } catch (e) {
+    console.error("Email de lead asignado falló:", ejecutivo.email, lead.id, e);
+  }
 }
 
 async function nombreDe(email: string): Promise<string> {
@@ -145,6 +155,7 @@ export async function asignarLead(
         return rechazo("sin_saldo", "Este ejecutivo no tiene créditos. ¿Asignar igual como regalo?");
       }
       const guardado = await guardarAsignacion(leadId, ejecutivo.email, cobro.cobrado, actor);
+      await avisarEjecutivo(guardado, ejecutivo);
       return { ok: true, lead: guardado, cobrado: cobro.cobrado, saldo: cobro.saldo };
     },
   );
@@ -185,6 +196,7 @@ export async function reasignarLead(
     if (lead.asignacionCobrada) {
       await devolverCredito(original, { motivo: "corrección de asignación", por: actor, leadId });
     }
+    await avisarEjecutivo(guardado, nuevo);
     return { ok: true, lead: guardado, cobrado: cobro.cobrado, saldo: cobro.saldo };
   });
 }

@@ -263,3 +263,72 @@ export async function enviarRecuperacionClave(
   });
   if (error) throw new Error(`Resend: ${error.message ?? JSON.stringify(error)}`);
 }
+
+// Avisa al ejecutivo que se le asignó un lead (reparto automático, manual o
+// corrección), con los datos para contactarlo. Sin RESEND_API_KEY no envía.
+export async function enviarLeadAsignado(
+  lead: Lead,
+  ejecutivo: { email: string; nombre?: string },
+): Promise<void> {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) return;
+  const resend = new Resend(apiKey);
+  const site = process.env.NEXT_PUBLIC_SITE_URL || "https://nuevaisapre.cl";
+  const linkLead = `${site}/admin/leads/${encodeURIComponent(lead.id ?? "")}`;
+  const wa = lead.telefono ? `https://wa.me/${lead.telefono.replace(/[^0-9]/g, "")}` : null;
+
+  const html = `
+  <div style="font-family: -apple-system, system-ui, sans-serif; color: #0F172A; max-width: 560px;">
+    <h2 style="color: #0D47A1; margin: 0 0 12px;">Tienes un lead nuevo: ${esc(lead.nombre)}</h2>
+    <p style="color: #475569; margin: 0 0 18px;">
+      Hola${ejecutivo.nombre ? ` ${esc(ejecutivo.nombre)}` : ""}, se te asignó este cliente. Contáctalo lo antes posible.
+    </p>
+    <table style="border-collapse: collapse; width: 100%; font-size: 14px;">
+      <tbody>
+        ${row("Nombre", esc(lead.nombre))}
+        ${row("RUT", esc(lead.rut))}
+        ${row("WhatsApp", wa ? `<a href="${wa}" style="color:#0D47A1;">${esc(lead.telefono)}</a>` : esc(lead.telefono))}
+        ${row("Email", esc(lead.email))}
+        ${row("Región", esc(lead.region))}
+        ${row("Edad", esc(lead.edad))}
+        ${row("Sueldo líquido", `$${clp(lead.sueldoLiquido)} CLP`)}
+        ${row("Previsión actual", esc(lead.previsionActual))}
+        ${row("Cargas", esc(lead.cargasResumen))}
+        ${row("Clínicas preferidas", esc(lead.clinicaPreferida))}
+        ${row("Isapre de interés", esc(lead.isapre))}
+      </tbody>
+    </table>
+    <p style="margin-top: 20px;">
+      <a href="${linkLead}" style="display:inline-block; padding:10px 18px; background:#0D47A1; color:#fff; text-decoration:none; border-radius:8px; font-weight:600;">
+        Abrir lead en el panel
+      </a>
+    </p>
+  </div>`;
+
+  const text = [
+    `Tienes un lead nuevo: ${lead.nombre}`,
+    ``,
+    `Nombre: ${lead.nombre}`,
+    `RUT: ${lead.rut || "—"}`,
+    `WhatsApp: ${lead.telefono || "—"}`,
+    `Email: ${lead.email || "—"}`,
+    `Región: ${lead.region ?? "—"}`,
+    `Edad: ${lead.edad ?? "—"}`,
+    `Sueldo líquido: $${clp(lead.sueldoLiquido)} CLP`,
+    `Previsión actual: ${lead.previsionActual ?? "—"}`,
+    `Cargas: ${lead.cargasResumen || "—"}`,
+    `Clínicas preferidas: ${lead.clinicaPreferida || "—"}`,
+    ``,
+    `Abrir lead: ${linkLead}`,
+  ].join("\n");
+
+  const { error } = await resend.emails.send({
+    from: REMITENTE,
+    to: [ejecutivo.email],
+    replyTo: DESTINO,
+    subject: `Nuevo lead asignado: ${lead.nombre}${lead.region ? ` · ${lead.region}` : ""}`,
+    html,
+    text,
+  });
+  if (error) throw new Error(`Resend lead asignado: ${error.message ?? JSON.stringify(error)}`);
+}
