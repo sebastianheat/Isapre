@@ -18,6 +18,8 @@ export interface Usuario {
   // Interruptor "recibir leads" (US-007). Ausente = prendido: los usuarios
   // anteriores a la Fase 1 siguen apareciendo en el selector de reparto.
   recibiendoLeads?: boolean;
+  rut?: string;
+  telefono?: string;
 }
 
 export interface UsuarioPublico {
@@ -27,6 +29,8 @@ export interface UsuarioPublico {
   createdAt: string;
   passwordEsSemilla?: boolean;
   recibiendoLeads: boolean;
+  rut?: string;
+  telefono?: string;
 }
 
 const SEED_EMAIL = (process.env.ADMIN_SEED_EMAIL || "info@nuevaisapre.cl").toLowerCase();
@@ -44,6 +48,8 @@ function publicView(u: Usuario): UsuarioPublico {
     createdAt: u.createdAt,
     passwordEsSemilla: u.passwordEsSemilla,
     recibiendoLeads: recibeLeads(u),
+    rut: u.rut,
+    telefono: u.telefono,
   };
 }
 
@@ -132,11 +138,19 @@ export async function autenticar(email: string, password: string): Promise<Usuar
   return ok ? u : null;
 }
 
+// Clave con la que nacen los usuarios importados en lote. Es temporal: el
+// panel obliga a cambiarla en el primer ingreso (passwordEsSemilla).
+export const CLAVE_TEMPORAL = "123456";
+
+// Toda clave puesta por el superadmin es temporal: el ejecutivo debe
+// cambiarla al entrar por primera vez.
 export async function crearUsuario(input: {
   email: string;
   password: string;
   role: "superadmin" | "ejecutivo";
   nombre?: string;
+  rut?: string;
+  telefono?: string;
 }): Promise<UsuarioPublico> {
   const e = normEmail(input.email);
   if (await getUsuario(e)) throw new Error("Ya existe un usuario con ese email.");
@@ -149,9 +163,27 @@ export async function crearUsuario(input: {
     role: input.role,
     nombre: input.nombre?.trim() || undefined,
     createdAt: new Date().toISOString(),
+    passwordEsSemilla: true,
+    rut: input.rut?.trim() || undefined,
+    telefono: input.telefono?.trim() || undefined,
   };
   await setUsuario(u);
   return publicView(u);
+}
+
+// Pone una clave nueva sin pedir la actual (link de recuperación por correo).
+export async function restablecerPassword(email: string, passwordNueva: string): Promise<void> {
+  const u = await getUsuario(email);
+  if (!u) throw new Error("Usuario no existe.");
+  if (!passwordNueva || passwordNueva.length < 6) {
+    throw new Error("La contraseña nueva debe tener al menos 6 caracteres.");
+  }
+  if (passwordNueva === CLAVE_TEMPORAL) {
+    throw new Error("Elige una contraseña distinta a la temporal.");
+  }
+  u.passwordHash = await hashPassword(passwordNueva);
+  u.passwordEsSemilla = false;
+  await setUsuario(u);
 }
 
 export async function cambiarPassword(

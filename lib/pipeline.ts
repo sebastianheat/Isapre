@@ -53,3 +53,16 @@ export interface RecordatorioLead {
   creadoPor: string; // email del ejecutivo
   creadoEn: string; // ISO
 }
+
+// Estado de reparto de un lead (marketplace Fase 1). Vive aquí, y no en
+// lib/leads, para que los componentes client lo usen sin arrastrar backend.
+export type EstadoAsignacion = "sin_asignar" | "asignado";
+
+// Un lead con asignadoA es "asignado" aunque no tenga el campo nuevo (leads
+// previos a la Fase 1, asignados a mano por email).
+export function estadoAsignacion(lead: {
+  assignmentStatus?: EstadoAsignacion;
+  asignadoA?: string;
+}): EstadoAsignacion {
+  return lead.assignmentStatus ?? (lead.asignadoA ? "asignado" : "sin_asignar");
+}

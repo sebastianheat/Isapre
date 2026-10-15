@@ -11,11 +11,11 @@ export type CanalLead = "google-ads" | "meta-ads" | "web-organico" | "whatsapp";
 // de este módulo hacia el resto del backend.
 import type { EtapaLead, CalidadLead, NotaLead, RecordatorioLead } from "./pipeline";
 export type { EtapaLead, CalidadLead, NotaLead, RecordatorioLead } from "./pipeline";
-export { ETAPAS, CALIDADES } from "./pipeline";
-
+export { ETAPAS, CALIDADES, estadoAsignacion } from "./pipeline";
 // Estado del reparto del lead (marketplace, Fase 1). Los leads anteriores a
 // la Fase 1 no tienen el campo: se derivan con estadoAsignacion().
-export type EstadoAsignacion = "sin_asignar" | "asignado";
+export type { EstadoAsignacion } from "./pipeline";
+import { estadoAsignacion, type EstadoAsignacion } from "./pipeline";
 
 export interface Lead {
   id?: string; // se setea al guardar; clave única tipo "lead:..."
@@ -139,9 +139,24 @@ export async function guardarLead(
   if (existente) {
     // Update: mergea datos nuevos sin pisar datos antiguos válidos.
     return await mergearLead(existente, lead);
-  } else {
-    return await crearLead(lead, opciones);
   }
+  const creado = await crearLead(lead, opciones);
+  return await repartirSiCorresponde(creado);
+}
+
+// Reparto automático (round robin) para leads nuevos sin dueño. Import
+// dinámico: lib/reparto depende de este módulo. Si falla, el lead queda en la
+// cola de reparto manual; nunca bloquea la captura del lead.
+async function repartirSiCorresponde(r: GuardarLeadResultado): Promise<GuardarLeadResultado> {
+  if (!r.lead.id || estadoAsignacion(r.lead) === "asignado") return r;
+  try {
+    const { asignarAutomatico } = await import("./reparto-auto");
+    const asignado = await asignarAutomatico(r.lead.id);
+    if (asignado?.ok) return { ...r, lead: asignado.lead };
+  } catch (e) {
+    console.error("Reparto automático falló:", e);
+  }
+  return r;
 }
 
 async function crearLead(lead: Lead, opciones?: GuardarLeadOpciones): Promise<GuardarLeadResultado> {
@@ -272,11 +287,6 @@ export async function listarLeads(limit = 200): Promise<Lead[]> {
 // ===== Reparto (marketplace Fase 1) =====
 // La asignación y reasignación con créditos viven en lib/reparto.ts.
 
-// Un lead con asignadoA es "asignado" aunque no tenga el campo nuevo (leads
-// previos a la Fase 1, asignados a mano por email).
-export function estadoAsignacion(lead: Lead): EstadoAsignacion {
-  return lead.assignmentStatus ?? (lead.asignadoA ? "asignado" : "sin_asignar");
-}
 
 // Cola de reparto: leads sin asignar, el más antiguo primero. Se deriva de
 // listarLeads() en vez de mantener un índice aparte: así no hay backfill de

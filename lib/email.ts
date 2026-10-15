@@ -213,3 +213,53 @@ export async function enviarCsvOfflinePorEmail(
   });
   if (error) throw new Error(`Resend CSV: ${error.message ?? JSON.stringify(error)}`);
 }
+
+// Link para crear una contraseña nueva (recuperación desde el login del panel).
+// A diferencia de los otros envíos, aquí sí fallamos si Resend no está
+// configurado: el usuario se queda esperando un correo que nunca llegaría.
+export async function enviarRecuperacionClave(
+  destino: string,
+  nombre: string | undefined,
+  link: string,
+): Promise<void> {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) throw new Error("RESEND_API_KEY no configurado");
+  const resend = new Resend(apiKey);
+  const remitente = process.env.AUTH_EMAIL_FROM || "Nueva Isapre <no-reply@nuevaisapre.cl>";
+
+  const html = `
+  <div style="font-family: -apple-system, system-ui, sans-serif; color: #0F172A; max-width: 520px;">
+    <h2 style="color: #0D47A1; margin: 0 0 12px;">Recupera tu contraseña</h2>
+    <p style="color: #475569; margin: 0 0 18px;">
+      Hola${nombre ? ` ${esc(nombre)}` : ""}, recibimos una solicitud para cambiar la contraseña
+      de tu cuenta en el panel de Nueva Isapre.
+    </p>
+    <p style="margin: 0 0 18px;">
+      <a href="${link}" style="display:inline-block; padding:10px 18px; background:#0D47A1; color:#fff; text-decoration:none; border-radius:8px; font-weight:600;">
+        Crear contraseña nueva
+      </a>
+    </p>
+    <p style="color: #475569; font-size: 13px;">
+      El link vence en 1 hora y sirve una sola vez. Si no fuiste tú, ignora este correo:
+      tu contraseña actual sigue funcionando.
+    </p>
+  </div>`;
+
+  const text = [
+    `Recupera tu contraseña de Nueva Isapre`,
+    ``,
+    `Abre este link para crear una contraseña nueva (vence en 1 hora):`,
+    link,
+    ``,
+    `Si no fuiste tú, ignora este correo.`,
+  ].join("\n");
+
+  const { error } = await resend.emails.send({
+    from: remitente,
+    to: [destino],
+    subject: "Recupera tu contraseña · Nueva Isapre",
+    html,
+    text,
+  });
+  if (error) throw new Error(`Resend: ${error.message ?? JSON.stringify(error)}`);
+}

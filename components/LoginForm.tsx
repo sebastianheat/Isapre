@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 export default function LoginForm() {
@@ -65,6 +66,11 @@ export default function LoginForm() {
       <button type="submit" className="admin-btn" disabled={loading}>
         {loading ? "Ingresando…" : "Entrar"}
       </button>
+      <p style={{ textAlign: "center", marginTop: 14, fontSize: 13 }}>
+        <Link href="/admin/recuperar" style={{ color: "var(--admin-text-soft)" }}>
+          ¿Olvidaste tu contraseña?
+        </Link>
+      </p>
     </form>
   );
 }

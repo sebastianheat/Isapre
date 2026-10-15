@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { obtenerSesion } from "@/lib/auth";
 import { listarUsuarios } from "@/lib/usuarios";
+import { obtenerSaldo } from "@/lib/credits-kv";
 import AdminShell from "@/components/AdminShell";
 import UsuariosPanel from "@/components/UsuariosPanel";
 
@@ -13,10 +14,13 @@ export default async function UsuariosPage() {
   if (sesion.role !== "superadmin") redirect("/admin/leads");
 
   const usuarios = await listarUsuarios();
+  const saldos = Object.fromEntries(
+    await Promise.all(usuarios.map(async (u) => [u.email, await obtenerSaldo(u.email)] as const)),
+  );
 
   return (
     <AdminShell title="Usuarios" userEmail={sesion.email} role={sesion.role}>
-      <UsuariosPanel initialUsuarios={usuarios} miEmail={sesion.email} />
+      <UsuariosPanel initialUsuarios={usuarios} saldosIniciales={saldos} miEmail={sesion.email} />
     </AdminShell>
   );
 }

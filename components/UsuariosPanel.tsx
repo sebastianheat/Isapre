@@ -3,15 +3,23 @@
 import { useState } from "react";
 import type { UsuarioPublico } from "@/lib/usuarios";
 import RecibirLeadsToggle from "./RecibirLeadsToggle";
+import ImportarUsuarios from "./ImportarUsuarios";
+
+// Cupo que suma el botón "Reactivar cupo" (mismo que el cupo inicial).
+const CUPO_REACTIVACION = 20;
 
 export default function UsuariosPanel({
   initialUsuarios,
+  saldosIniciales,
   miEmail,
 }: {
   initialUsuarios: UsuarioPublico[];
+  saldosIniciales: Record<string, number>;
   miEmail: string;
 }) {
   const [usuarios, setUsuarios] = useState<UsuarioPublico[]>(initialUsuarios);
+  const [saldos, setSaldos] = useState<Record<string, number>>(saldosIniciales);
+  const [reactivando, setReactivando] = useState("");
   const [open, setOpen] = useState(false);
   const [nombre, setNombre] = useState("");
   const [email, setEmail] = useState("");
@@ -47,6 +55,35 @@ export default function UsuariosPanel({
     }
   }
 
+  async function reactivarCupo(u: UsuarioPublico) {
+    const quien = u.nombre || u.email;
+    if (!confirm(`¿Reactivar el cupo de ${quien}? Recibirá ${CUPO_REACTIVACION} leads más por turno.`)) return;
+    setReactivando(u.email);
+    setError("");
+    setOk("");
+    try {
+      const res = await fetch("/api/admin/creditos", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: u.email,
+          cantidad: CUPO_REACTIVACION,
+          motivo: `Reactivación de cupo (+${CUPO_REACTIVACION} leads)`,
+        }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) setError(data.error || "No se pudo reactivar el cupo.");
+      else {
+        setSaldos((prev) => ({ ...prev, [u.email]: data.saldo }));
+        setOk(`Cupo de ${quien} reactivado: ${data.saldo} leads disponibles.`);
+      }
+    } catch {
+      setError("Sin conexión.");
+    } finally {
+      setReactivando("");
+    }
+  }
+
   async function eliminar(emailObjetivo: string) {
     if (!confirm(`¿Eliminar al usuario ${emailObjetivo}?`)) return;
     const res = await fetch(`/api/admin/usuarios/${encodeURIComponent(emailObjetivo)}`, {
@@ -66,9 +103,12 @@ export default function UsuariosPanel({
       {ok && <div className="admin-msg ok">{ok}</div>}
       {error && <div className="admin-msg error">{error}</div>}
 
-      <button onClick={() => setOpen((o) => !o)} className="admin-btn" style={{ marginBottom: 12 }}>
-        {open ? "Cancelar" : "+ Nuevo usuario"}
-      </button>
+      <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 12 }}>
+        <button onClick={() => setOpen((o) => !o)} className="admin-btn">
+          {open ? "Cancelar" : "+ Nuevo usuario"}
+        </button>
+        <ImportarUsuarios onImportado={() => window.location.reload()} />
+      </div>
 
       {open && (
         <form className="admin-form" onSubmit={crear} style={{ marginBottom: 18 }}>
@@ -81,7 +121,7 @@ export default function UsuariosPanel({
             <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required autoComplete="off" />
           </label>
           <label>
-            <span>Contraseña inicial *</span>
+            <span>Contraseña temporal * (deberá cambiarla al entrar)</span>
             <input
               type="text"
               value={password}
@@ -112,14 +152,32 @@ export default function UsuariosPanel({
               <div className="email">{u.nombre ? `${u.nombre} · ` : ""}{u.email}</div>
               <div className="role">
                 {u.role === "superadmin" ? "👑 Superadmin" : "👤 Ejecutivo"}
-                {u.passwordEsSemilla && " · ⚠️ password por defecto"}
+                {u.passwordEsSemilla && " · ⚠️ clave temporal sin cambiar"}
               </div>
+              {u.role === "ejecutivo" && (
+                <div className="role">
+                  Cupo: {saldos[u.email] ?? 0} lead{(saldos[u.email] ?? 0) === 1 ? "" : "s"} disponible
+                  {(saldos[u.email] ?? 0) === 1 ? "" : "s"}
+                  {(saldos[u.email] ?? 0) <= 0 && " · fuera de la rueda"}
+                </div>
+              )}
             </div>
-            {u.email !== miEmail && (
-              <button onClick={() => eliminar(u.email)} className="admin-btn danger small">
-                Eliminar
-              </button>
-            )}
+            <div style={{ display: "flex", gap: 6, flexWrap: "wrap", justifyContent: "flex-end" }}>
+              {u.role === "ejecutivo" && (
+                <button
+                  onClick={() => reactivarCupo(u)}
+                  className="admin-btn small"
+                  disabled={reactivando === u.email}
+                >
+                  {reactivando === u.email ? "Reactivando…" : `Reactivar cupo (+${CUPO_REACTIVACION})`}
+                </button>
+              )}
+              {u.email !== miEmail && (
+                <button onClick={() => eliminar(u.email)} className="admin-btn danger small">
+                  Eliminar
+                </button>
+              )}
+            </div>
           </div>
           <div style={{ marginTop: 8 }}>
             <RecibirLeadsToggle email={u.email} inicial={u.recibiendoLeads} />

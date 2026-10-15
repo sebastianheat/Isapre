@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import type { Lead } from "@/lib/leads";
-import { estadoAsignacion } from "@/lib/leads";
+import { estadoAsignacion } from "@/lib/pipeline";
 
 export interface EjecutivoElegible {
   email: string;
