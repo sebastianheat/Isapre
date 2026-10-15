@@ -1,0 +1,31 @@
+Las 4 sub-fases están hechas y commiteadas en `forja/fase1-equilibrado`. Ninguna se bloqueó, así que no hay `PROBLEMAS.md`.
+
+| Check | Resultado |
+|---|---|
+| Tests (`npm run test`) | 53 pasan en 6 archivos, incluida una carrera de doble asignación simultánea |
+| Tipos (`npx tsc --noEmit`) | 0 errores |
+| `npm run build` | OK, una sola vez al final (`.next` pesa 309 MB) |
+| CSV del export | Idéntico antes y después: mismo sha1 y `cmp` sin diferencias |
+| Navegador (Playwright) | Funcionó la cola, asignar (saldo 3→2), la advertencia de sin créditos con "asignar como regalo", reasignar (Ingrid vuelve a 3), el motivo vacío rechazado y el selector de calidad |
+
+- **CSV:** capturé la línea base sobre el código sin tocar y la dejé como test permanente (`lib/offline.test.ts`). `lib/offline.ts`, la ruta de export y el cron no tienen ningún cambio.
+- **Navegador:** probé contra el build de producción con KV en memoria. Falta validar en un preview de Vercel con Upstash real.
+- **Archivos de operación:** `forja/CLAUDE.md` y la Pieza no están en el worktree, solo en `/Users/heat/Proyectos/Isapre`, porque no estaban commiteados. Los leí desde ahí en solo lectura.
+
+Decisiones tomadas (están las 23 en `DECISIONES.md`):
+- **`kvMarcarUnaVez` no era atómico.** Hacía un GET y luego un SET, así que lo cambié a `SET NX EX`. Los otros dos usuarios, los webhooks de WhatsApp y Meta, quedan igual.
+- **Saldos con INCRBY.** Agregué `kvIncrBy`, `kvLPush` y `kvLRange` para que dos asignaciones simultáneas no pierdan un descuento. Estas funciones fallan visiblemente en vez de caer a memoria.
+- **`asignarLead` y `reasignarLead` viven en `lib/reparto.ts`.** `lib/leads.ts` ya está en 499 líneas y el límite del proyecto es 500.
+- **La cola de sin asignar se arma desde `listarLeads()`, sin el índice `leads:sin-asignar`.** Así no hace falta migrar los leads viejos, y los ya ganados o perdidos no aparecen.
+- **Campo nuevo `asignacionCobrada` en el lead.** Un lead asignado "como regalo" no cobró crédito, así que reasignarlo no devuelve nada.
+- **`PATCH /api/admin/leads/[id]` ya no acepta `asignadoA`.** Era el selector libre de la ficha, que asignaba sin créditos ni lock y dejaba el estado inconsistente.
+- **`recibiendoLeads` ausente cuenta como prendido.** Si no, el selector quedaría vacío el primer día para los usuarios existentes.
+- **Interruptor en el perfil y en el servidor.** Lo puse también en `/admin/perfil` (US-007 lo pide ahí), y `asignarLead` y `reasignarLead` rechazan a quien lo tenga apagado.
+
+**Pendientes para la Fase 2 y pre-producción:**
+- Rotar `ADMIN_SESSION_SECRET` y confirmar `ADMIN_SEED_PASSWORD` y `ADMIN_SEED_FORCE` en Vercel; el banner de contraseña por defecto apareció en las pruebas.
+- Revisar el nav inferior de 7 ítems (para superadmin) en un celular real.
+- Las rutas API y los componentes no tienen tests; la lógica sí está cubierta en `lib/`.
+- El rollback entre cobrar y guardar no es transaccional; lo resuelve Postgres.
+
+`RESUMEN.md` y `DECISIONES.md` están en la raíz del sandbox.

@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import type { Lead } from "@/lib/leads";
 import type { NotaLead, RecordatorioLead, EtapaLead, CalidadLead } from "@/lib/pipeline";
 import { ETAPAS, CALIDADES } from "@/lib/pipeline";
-import type { UsuarioPublico } from "@/lib/usuarios";
+import LeadAsignacion, { type EjecutivoElegible } from "./LeadAsignacion";
 
 function formatearFecha(iso?: string) {
   if (!iso) return "";
@@ -34,12 +34,14 @@ function proximaHora(): string {
 
 export default function LeadPipeline({
   initialLead,
-  usuarios,
+  nombres,
+  ejecutivos,
   miEmail,
   puedeAsignar = true,
 }: {
   initialLead: Lead;
-  usuarios: UsuarioPublico[];
+  nombres: Record<string, string>;
+  ejecutivos: EjecutivoElegible[];
   miEmail: string;
   puedeAsignar?: boolean;
 }) {
@@ -81,26 +83,6 @@ export default function LeadPipeline({
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ calidad }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "No se pudo actualizar");
-      setLead(data.lead);
-      router.refresh();
-    } catch (e) {
-      setError(e instanceof Error ? e.message : "Error");
-    } finally {
-      setGuardando(false);
-    }
-  }
-
-  async function cambiarAsignado(asignadoA: string) {
-    setGuardando(true);
-    setError("");
-    try {
-      const res = await fetch(`/api/admin/leads/${leadId}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ asignadoA: asignadoA || null }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "No se pudo actualizar");
@@ -219,33 +201,14 @@ export default function LeadPipeline({
               </select>
             </div>
           </label>
-          <label style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-            <span style={{ color: "var(--admin-text-soft)", fontSize: 13 }}>Asignado a</span>
-            {puedeAsignar ? (
-              <select
-                value={lead.asignadoA ?? ""}
-                onChange={(e) => cambiarAsignado(e.target.value)}
-                disabled={guardando}
-                style={{
-                  width: "100%", padding: "8px 10px", fontSize: 15,
-                  border: "1px solid var(--admin-border)", borderRadius: 8,
-                  background: "#fff", fontFamily: "inherit",
-                }}
-              >
-                <option value="">Sin asignar</option>
-                {usuarios.map((u) => (
-                  <option key={u.email} value={u.email}>
-                    {u.nombre ? `${u.nombre} (${u.email})` : u.email}
-                    {u.email === miEmail ? " · yo" : ""}
-                  </option>
-                ))}
-              </select>
-            ) : (
-              <span className="tag" style={{ background: "#0D47A122", color: "#0D47A1", alignSelf: "flex-start", fontSize: 13 }}>
-                👤 {lead.asignadoA === miEmail ? "Tú" : lead.asignadoA || "Sin asignar"}
-              </span>
-            )}
-          </label>
+          <LeadAsignacion
+            lead={lead}
+            nombres={nombres}
+            ejecutivos={ejecutivos}
+            miEmail={miEmail}
+            puedeAsignar={puedeAsignar}
+            onLeadChange={(l) => { setLead(l); router.refresh(); }}
+          />
           <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
             <span style={{ color: "var(--admin-text-soft)", fontSize: 13 }}>
               Calidad del lead (alimenta la optimización de Google Ads)

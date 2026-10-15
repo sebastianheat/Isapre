@@ -459,3 +459,58 @@
   font-family: inherit; cursor: pointer;
 }
 .pipeline-card-select:hover { background: #F1F5F9; }
+
+/* ===== Reparto y créditos (marketplace Fase 1) ===== */
+a.admin-btn { display: inline-block; text-decoration: none; text-align: center; }
+.reparto-vacio { text-align: center; color: var(--admin-text-soft); padding: 28px 16px; }
+.reparto-fila { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; }
+.reparto-fila-main { flex: 1 1 200px; min-width: 0; }
+.reparto-nombre {
+  font-weight: 700; color: var(--admin-text); text-decoration: none;
+  display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.reparto-nombre:hover { color: var(--admin-blue-dark); text-decoration: underline; }
+.reparto-meta {
+  display: flex; align-items: center; gap: 8px; margin-top: 4px;
+  font-size: 12px; color: var(--admin-text-soft);
+}
+.reparto-fila-accion { display: flex; gap: 8px; align-items: center; flex: 1 1 260px; }
+.reparto-fila-accion select, .creditos-form select, .creditos-form input, .creditos-form textarea {
+  padding: 8px 10px; font-size: 15px; font-family: inherit;
+  border: 1px solid var(--admin-border); border-radius: 8px; background: #fff;
+}
+.reparto-fila-accion select { flex: 1; min-width: 0; }
+.reparto-sinsaldo {
+  flex: 1 1 100%; margin: 0; display: flex; flex-wrap: wrap;
+  align-items: center; justify-content: space-between; gap: 8px;
+}
+.reparto-sinsaldo-botones { display: flex; gap: 6px; flex-wrap: wrap; }
+
+.creditos-form { display: flex; flex-direction: column; gap: 10px; }
+.creditos-form label > span { display: block; font-size: 13px; color: var(--admin-text-soft); margin-bottom: 4px; }
+.creditos-form select, .creditos-form input, .creditos-form textarea { width: 100%; }
+.creditos-campo-error { color: var(--admin-red); font-size: 13px; margin-top: 4px; }
+.creditos-tabla { width: 100%; border-collapse: collapse; }
+.creditos-tabla th, .creditos-tabla td {
+  text-align: left; padding: 10px 8px; border-bottom: 1px solid var(--admin-border); font-size: 14px;
+}
+.creditos-tabla th { color: var(--admin-text-soft); font-weight: 600; font-size: 12px; }
+.creditos-tabla td.num, .creditos-tabla th.num { text-align: right; }
+.creditos-tabla a { color: var(--admin-blue-dark); font-weight: 600; text-decoration: none; }
+.creditos-saldo-grande { font-size: 40px; font-weight: 800; line-height: 1.1; }
+.creditos-mov { display: flex; justify-content: space-between; gap: 10px; align-items: flex-start; }
+.creditos-cantidad { font-weight: 800; font-size: 16px; white-space: nowrap; }
+.creditos-cantidad.pos { color: var(--admin-green); }
+.creditos-cantidad.neg { color: var(--admin-red); }
+.creditos-cantidad.cero { color: var(--admin-text-soft); }
+.leadasig-fila { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.leadasig-fila select {
+  flex: 1; min-width: 160px; padding: 8px 10px; font-size: 15px; font-family: inherit;
+  border: 1px solid var(--admin-border); border-radius: 8px; background: #fff;
+}
+.usuario-toggle { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--admin-text-soft); cursor: pointer; }
+@media (max-width: 480px) {
+  /* Con 7 ítems (superadmin) el nav inferior no cabe con el padding normal. */
+  .admin-bottomnav a { font-size: 11px; padding: 6px 2px; }
+  .admin-bottomnav a .ico { padding: 2px 8px; }
+}
