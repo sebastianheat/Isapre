@@ -24,15 +24,23 @@ export default function AdminShell({ title, userEmail, role, children }: Props) 
   const router = useRouter();
   const [usaSemilla, setUsaSemilla] = useState(false);
 
-  // Verifica si la password actual sigue siendo la semilla (la inicial) para
-  // mostrar el banner amarillo. Se hace en cliente para no acoplar el render
-  // del page al KV.
+  // Verifica si la password actual sigue siendo la semilla (temporal). Si lo
+  // es, el panel queda bloqueado en /admin/perfil hasta que la cambie. Se hace
+  // en cliente para no acoplar el render del page al KV.
   useEffect(() => {
     fetch("/api/admin/me")
       .then((r) => r.json())
       .then((d) => setUsaSemilla(!!d?.user?.passwordEsSemilla))
       .catch(() => {});
+    const alCambiar = () => setUsaSemilla(false);
+    window.addEventListener("admin:password-cambiada", alCambiar);
+    return () => window.removeEventListener("admin:password-cambiada", alCambiar);
   }, []);
+
+  const enPerfil = pathname === "/admin/perfil";
+  useEffect(() => {
+    if (usaSemilla && !enPerfil) router.replace("/admin/perfil");
+  }, [usaSemilla, enPerfil, router]);
 
   async function logout() {
     await fetch("/api/admin/logout", { method: "POST" });
@@ -72,20 +80,16 @@ export default function AdminShell({ title, userEmail, role, children }: Props) 
       <main className="admin-content">
         {usaSemilla && (
           <div className="admin-msg warn">
-            ⚠️ Estás usando la contraseña por defecto. Cámbiala en{" "}
-            <Link href="/admin/perfil" style={{ color: "inherit", textDecoration: "underline" }}>
-              Perfil
-            </Link>{" "}
-            cuanto antes.
+            ⚠️ Estás usando una contraseña temporal. Debes cambiarla para seguir usando el panel.
           </div>
         )}
         <div style={{ fontSize: 12, color: "var(--admin-text-soft)", marginBottom: 8 }}>
           Sesión: <strong>{userEmail}</strong> · {role === "superadmin" ? "Superadmin" : "Ejecutivo"}
         </div>
-        {children}
+        {(!usaSemilla || enPerfil) && children}
       </main>
 
-      <nav className="admin-bottomnav">
+      {!usaSemilla && <nav className="admin-bottomnav">
         {NAV.filter((n) => !n.superadminOnly || role === "superadmin").map((n) => {
           const active = pathname === n.href || pathname?.startsWith(n.href + "/");
           return (
@@ -95,7 +99,7 @@ export default function AdminShell({ title, userEmail, role, children }: Props) 
             </Link>
           );
         })}
-      </nav>
+      </nav>}
     </div>
   );
 }

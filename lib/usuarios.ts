@@ -92,8 +92,8 @@ export async function autenticar(email: string, password: string): Promise<Usuar
       role: "superadmin",
       nombre: u?.nombre || "Super Admin",
       createdAt: u?.createdAt || new Date().toISOString(),
-      // El banner de "cambia tu clave" solo si sigue con la default.
-      passwordEsSemilla: SEED_PASSWORD === "123456",
+      // Toda clave semilla es temporal: el panel obliga a cambiarla.
+      passwordEsSemilla: true,
     };
     await setUsuario(u);
     if (seedForce) {
@@ -144,6 +144,9 @@ export async function cambiarPassword(
   if (!ok) throw new Error("La contraseña actual no es correcta.");
   if (!passwordNueva || passwordNueva.length < 6) {
     throw new Error("La contraseña nueva debe tener al menos 6 caracteres.");
+  }
+  if (passwordNueva === passwordActual) {
+    throw new Error("La contraseña nueva debe ser distinta a la actual.");
   }
   u.passwordHash = await hashPassword(passwordNueva);
   u.passwordEsSemilla = false;

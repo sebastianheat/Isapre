@@ -36,6 +36,7 @@ export default function CambiarPassword() {
       else {
         setOk("Contraseña actualizada.");
         setActual(""); setNueva(""); setConfirm("");
+        window.dispatchEvent(new Event("admin:password-cambiada"));
         router.refresh();
       }
     } catch {
