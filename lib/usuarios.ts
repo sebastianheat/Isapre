@@ -20,6 +20,8 @@ export interface Usuario {
   recibiendoLeads?: boolean;
   rut?: string;
   telefono?: string;
+  ultimoIngreso?: string; // ISO
+  passwordCambiadaEn?: string; // ISO, cuando dejó la clave temporal
 }
 
 export interface UsuarioPublico {
@@ -135,7 +137,10 @@ export async function autenticar(email: string, password: string): Promise<Usuar
 
   if (!u) return null;
   const ok = await verifyPassword(password, u.passwordHash);
-  return ok ? u : null;
+  if (!ok) return null;
+  const conIngreso: Usuario = { ...u, ultimoIngreso: new Date().toISOString() };
+  await setUsuario(conIngreso).catch(() => {});
+  return conIngreso;
 }
 
 // Clave con la que nacen los usuarios importados en lote. Es temporal: el
@@ -183,6 +188,7 @@ export async function restablecerPassword(email: string, passwordNueva: string):
   }
   u.passwordHash = await hashPassword(passwordNueva);
   u.passwordEsSemilla = false;
+  u.passwordCambiadaEn = new Date().toISOString();
   await setUsuario(u);
 }
 
@@ -203,6 +209,7 @@ export async function cambiarPassword(
   }
   u.passwordHash = await hashPassword(passwordNueva);
   u.passwordEsSemilla = false;
+  u.passwordCambiadaEn = new Date().toISOString();
   await setUsuario(u);
 }
 
