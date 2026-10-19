@@ -129,4 +129,24 @@ describe("reparto automático round robin", () => {
     await nuevoLead(c);
     expect(avisos).toHaveLength(0);
   });
+
+  it("prioridad: los próximos N van al elegido y luego la rueda sigue donde iba", async () => {
+    await importar(c, 20, "a@x.cl", "b@x.cl", "c@x.cl");
+    await c.auto.setRepartoAutomatico(true);
+    expect((await nuevoLead(c)).asignadoA).toBe("a@x.cl");
+    await c.auto.setPrioridad("C@x.cl", 2);
+    const dueños = [];
+    for (let i = 0; i < 4; i++) dueños.push((await nuevoLead(c)).asignadoA);
+    expect(dueños).toEqual(["c@x.cl", "c@x.cl", "b@x.cl", "c@x.cl"]);
+    expect(await c.auto.obtenerPrioridad()).toBeNull();
+  });
+
+  it("prioridad para alguien sin cupo se cancela y el lead va a la rueda", async () => {
+    await importar(c, 5, "a@x.cl");
+    await importar(c, 0, "z@x.cl");
+    await c.auto.setRepartoAutomatico(true);
+    await c.auto.setPrioridad("z@x.cl", 2);
+    expect((await nuevoLead(c)).asignadoA).toBe("a@x.cl");
+    expect(await c.auto.obtenerPrioridad()).toBeNull();
+  });
 });

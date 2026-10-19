@@ -6,7 +6,7 @@ import { obtenerSaldo } from "@/lib/credits-kv";
 import AdminShell from "@/components/AdminShell";
 import RepartoCola, { type EjecutivoOpcion, type LeadCola } from "@/components/RepartoCola";
 import RepartoAutomaticoToggle from "@/components/RepartoAutomaticoToggle";
-import { ejecutivosEnRueda, repartoAutomaticoActivo } from "@/lib/reparto-auto";
+import { ejecutivosEnRueda, obtenerPrioridad, repartoAutomaticoActivo } from "@/lib/reparto-auto";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -16,11 +16,12 @@ export default async function RepartoPage() {
   if (!sesion) redirect("/admin");
   if (sesion.role !== "superadmin") redirect("/admin/leads");
 
-  const [leads, usuarios, autoActivo, enRueda] = await Promise.all([
+  const [leads, usuarios, autoActivo, enRueda, prioridad] = await Promise.all([
     listarLeadsSinAsignar(),
     listarUsuarios(),
     repartoAutomaticoActivo(),
     ejecutivosEnRueda(),
+    obtenerPrioridad(),
   ]);
 
   // Solo quienes tienen prendido "recibir leads" (US-007).
@@ -44,7 +45,15 @@ export default async function RepartoPage() {
 
   return (
     <AdminShell title="Reparto" userEmail={sesion.email} role={sesion.role}>
-      <RepartoAutomaticoToggle inicial={autoActivo} enRueda={enRueda} />
+      <RepartoAutomaticoToggle
+        inicial={autoActivo}
+        enRueda={enRueda}
+        prioridadInicial={prioridad}
+        ejecutivos={usuarios
+          .filter((u) => u.role === "ejecutivo")
+          .map((u) => ({ email: u.email, nombre: u.nombre || u.email }))
+          .sort((a, b) => a.nombre.localeCompare(b.nombre, "es"))}
+      />
       <RepartoCola leadsIniciales={cola} ejecutivosIniciales={ejecutivos} />
     </AdminShell>
   );
