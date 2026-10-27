@@ -8,13 +8,13 @@
 
 import { kvGet, kvIncrBy, kvLPush, kvLRange } from "./store";
 
-export type TipoMovimiento = "regalo" | "asignacion" | "devolucion";
+export type TipoMovimiento = "regalo" | "asignacion" | "devolucion" | "ajuste";
 
 export interface MovimientoCredito {
   id: string;
   fecha: string; // ISO
   tipo: TipoMovimiento;
-  cantidad: number; // con signo: +5 regalo, -1 asignación, +1 devolución, 0 asignación sin costo
+  cantidad: number; // con signo: +5 regalo, -1 asignación, +1 devolución, 0 asignación sin costo, ±N ajuste
   motivo: string;
   por: string; // email de quien ejecutó la acción
   leadId?: string;
@@ -121,4 +121,28 @@ export async function devolverCredito(email: string, input: CobroInput): Promise
   const saldo = await kvIncrBy(keySaldo(email), 1);
   await registrarMovimiento(email, { tipo: "devolucion", cantidad: 1, ...input });
   return saldo;
+}
+
+// Deja el saldo en `saldo` exacto (conciliación). El movimiento de ajuste se
+// calcula contra el historial, así historial y contador quedan iguales aunque
+// hubieran divergido antes.
+export async function ajustarSaldo(input: {
+  email: string;
+  saldo: number;
+  motivo: string;
+  por: string;
+}): Promise<{ saldo: number; movimiento: MovimientoCredito | null }> {
+  const motivo = input.motivo.trim();
+  if (!motivo) throw new Error("Escribe un motivo para este ajuste");
+  if (!Number.isInteger(input.saldo) || input.saldo < 0) {
+    throw new Error("El saldo debe ser un entero mayor o igual a 0");
+  }
+  const [guardado, historial] = await Promise.all([obtenerSaldo(input.email), recalcularSaldo(input.email)]);
+  if (guardado !== input.saldo) await kvIncrBy(keySaldo(input.email), input.saldo - guardado);
+  const delta = input.saldo - historial;
+  const movimiento =
+    delta === 0
+      ? null
+      : await registrarMovimiento(input.email, { tipo: "ajuste", cantidad: delta, motivo, por: input.por });
+  return { saldo: input.saldo, movimiento };
 }

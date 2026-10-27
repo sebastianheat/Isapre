@@ -96,6 +96,9 @@ export default function CreditosPanel({
       </form>
 
       <h2 className="admin-h2">Saldos</h2>
+      <p style={{ marginTop: 0 }}>
+        <Link href="/admin/creditos/conciliar">Revisar si los saldos cuadran con los leads entregados →</Link>
+      </p>
       <div className="admin-card">
         <table className="creditos-tabla">
           <thead>

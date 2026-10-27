@@ -12,6 +12,7 @@ const TIPOS: Record<TipoMovimiento, { label: string; clase: string }> = {
   regalo: { label: "Regalo", clase: "green" },
   asignacion: { label: "Asignación", clase: "orange" },
   devolucion: { label: "Devolución", clase: "gray" },
+  ajuste: { label: "Ajuste", clase: "gray" },
 };
 
 function formatearFecha(iso: string): string {
