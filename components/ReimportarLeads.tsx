@@ -7,13 +7,15 @@ interface Resultado {
   restaurados: string[];
   yaExistian: string[];
   descartados: string[];
-  repartidos: string[];
+  asignados: string[];
+  sinAsignar: string[];
 }
 
 // Pegar líneas "LEAD nuevo: {...}" / "LEAD SIN GUARDAR: {...}" de los logs de
 // Vercel (o un arreglo JSON) y devolverlas al panel.
 export default function ReimportarLeads() {
   const [texto, setTexto] = useState("");
+  const [asignaciones, setAsignaciones] = useState("");
   const [repartir, setRepartir] = useState(false);
   const [enCurso, setEnCurso] = useState(false);
   const [error, setError] = useState("");
@@ -27,7 +29,7 @@ export default function ReimportarLeads() {
       const res = await fetch("/api/admin/reimportar-leads", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ texto, repartir }),
+        body: JSON.stringify({ texto, asignaciones, repartir }),
       });
       const data = await res.json();
       if (!res.ok) setError(data.error || "No se pudo reimportar.");
@@ -53,9 +55,21 @@ export default function ReimportarLeads() {
         placeholder='LEAD nuevo: {"nombre":"…","telefono":"…"}'
         style={{ width: "100%", fontFamily: "monospace", fontSize: 12 }}
       />
+      <p style={{ margin: 0 }}>
+        Si ya le mandaste un lead a un ejecutivo, escríbelo aquí (uno por línea:{" "}
+        <code>correo del lead ; ejecutivo</code>, el ejecutivo por su correo o su nombre). Queda
+        asignado a él, se descuenta el crédito y <strong>no</strong> se le vuelve a mandar el correo.
+      </p>
+      <textarea
+        value={asignaciones}
+        onChange={(e) => setAsignaciones(e.target.value)}
+        rows={6}
+        placeholder="cliente@gmail.com ; ejecutivo@nuevaisapre.cl"
+        style={{ width: "100%", fontFamily: "monospace", fontSize: 12 }}
+      />
       <label style={{ display: "flex", gap: 8, alignItems: "center" }}>
         <input type="checkbox" checked={repartir} onChange={(e) => setRepartir(e.target.checked)} />
-        Repartirlos automáticamente entre los ejecutivos (si no, quedan en Reparto)
+        Los que no estén en la lista, repartirlos automáticamente (si no, quedan en Reparto)
       </label>
       <button className="admin-btn" onClick={reimportar} disabled={enCurso || !texto.trim()}>
         {enCurso ? "Reimportando…" : "Reimportar leads"}
@@ -69,7 +83,8 @@ export default function ReimportarLeads() {
           {resultado.restaurados.length > 0 && <p style={{ margin: 0 }}>Restaurados: {resultado.restaurados.join(", ")}</p>}
           {resultado.yaExistian.length > 0 && <p style={{ margin: 0 }}>Ya estaban: {resultado.yaExistian.join(", ")}</p>}
           {resultado.descartados.length > 0 && <p style={{ margin: 0 }}>Descartados: {resultado.descartados.join("; ")}</p>}
-          {resultado.repartidos.length > 0 && <p style={{ margin: 0 }}>Repartidos: {resultado.repartidos.join("; ")}</p>}
+          {resultado.asignados.length > 0 && <p style={{ margin: 0 }}>Asignados: {resultado.asignados.join("; ")}</p>}
+          {resultado.sinAsignar.length > 0 && <p style={{ margin: 0 }}>Sin asignar: {resultado.sinAsignar.join("; ")}</p>}
         </div>
       )}
     </div>

@@ -32,6 +32,9 @@ export type ResultadoReparto =
 export interface OpcionesReparto {
   // Confirmación del "¿Asignar igual como regalo?": asigna sin descontar crédito.
   permitirSinSaldo?: boolean;
+  // false: no mandar el correo de "lead asignado" (p. ej. al reimportar leads
+  // que el ejecutivo ya recibió por correo durante una caída de la base).
+  avisar?: boolean;
 }
 
 function rechazo(code: CodigoRechazo, mensaje: string, asignadoA?: string): ResultadoReparto {
@@ -155,7 +158,7 @@ export async function asignarLead(
         return rechazo("sin_saldo", "Este ejecutivo no tiene créditos. ¿Asignar igual como regalo?");
       }
       const guardado = await guardarAsignacion(leadId, ejecutivo.email, cobro.cobrado, actor);
-      await avisarEjecutivo(guardado, ejecutivo);
+      if (opts.avisar !== false) await avisarEjecutivo(guardado, ejecutivo);
       return { ok: true, lead: guardado, cobrado: cobro.cobrado, saldo: cobro.saldo };
     },
   );

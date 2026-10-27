@@ -114,3 +114,16 @@ export async function restaurarLeads(leads: Lead[], ahora = Date.now()): Promise
   }
   return r;
 }
+
+// Asignaciones pegadas a mano: una por línea, "correo del lead ; ejecutivo"
+// (también sirve tabulador o coma, p. ej. copiado de Excel). El ejecutivo va
+// por correo o por su nombre tal como está en Usuarios.
+export function leerAsignaciones(texto: string): Map<string, string> {
+  const m = new Map<string, string>();
+  for (const linea of texto.split(/\r?\n/)) {
+    const partes = linea.split(/[;\t,]|->|→/).map((x) => x.trim()).filter(Boolean);
+    if (partes.length < 2) continue;
+    m.set(partes[0].toLowerCase(), partes[partes.length - 1]);
+  }
+  return m;
+}
