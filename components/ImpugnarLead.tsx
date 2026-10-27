@@ -107,7 +107,7 @@ export default function ImpugnarLead({
 
   const valido = motivosValidos(motivos) && comentario.trim().length >= 10;
   return (
-    <div className="admin-card" style={{ display: "grid", gap: 10 }}>
+    <div className="admin-card admin-form" style={{ display: "grid", gap: 10 }}>
       <strong>🚩 Impugnar lead falso</strong>
       <p style={{ margin: 0, fontSize: 13 }}>
         Solo vale si <strong>el teléfono es falso</strong> y además <strong>el nombre o el correo</strong>.
@@ -117,6 +117,7 @@ export default function ImpugnarLead({
         <label key={m.id} style={{ display: "flex", gap: 8, alignItems: "center" }}>
           <input
             type="checkbox"
+            style={{ width: 20, height: 20, flex: "none" }}
             checked={motivos.includes(m.id)}
             onChange={(e) =>
               setMotivos((ms) => (e.target.checked ? [...ms, m.id] : ms.filter((x) => x !== m.id)))

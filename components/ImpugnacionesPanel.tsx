@@ -86,7 +86,7 @@ export default function ImpugnacionesPanel({
         const id = l.id ?? "";
         const wa = (l.telefono ?? "").replace(/[^0-9]/g, "");
         return (
-          <div key={id} className="admin-card" style={{ display: "grid", gap: 8 }}>
+          <div key={id} className="admin-card admin-form" style={{ display: "grid", gap: 8 }}>
             <div style={{ display: "flex", justifyContent: "space-between", gap: 8, flexWrap: "wrap" }}>
               <strong>
                 <Link href={`/admin/leads/${encodeURIComponent(id)}`}>{l.nombre || "Sin nombre"}</Link>
