@@ -85,13 +85,13 @@ describe("impugnación de leads falsos", () => {
     expect(await c.credits.obtenerSaldo(ROCIO)).toBe(3);
   });
 
-  it("un lead regalado (sin cobro) se marca falso sin devolver nada", async () => {
+  it("un lead asignado como regalo (sin descuento) igual devuelve 1 crédito", async () => {
     await c.credits.ajustarSaldo({ email: SEBA, saldo: 0, motivo: "test", por: ADMIN });
     const id = await leadAsignado(c, SEBA, { permitirSinSaldo: true });
     await c.imp.impugnarLead(id, SEBA, VALIDA);
     await c.imp.resolverImpugnacion(id, { aceptar: true, por: ADMIN });
-    expect(await c.credits.obtenerSaldo(SEBA)).toBe(0);
-    expect((await c.leads.obtenerLead(id))?.impugnacion?.creditoDevuelto).toBe(false);
+    expect(await c.credits.obtenerSaldo(SEBA)).toBe(1);
+    expect((await c.leads.obtenerLead(id))?.impugnacion?.creditoDevuelto).toBe(true);
   });
 
   it("rechazar exige motivo y deja el lead igual", async () => {

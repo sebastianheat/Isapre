@@ -49,7 +49,7 @@ export default function ImpugnacionesPanel({
       setMsg({
         tipo: "ok",
         texto: aceptar
-          ? `${l.nombre}: marcado como falso${l.impugnacion?.creditoDevuelto ? ` y crédito devuelto a ${nombre(l.impugnacion.por)}` : " (no había crédito que devolver)"}.`
+          ? `${l.nombre}: marcado como falso${l.impugnacion?.creditoDevuelto ? ` y crédito devuelto a ${nombre(l.impugnacion.por)}` : " (sin devolución: el lead ya no era suyo)"}.`
           : `${l.nombre}: impugnación rechazada.`,
       });
     } catch {

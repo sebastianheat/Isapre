@@ -3,8 +3,9 @@
 // El ejecutivo al que se le asignó un lead puede impugnarlo SOLO si el
 // teléfono es falso y además el nombre o el correo (motivosValidos). El
 // superadmin la acepta o la rechaza:
-// - Aceptada: se le devuelve el crédito al ejecutivo (si se le cobró y el lead
-//   sigue siendo suyo) y el lead queda marcado como falso (perdido, no calificado).
+// - Aceptada: se le devuelve 1 crédito al ejecutivo (si el lead sigue siendo
+//   suyo; también si se le asignó como regalo, por decisión del negocio: un
+//   lead falso nunca consume cupo) y el lead queda marcado como falso.
 // - Rechazada: el lead sigue igual; el ejecutivo ve el motivo.
 // Mientras está pendiente, el ejecutivo puede retirarla (p. ej. si el cliente
 // le contestó: entonces no era falso).
@@ -129,9 +130,10 @@ export async function resolverImpugnacion(
       return { ok: true, lead: guardado };
     }
 
-    // Se devuelve el crédito solo si el lead sigue siendo de quien impugnó y
-    // esa asignación se le cobró (un lead regalado no descontó nada).
-    const devolver = mismo(lead.asignadoA, imp.por) && lead.asignacionCobrada === true;
+    // Se devuelve 1 crédito siempre que el lead siga siendo de quien impugnó,
+    // aunque se le haya asignado como regalo (sin descuento): el cupo de los
+    // ejecutivos es un regalo y un lead falso no debe gastarlo.
+    const devolver = mismo(lead.asignadoA, imp.por);
     if (devolver) {
       await devolverCredito(imp.por, { motivo: "Impugnación aceptada: lead falso", por: input.por, leadId });
     }
