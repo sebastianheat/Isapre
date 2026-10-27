@@ -28,15 +28,20 @@ export async function enviarWhatsApp(to: string, body: string): Promise<void> {
 const MAX_TURNOS = 24;
 
 export async function getHistorial(phone: string): Promise<ChatMessage[]> {
-  const raw = await kvGet(`conv:${phone}`);
-  if (!raw) return [];
+  // Sin base, Romina sigue contestando (sin memoria de la conversación).
   try {
-    return JSON.parse(raw) as ChatMessage[];
-  } catch {
+    const raw = await kvGet(`conv:${phone}`);
+    return raw ? (JSON.parse(raw) as ChatMessage[]) : [];
+  } catch (e) {
+    console.error("Historial de WhatsApp no disponible:", e);
     return [];
   }
 }
 
 export async function guardarHistorial(phone: string, msgs: ChatMessage[]): Promise<void> {
-  await kvSet(`conv:${phone}`, JSON.stringify(msgs.slice(-MAX_TURNOS)), 60 * 60 * 24 * 3);
+  try {
+    await kvSet(`conv:${phone}`, JSON.stringify(msgs.slice(-MAX_TURNOS)), 60 * 60 * 24 * 3);
+  } catch (e) {
+    console.error("No se pudo guardar el historial de WhatsApp:", e);
+  }
 }

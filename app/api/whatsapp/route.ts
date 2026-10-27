@@ -21,7 +21,8 @@ export async function GET(req: Request) {
 // Procesa el mensaje en segundo plano (Claude + envío). NO bloquea la respuesta a Meta.
 async function procesarMensaje(msg: any): Promise<void> {
   try {
-    if (!(await kvMarcarUnaVez(`wamsg:${msg.id}`))) return; // dedupe
+    // Sin base no hay dedupe, pero Romina igual contesta.
+    if (!(await kvMarcarUnaVez(`wamsg:${msg.id}`).catch(() => true))) return; // dedupe
     const from: string = msg.from;
     let texto = "";
     if (msg.type === "text") {

@@ -1,7 +1,7 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { SYSTEM_PROMPT } from "./prompt";
 import { cotizar, obtenerValorUF, type Carga } from "./cotizador";
-import { guardarLead } from "./leads";
+import { guardarLeadSeguro } from "./guardar-lead-seguro";
 
 const MODEL = process.env.CLAUDE_MODEL || "claude-opus-4-7";
 
@@ -219,7 +219,7 @@ export async function responderTurno(
               : ctx?.fbclid
                 ? ("meta-ads" as const)
                 : ("web-organico" as const);
-          const resultado = await guardarLead({
+          const resultado = await guardarLeadSeguro({
             nombre: input.nombre ?? "",
             rut: input.rut ?? "",
             telefono,

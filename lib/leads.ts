@@ -1,4 +1,4 @@
-import { kvSet, kvGet, kvDel, kvZAdd, kvZRem, kvZRevRange, kvScanKeys } from "./store";
+import { kvSet, kvGet, kvMGet, kvDel, kvZAdd, kvZRem, kvZRevRange, kvScanKeys } from "./store";
 import { enviarLeadPorEmail } from "./email";
 
 // Canal de origen del lead: cómo llegó el cliente. "google-ads" cuando hay
@@ -59,8 +59,8 @@ export interface Lead {
   exportadoOffline?: string; // ISO
 }
 
-const INDEX_KEY = "leads:by-date";
-const LEAD_TTL_SECONDS = 60 * 60 * 24 * 60; // 60 días
+export const INDEX_KEY = "leads:by-date";
+export const LEAD_TTL_SECONDS = 60 * 60 * 24 * 60; // 60 días
 
 // Índices secundarios para dedupe: mapean email/rut/telefono normalizado al ID.
 function keyByEmail(email: string): string {
@@ -226,7 +226,7 @@ async function mergearLead(existente: Lead, nuevo: Lead): Promise<GuardarLeadRes
   return { lead: mergeado, esNuevo: false };
 }
 
-async function guardarIndicesSecundarios(lead: Lead): Promise<void> {
+export async function guardarIndicesSecundarios(lead: Lead): Promise<void> {
   if (!lead.id) return;
   const ops: Promise<unknown>[] = [];
   if (lead.email) ops.push(kvSet(keyByEmail(lead.email), lead.id, LEAD_TTL_SECONDS));
@@ -269,9 +269,8 @@ export async function listarLeads(limit = 200): Promise<Lead[]> {
   }
 
   const leads: Lead[] = [];
-  for (const id of ids) {
-    const l = await obtenerLead(id);
-    if (l) leads.push(l);
+  for (const raw of await kvMGet([...ids])) {
+    if (raw) leads.push(JSON.parse(raw) as Lead);
   }
   // Re-curar el ZSET con cualquier lead que faltaba (reindex perezoso).
   for (const l of leads) {

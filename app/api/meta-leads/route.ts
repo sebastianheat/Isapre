@@ -13,7 +13,8 @@
 // Setup completo en docs: google-ads/../docs? → ver meta-lead-ads-setup.md
 
 import { waitUntil } from "@vercel/functions";
-import { guardarLead, type Lead } from "@/lib/leads";
+import { type Lead } from "@/lib/leads";
+import { guardarLeadSeguro } from "@/lib/guardar-lead-seguro";
 import { kvMarcarUnaVez } from "@/lib/store";
 import { agregarNota } from "@/lib/leads";
 
@@ -73,7 +74,8 @@ async function procesarLeadgen(ev: LeadgenValue): Promise<void> {
   try {
     const id = ev.leadgen_id!;
     // Dedupe de reintentos del webhook.
-    const esNuevoEvento = await kvMarcarUnaVez(`metalead:${id}`, 60 * 60 * 24 * 7);
+    // Sin base no hay dedupe: mejor un posible duplicado que perder el lead.
+    const esNuevoEvento = await kvMarcarUnaVez(`metalead:${id}`, 60 * 60 * 24 * 7).catch(() => true);
     if (!esNuevoEvento) return;
 
     const token = process.env.META_PAGE_ACCESS_TOKEN;
@@ -102,7 +104,7 @@ async function procesarLeadgen(ev: LeadgenValue): Promise<void> {
 
     // Directo al panel + email a info@. SIN HEAT (lo pidió Sebastián: GHL ya
     // tiene su propia sincronización de formularios de Meta).
-    const r = await guardarLead(lead, { omitirHeat: true });
+    const r = await guardarLeadSeguro(lead, { omitirHeat: true });
 
     // Todo lo que el form traía y no mapeamos, más el nombre del anuncio,
     // queda como nota para no perder información.

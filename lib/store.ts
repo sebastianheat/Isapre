@@ -1,5 +1,10 @@
 // Almacén simple (KV). Usa Upstash/Vercel KV por REST si está configurado;
-// si no, cae a memoria (sirve para pruebas con un solo proceso).
+// si no, usa memoria (sirve para pruebas con un solo proceso).
+//
+// Si Upstash está configurado y falla, las operaciones FALLAN (no caen a
+// memoria). Caer a memoria en silencio fue lo que el 24-10-2026 dejó el panel
+// "vacío" (sin usuarios ni leads) y perdió los leads nuevos: Upstash rechazaba
+// los comandos por cuota agotada y cada instancia seguía con su memoria vacía.
 
 const URL_ = process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL || "";
 const TOKEN = process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN || "";
@@ -17,17 +22,30 @@ async function cmd(args: string[]): Promise<unknown> {
     headers: { Authorization: `Bearer ${TOKEN}`, "Content-Type": "application/json" },
     body: JSON.stringify(args),
   });
-  if (!res.ok) throw new Error(`KV error ${res.status}`);
+  if (!res.ok) {
+    const detalle = (await res.text().catch(() => "")).slice(0, 300);
+    throw new Error(`Base de datos no disponible (Upstash ${res.status}): ${detalle}`);
+  }
   return (await res.json()).result;
 }
 
 export async function kvGet(key: string): Promise<string | null> {
   if (!remoto) return memStrings.get(key) ?? null;
-  try {
-    return ((await cmd(["GET", key])) as string | null) ?? null;
-  } catch {
-    return memStrings.get(key) ?? null;
+  return ((await cmd(["GET", key])) as string | null) ?? null;
+}
+
+// Varias claves en UN comando (en Upstash cada comando cuenta para la cuota:
+// leer 300 leads con GET eran 300 comandos; con MGET son 3).
+export async function kvMGet(keys: string[]): Promise<(string | null)[]> {
+  if (!remoto) return keys.map((k) => memStrings.get(k) ?? null);
+  const out: (string | null)[] = [];
+  for (let i = 0; i < keys.length; i += 100) {
+    const lote = keys.slice(i, i + 100);
+    const r = await cmd(["MGET", ...lote]);
+    const valores = Array.isArray(r) ? (r as (string | null)[]) : [];
+    for (let j = 0; j < lote.length; j++) out.push(valores[j] ?? null);
   }
+  return out;
 }
 
 // ttlSeconds=0 → sin expiración (para usuarios y leads persistentes).
@@ -36,12 +54,8 @@ export async function kvSet(key: string, value: string, ttlSeconds = 86400): Pro
     memStrings.set(key, value);
     return;
   }
-  try {
-    if (ttlSeconds > 0) await cmd(["SET", key, value, "EX", String(ttlSeconds)]);
-    else await cmd(["SET", key, value]);
-  } catch {
-    memStrings.set(key, value);
-  }
+  if (ttlSeconds > 0) await cmd(["SET", key, value, "EX", String(ttlSeconds)]);
+  else await cmd(["SET", key, value]);
 }
 
 export async function kvDel(key: string): Promise<void> {
@@ -52,11 +66,7 @@ export async function kvDel(key: string): Promise<void> {
     memLists.delete(key);
     return;
   }
-  try {
-    await cmd(["DEL", key]);
-  } catch {
-    memStrings.delete(key);
-  }
+  await cmd(["DEL", key]);
 }
 
 // Marca una clave una sola vez (dedupe de webhooks, lock de asignación).
@@ -64,22 +74,13 @@ export async function kvDel(key: string): Promise<void> {
 // atómica en el servidor (GET + SET separados dejaban una ventana en la que
 // dos requests simultáneos veían la clave libre).
 export async function kvMarcarUnaVez(key: string, ttlSeconds = 3600): Promise<boolean> {
-  if (remoto) {
-    try {
-      return (await cmd(["SET", key, "1", "EX", String(ttlSeconds), "NX"])) === "OK";
-    } catch {
-      // cae al camino en memoria, igual que el resto de este módulo
-    }
-  }
+  if (remoto) return (await cmd(["SET", key, "1", "EX", String(ttlSeconds), "NX"])) === "OK";
   if (memStrings.has(key)) return false;
   memStrings.set(key, "1");
   return true;
 }
 
 // ===== Contadores y listas (créditos de la Fase 1) =====
-// A diferencia del resto del módulo, estos NO caen a memoria si Upstash falla
-// estando configurado: un saldo en memoria por instancia divergiría del real
-// en silencio. Mejor que la operación falle visiblemente.
 
 // Suma `delta` (puede ser negativo) al entero en `key` y devuelve el valor nuevo.
 export async function kvIncrBy(key: string, delta: number): Promise<number> {
@@ -119,28 +120,18 @@ export async function kvSAdd(key: string, member: string): Promise<void> {
     s.add(member);
     return;
   }
-  try { await cmd(["SADD", key, member]); }
-  catch {
-    let s = memSets.get(key);
-    if (!s) { s = new Set(); memSets.set(key, s); }
-    s.add(member);
-  }
+  await cmd(["SADD", key, member]);
 }
 
 export async function kvSRem(key: string, member: string): Promise<void> {
   if (!remoto) { memSets.get(key)?.delete(member); return; }
-  try { await cmd(["SREM", key, member]); }
-  catch { memSets.get(key)?.delete(member); }
+  await cmd(["SREM", key, member]);
 }
 
 export async function kvSMembers(key: string): Promise<string[]> {
   if (!remoto) return [...(memSets.get(key) ?? [])];
-  try {
-    const r = await cmd(["SMEMBERS", key]);
-    return Array.isArray(r) ? (r as string[]) : [];
-  } catch {
-    return [...(memSets.get(key) ?? [])];
-  }
+  const r = await cmd(["SMEMBERS", key]);
+  return Array.isArray(r) ? (r as string[]) : [];
 }
 
 // ===== Sorted Sets (para índices ordenados por timestamp) =====
@@ -151,18 +142,12 @@ export async function kvZAdd(key: string, score: number, member: string): Promis
     z.set(member, score);
     return;
   }
-  try { await cmd(["ZADD", key, String(score), member]); }
-  catch {
-    let z = memZSets.get(key);
-    if (!z) { z = new Map(); memZSets.set(key, z); }
-    z.set(member, score);
-  }
+  await cmd(["ZADD", key, String(score), member]);
 }
 
 export async function kvZRem(key: string, member: string): Promise<void> {
   if (!remoto) { memZSets.get(key)?.delete(member); return; }
-  try { await cmd(["ZREM", key, member]); }
-  catch { memZSets.get(key)?.delete(member); }
+  await cmd(["ZREM", key, member]);
 }
 
 // SCAN para listar todas las keys que coincidan con un pattern (ej. "lead:*").
@@ -178,23 +163,15 @@ export async function kvScanKeys(pattern: string, max = 1000): Promise<string[]>
   }
   const keys: string[] = [];
   let cursor = "0";
-  try {
-    do {
-      const r = (await cmd(["SCAN", cursor, "MATCH", pattern, "COUNT", "200"])) as
-        | [string, string[]]
-        | null;
-      if (!r) break;
-      cursor = r[0];
-      keys.push(...(r[1] ?? []));
-      if (keys.length >= max) break;
-    } while (cursor !== "0");
-  } catch {
-    // fallback in-memory
-    return [...memStrings.keys()].filter((k) => {
-      if (pattern.endsWith("*")) return k.startsWith(pattern.slice(0, -1));
-      return k === pattern;
-    });
-  }
+  do {
+    const r = (await cmd(["SCAN", cursor, "MATCH", pattern, "COUNT", "1000"])) as
+      | [string, string[]]
+      | null;
+    if (!r) break;
+    cursor = r[0];
+    keys.push(...(r[1] ?? []));
+    if (keys.length >= max) break;
+  } while (cursor !== "0");
   return keys;
 }
 
@@ -206,10 +183,6 @@ export async function kvZRevRange(key: string, start = 0, stop = -1): Promise<st
     const sorted = [...z.entries()].sort((a, b) => b[1] - a[1]).map((e) => e[0]);
     return sorted.slice(start, stop === -1 ? undefined : stop + 1);
   }
-  try {
-    const r = await cmd(["ZREVRANGE", key, String(start), String(stop)]);
-    return Array.isArray(r) ? (r as string[]) : [];
-  } catch {
-    return [];
-  }
+  const r = await cmd(["ZREVRANGE", key, String(start), String(stop)]);
+  return Array.isArray(r) ? (r as string[]) : [];
 }

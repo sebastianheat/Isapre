@@ -1,4 +1,5 @@
-import { guardarLead, type Lead } from "@/lib/leads";
+import { type Lead } from "@/lib/leads";
+import { guardarLeadSeguro } from "@/lib/guardar-lead-seguro";
 
 export const runtime = "nodejs";
 export const maxDuration = 15;
@@ -63,14 +64,7 @@ export async function POST(req: Request) {
     canal: gclid ? "google-ads" : fbclid ? "meta-ads" : "web-organico",
   };
 
-  let esNuevo = true;
-  try {
-    const r = await guardarLead(lead);
-    esNuevo = r.esNuevo;
-  } catch (err) {
-    console.error("Error guardando lead:", err);
-    return Response.json({ ok: false, error: "Error guardando el lead." }, { status: 500 });
-  }
+  const { esNuevo } = await guardarLeadSeguro(lead);
 
   // esNuevo: true → cliente nuevo, dispara conversión Google Ads en el cliente.
   // esNuevo: false → ya existía (mismo email/rut/teléfono), no contar conversión.
