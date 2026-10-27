@@ -332,3 +332,38 @@ export async function enviarLeadAsignado(
   });
   if (error) throw new Error(`Resend lead asignado: ${error.message ?? JSON.stringify(error)}`);
 }
+
+// Respaldo diario en Excel a info@ (cron /api/cron/respaldo-diario, 2 AM).
+export async function enviarRespaldoPorEmail(
+  archivo: Buffer,
+  nombreArchivo: string,
+  resumen: { leads: number; sinAsignar: number; ejecutivos: number },
+): Promise<void> {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) throw new Error("RESEND_API_KEY no configurado; respaldo NO enviado.");
+  const resend = new Resend(apiKey);
+  const fecha = new Date().toLocaleDateString("es-CL", { timeZone: "America/Santiago" });
+  const html = `
+  <div style="font-family: -apple-system, system-ui, sans-serif; color: #0F172A; max-width: 560px;">
+    <h2 style="color: #0D47A1; margin: 0 0 12px;">Respaldo diario del panel — ${esc(fecha)}</h2>
+    <p style="color: #475569;">Adjunto va el Excel con el estado completo del panel a esta hora:</p>
+    <ul style="font-size: 14px; line-height: 1.7;">
+      <li><strong>${resumen.leads}</strong> leads (${resumen.sinAsignar} sin asignar)</li>
+      <li><strong>${resumen.ejecutivos}</strong> ejecutivos con su saldo de créditos</li>
+      <li>Historial de créditos</li>
+    </ul>
+    <p style="color: #475569; font-size: 12px; margin-top: 18px;">
+      Guárdalo tal cual: si el panel falla, este archivo tiene todo lo que había el día anterior.
+      Contiene datos personales de clientes: no lo reenvíes fuera del equipo.
+    </p>
+  </div>`;
+  const { error } = await resend.emails.send({
+    from: REMITENTE,
+    to: [DESTINO],
+    subject: `🗂️ Respaldo panel Nueva Isapre (${fecha}): ${resumen.leads} leads`,
+    html,
+    text: `Respaldo diario del panel (${fecha}): ${resumen.leads} leads, ${resumen.sinAsignar} sin asignar, ${resumen.ejecutivos} ejecutivos. Excel adjunto.`,
+    attachments: [{ filename: nombreArchivo, content: archivo }],
+  });
+  if (error) throw new Error(`Resend respaldo: ${error.message ?? JSON.stringify(error)}`);
+}

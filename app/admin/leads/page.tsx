@@ -33,6 +33,17 @@ export default async function LeadsPage() {
       {sesion.role === "superadmin" && (
         <div style={{ marginTop: 18, textAlign: "center" }}>
           <a
+            href="/api/admin/respaldo"
+            className="admin-btn small"
+            style={{ display: "inline-block", textDecoration: "none", marginBottom: 6 }}
+          >
+            🗂️ Descargar respaldo completo (Excel)
+          </a>
+          <p style={{ fontSize: 11, color: "var(--admin-text-soft)", margin: "0 0 14px" }}>
+            Leads, ejecutivos con su saldo e historial de créditos, a este momento. Todos los días
+            a las 2 AM llega uno igual a info@nuevaisapre.cl.
+          </p>
+          <a
             href="/api/admin/leads/export-offline"
             className="admin-btn small secondary"
             style={{ display: "inline-block", textDecoration: "none" }}
