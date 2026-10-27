@@ -43,10 +43,14 @@ export default function AdminShell({ title, userEmail, role, children }: Props) 
   // Aviso al superadmin de impugnaciones de leads falsos por revisar.
   useEffect(() => {
     if (role !== "superadmin") return;
-    fetch("/api/admin/impugnaciones")
-      .then((r) => r.json())
-      .then((d) => setImpugnaciones(Number(d?.pendientes) || 0))
-      .catch(() => {});
+    const cargar = () =>
+      fetch("/api/admin/impugnaciones")
+        .then((r) => r.json())
+        .then((d) => setImpugnaciones(Number(d?.pendientes) || 0))
+        .catch(() => {});
+    cargar();
+    window.addEventListener("admin:impugnaciones", cargar);
+    return () => window.removeEventListener("admin:impugnaciones", cargar);
   }, [role, pathname]);
 
   const enPerfil = pathname === "/admin/perfil";

@@ -4,6 +4,8 @@ import { obtenerSesion } from "@/lib/auth";
 import { getUsuario, listarUsuarios } from "@/lib/usuarios";
 import { listarMovimientos, obtenerSaldo, type TipoMovimiento } from "@/lib/credits-kv";
 import AdminShell from "@/components/AdminShell";
+import ImpugnacionesPanel from "@/components/ImpugnacionesPanel";
+import { listarImpugnacionesDe } from "@/lib/impugnaciones";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -32,11 +34,12 @@ export default async function HistorialCreditosPage({
   if (sesion.role !== "superadmin") redirect("/admin/leads");
 
   const email = decodeURIComponent((await params).email).toLowerCase();
-  const [usuario, movimientos, saldoGuardado, usuarios] = await Promise.all([
+  const [usuario, movimientos, saldoGuardado, usuarios, impugnaciones] = await Promise.all([
     getUsuario(email),
     listarMovimientos(email),
     obtenerSaldo(email),
     listarUsuarios(),
+    listarImpugnacionesDe(email),
   ]);
   if (!usuario && movimientos.length === 0) notFound();
 
@@ -60,6 +63,17 @@ export default async function HistorialCreditosPage({
           </div>
         )}
       </div>
+
+      {impugnaciones.pendientes.length + impugnaciones.resueltas.length > 0 && (
+        <div id="impugnaciones">
+          <ImpugnacionesPanel
+            pendientesIniciales={impugnaciones.pendientes}
+            resueltasIniciales={impugnaciones.resueltas}
+            nombres={Object.fromEntries(usuarios.map((u) => [u.email.toLowerCase(), u.nombre || u.email]))}
+            encabezado={false}
+          />
+        </div>
+      )}
 
       {movimientos.length === 0 ? (
         <div className="admin-card reparto-vacio">

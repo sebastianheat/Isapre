@@ -194,3 +194,24 @@ export async function listarImpugnaciones(): Promise<{ pendientes: Lead[]; resue
   }
   return { pendientes, resueltas };
 }
+
+// Por ejecutivo (para la columna "Impugnados" de Créditos): pendientes y total
+// (pendientes + las últimas resueltas).
+export async function resumenPorEjecutivo(): Promise<Record<string, { pendientes: number; total: number }>> {
+  const { pendientes, resueltas } = await listarImpugnaciones();
+  const r: Record<string, { pendientes: number; total: number }> = {};
+  for (const l of [...pendientes, ...resueltas]) {
+    const email = (l.impugnacion?.por ?? "").toLowerCase();
+    if (!email) continue;
+    r[email] ??= { pendientes: 0, total: 0 };
+    r[email].total += 1;
+    if (l.impugnacion?.estado === "pendiente") r[email].pendientes += 1;
+  }
+  return r;
+}
+
+export async function listarImpugnacionesDe(email: string): Promise<{ pendientes: Lead[]; resueltas: Lead[] }> {
+  const { pendientes, resueltas } = await listarImpugnaciones();
+  const suyo = (l: Lead) => mismo(l.impugnacion?.por, email);
+  return { pendientes: pendientes.filter(suyo), resueltas: resueltas.filter(suyo) };
+}

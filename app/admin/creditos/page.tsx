@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { obtenerSesion } from "@/lib/auth";
 import { listarUsuarios } from "@/lib/usuarios";
 import { obtenerSaldo } from "@/lib/credits-kv";
+import { resumenPorEjecutivo } from "@/lib/impugnaciones";
 import AdminShell from "@/components/AdminShell";
 import CreditosPanel, { type FilaSaldo } from "@/components/CreditosPanel";
 
@@ -18,12 +19,13 @@ export default async function CreditosPage({
   if (sesion.role !== "superadmin") redirect("/admin/leads");
 
   const { ejecutivo } = await searchParams;
-  const usuarios = await listarUsuarios();
+  const [usuarios, impugnados] = await Promise.all([listarUsuarios(), resumenPorEjecutivo()]);
   const filas: FilaSaldo[] = await Promise.all(
     usuarios.map(async (u) => ({
       email: u.email,
       nombre: u.nombre || u.email,
       saldo: await obtenerSaldo(u.email),
+      impugnados: impugnados[u.email.toLowerCase()],
     })),
   );
   filas.sort((a, b) => a.nombre.localeCompare(b.nombre, "es"));

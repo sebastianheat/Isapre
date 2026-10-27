@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import type { Lead } from "@/lib/leads";
 import { MOTIVOS_IMPUGNACION } from "@/lib/pipeline";
@@ -16,11 +17,14 @@ export default function ImpugnacionesPanel({
   pendientesIniciales,
   resueltasIniciales,
   nombres,
+  encabezado = true,
 }: {
   pendientesIniciales: Lead[];
   resueltasIniciales: Lead[];
   nombres: Record<string, string>;
+  encabezado?: boolean; // false dentro del historial de un ejecutivo
 }) {
+  const router = useRouter();
   const [pendientes, setPendientes] = useState(pendientesIniciales);
   const [resueltas, setResueltas] = useState(resueltasIniciales);
   const [respuesta, setRespuesta] = useState<Record<string, string>>({});
@@ -46,6 +50,8 @@ export default function ImpugnacionesPanel({
       const l = data.lead as Lead;
       setPendientes((ps) => ps.filter((p) => p.id !== id));
       setResueltas((rs) => [l, ...rs]);
+      router.refresh(); // el saldo y los movimientos cambian al aceptar
+      window.dispatchEvent(new Event("admin:impugnaciones")); // actualiza el aviso del panel
       setMsg({
         tipo: "ok",
         texto: aceptar
@@ -61,15 +67,19 @@ export default function ImpugnacionesPanel({
 
   return (
     <div style={{ display: "grid", gap: 12 }}>
-      <h1 className="admin-h1">Impugnaciones de leads falsos</h1>
-      <p style={{ margin: 0, fontSize: 13 }}>
-        Un ejecutivo puede impugnar un lead solo si el teléfono es falso y además el nombre o el correo.
-        Al <strong>aceptar</strong>, el lead queda como falso (perdido) y se le devuelve el crédito. Al{" "}
-        <strong>rechazar</strong>, el lead sigue igual y el ejecutivo ve tu motivo.
-      </p>
+      {encabezado && (
+        <>
+          <h1 className="admin-h1">Impugnaciones de leads falsos</h1>
+          <p style={{ margin: 0, fontSize: 13 }}>
+            Un ejecutivo puede impugnar un lead solo si el teléfono es falso y además el nombre o el correo.
+            Al <strong>aceptar</strong>, el lead queda como falso (perdido) y se le devuelve el crédito. Al{" "}
+            <strong>rechazar</strong>, el lead sigue igual y el ejecutivo ve tu motivo.
+          </p>
+        </>
+      )}
       {msg && <div className={`admin-msg ${msg.tipo === "error" ? "error" : "ok"}`} style={{ margin: 0 }}>{msg.texto}</div>}
 
-      <h2 className="admin-h2">Por revisar ({pendientes.length})</h2>
+      <h2 className="admin-h2">{encabezado ? "Por revisar" : "🚩 Impugnaciones por revisar"} ({pendientes.length})</h2>
       {pendientes.length === 0 && <div className="admin-card">No hay impugnaciones pendientes.</div>}
       {pendientes.map((l) => {
         const imp = l.impugnacion!;
@@ -96,11 +106,15 @@ export default function ImpugnacionesPanel({
               </div>
               <div>Comentario: {imp.comentario}</div>
             </div>
-            <input
-              placeholder="Motivo (obligatorio si rechazas; lo ve el ejecutivo)"
-              value={respuesta[id] ?? ""}
-              onChange={(e) => setRespuesta((r) => ({ ...r, [id]: e.target.value }))}
-            />
+            <label style={{ display: "grid", gap: 4, fontSize: 13 }}>
+              Detalle (obligatorio si rechazas; el ejecutivo lo va a ver)
+              <textarea
+                rows={2}
+                placeholder="Ej.: el número sí tiene WhatsApp, vuelve a intentar contactarlo."
+                value={respuesta[id] ?? ""}
+                onChange={(e) => setRespuesta((r) => ({ ...r, [id]: e.target.value }))}
+              />
+            </label>
             <div style={{ display: "flex", gap: 8 }}>
               <button className="admin-btn small" onClick={() => resolver(l, true)} disabled={enCurso !== ""}>
                 {enCurso === id ? "…" : "Aceptar: es falso"}
@@ -115,7 +129,7 @@ export default function ImpugnacionesPanel({
 
       {resueltas.length > 0 && (
         <>
-          <h2 className="admin-h2">Últimas resueltas</h2>
+          <h2 className="admin-h2">{encabezado ? "Últimas resueltas" : "Impugnaciones resueltas"}</h2>
           <div className="admin-card" style={{ overflowX: "auto" }}>
             <table className="creditos-tabla">
               <thead>

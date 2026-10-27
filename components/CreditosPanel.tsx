@@ -8,6 +8,7 @@ export interface FilaSaldo {
   email: string;
   nombre: string;
   saldo: number;
+  impugnados?: { pendientes: number; total: number };
 }
 
 export default function CreditosPanel({
@@ -102,13 +103,26 @@ export default function CreditosPanel({
       <div className="admin-card">
         <table className="creditos-tabla">
           <thead>
-            <tr><th>Ejecutivo</th><th className="num">Saldo</th></tr>
+            <tr><th>Ejecutivo</th><th className="num">Saldo</th><th>Impugnados</th></tr>
           </thead>
           <tbody>
             {filas.map((f) => (
               <tr key={f.email}>
                 <td><Link href={`/admin/creditos/${encodeURIComponent(f.email)}`}>{f.nombre}</Link></td>
                 <td className="num"><strong>{f.saldo}</strong></td>
+                <td>
+                  {f.impugnados && f.impugnados.total > 0 ? (
+                    <Link href={`/admin/creditos/${encodeURIComponent(f.email)}#impugnaciones`}>
+                      {f.impugnados.pendientes > 0 ? (
+                        <span className="tag orange">🚩 {f.impugnados.pendientes} pendiente{f.impugnados.pendientes === 1 ? "" : "s"} · Ver</span>
+                      ) : (
+                        "Ver"
+                      )}
+                    </Link>
+                  ) : (
+                    <span style={{ color: "var(--admin-text-soft)" }}>—</span>
+                  )}
+                </td>
               </tr>
             ))}
           </tbody>
