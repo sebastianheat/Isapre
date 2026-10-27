@@ -121,6 +121,7 @@ export async function restaurarLeads(leads: Lead[], ahora = Date.now()): Promise
 export function leerAsignaciones(texto: string): Map<string, string> {
   const m = new Map<string, string>();
   for (const linea of texto.split(/\r?\n/)) {
+    if (linea.trim().startsWith("#")) continue;
     const partes = linea.split(/[;\t,]|->|→/).map((x) => x.trim()).filter(Boolean);
     if (partes.length < 2) continue;
     m.set(partes[0].toLowerCase(), partes[partes.length - 1]);

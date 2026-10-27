@@ -87,7 +87,7 @@ describe("restaurarLeads", () => {
 describe("asignación de leads reimportados", () => {
   it("lee 'correo del lead ; ejecutivo' en varios formatos", async () => {
     const { restaurar } = await cargar();
-    const m = restaurar.leerAsignaciones("Pedro@X.cl ; ingrid@x.cl\nlaura@x.cl\tIngrid\nlinea suelta");
+    const m = restaurar.leerAsignaciones("# comentario ; x\nPedro@X.cl ; ingrid@x.cl\nlaura@x.cl\tIngrid\nlinea suelta\nsolo@x.cl ; ");
     expect([...m.entries()]).toEqual([["pedro@x.cl", "ingrid@x.cl"], ["laura@x.cl", "Ingrid"]]);
   });
 
