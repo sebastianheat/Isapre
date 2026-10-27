@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { obtenerSesion } from "@/lib/auth";
 import { listarLeadsSinAsignar } from "@/lib/leads";
@@ -55,6 +56,9 @@ export default async function RepartoPage() {
           .sort((a, b) => a.nombre.localeCompare(b.nombre, "es"))}
       />
       <RepartoCola leadsIniciales={cola} ejecutivosIniciales={ejecutivos} />
+      <p style={{ textAlign: "center", marginTop: 18 }}>
+        <Link href="/admin/impugnaciones">🚩 Impugnaciones de leads falsos →</Link>
+      </p>
     </AdminShell>
   );
 }

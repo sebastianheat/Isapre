@@ -367,3 +367,75 @@ export async function enviarRespaldoPorEmail(
   });
   if (error) throw new Error(`Resend respaldo: ${error.message ?? JSON.stringify(error)}`);
 }
+
+const MOTIVO_IMPUGNACION: Record<string, string> = { telefono: "teléfono", nombre: "nombre", correo: "correo" };
+
+// Aviso a info@ de que un ejecutivo impugnó un lead (lo resuelve el superadmin).
+export async function enviarImpugnacionNueva(lead: Lead, ejecutivoNombre: string): Promise<void> {
+  const apiKey = process.env.RESEND_API_KEY;
+  const imp = lead.impugnacion;
+  if (!apiKey || !imp) return;
+  const site = process.env.NEXT_PUBLIC_SITE_URL || "https://nuevaisapre.cl";
+  const falsos = imp.motivos.map((m) => MOTIVO_IMPUGNACION[m] ?? m).join(", ");
+  const html = `
+  <div style="font-family: -apple-system, system-ui, sans-serif; color: #0F172A; max-width: 560px;">
+    <h2 style="color: #B45309; margin: 0 0 12px;">🚩 Impugnación de lead: ${esc(lead.nombre)}</h2>
+    <p style="color: #475569; margin: 0 0 14px;">
+      ${esc(ejecutivoNombre)} dice que este lead es falso (${esc(falsos)}).
+    </p>
+    <table style="border-collapse: collapse; width: 100%; font-size: 14px;">
+      <tbody>
+        ${row("Nombre", esc(lead.nombre))}
+        ${row("WhatsApp", esc(lead.telefono))}
+        ${row("Email", esc(lead.email))}
+        ${row("RUT", esc(lead.rut))}
+        ${row("Comentario", esc(imp.comentario))}
+      </tbody>
+    </table>
+    <p style="margin-top: 20px;">
+      <a href="${site}/admin/impugnaciones" style="display:inline-block; padding:10px 18px; background:#0D47A1; color:#fff; text-decoration:none; border-radius:8px; font-weight:600;">
+        Revisar en el panel
+      </a>
+    </p>
+  </div>`;
+  const { error } = await new Resend(apiKey).emails.send({
+    from: REMITENTE,
+    to: [DESTINO],
+    subject: `🚩 Impugnación: ${lead.nombre} (${ejecutivoNombre})`,
+    html,
+    text: `${ejecutivoNombre} impugnó el lead ${lead.nombre} (${falsos}). Comentario: ${imp.comentario}. Revisar: ${site}/admin/impugnaciones`,
+  });
+  if (error) throw new Error(`Resend impugnación: ${error.message ?? JSON.stringify(error)}`);
+}
+
+// Aviso al ejecutivo de que su impugnación se aceptó o se rechazó.
+export async function enviarImpugnacionResuelta(
+  lead: Lead,
+  ejecutivo: { email: string; nombre?: string },
+): Promise<void> {
+  const apiKey = process.env.RESEND_API_KEY;
+  const imp = lead.impugnacion;
+  if (!apiKey || !imp) return;
+  const aceptada = imp.estado === "aceptada";
+  const titulo = aceptada
+    ? `Impugnación aceptada: ${lead.nombre}`
+    : `Impugnación rechazada: ${lead.nombre}`;
+  const detalle = aceptada
+    ? imp.creditoDevuelto
+      ? "El lead quedó marcado como falso y se te devolvió el crédito."
+      : "El lead quedó marcado como falso."
+    : `El lead sigue asignado a ti. Motivo: ${imp.respuesta ?? ""}`;
+  const { error } = await new Resend(apiKey).emails.send({
+    from: REMITENTE,
+    to: [ejecutivo.email],
+    replyTo: DESTINO,
+    subject: `${aceptada ? "✅" : "❌"} ${titulo}`,
+    html: `
+  <div style="font-family: -apple-system, system-ui, sans-serif; color: #0F172A; max-width: 560px;">
+    <h2 style="color: #0D47A1; margin: 0 0 12px;">${esc(titulo)}</h2>
+    <p style="color: #475569;">Hola${ejecutivo.nombre ? ` ${esc(ejecutivo.nombre)}` : ""}, ${esc(detalle)}</p>
+  </div>`,
+    text: `${titulo}. ${detalle}`,
+  });
+  if (error) throw new Error(`Resend impugnación resuelta: ${error.message ?? JSON.stringify(error)}`);
+}

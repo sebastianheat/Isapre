@@ -25,6 +25,7 @@ export default function AdminShell({ title, userEmail, role, children }: Props) 
   const pathname = usePathname();
   const router = useRouter();
   const [usaSemilla, setUsaSemilla] = useState(false);
+  const [impugnaciones, setImpugnaciones] = useState(0);
 
   // Verifica si la password actual sigue siendo la semilla (temporal). Si lo
   // es, el panel queda bloqueado en /admin/perfil hasta que la cambie. Se hace
@@ -38,6 +39,15 @@ export default function AdminShell({ title, userEmail, role, children }: Props) 
     window.addEventListener("admin:password-cambiada", alCambiar);
     return () => window.removeEventListener("admin:password-cambiada", alCambiar);
   }, []);
+
+  // Aviso al superadmin de impugnaciones de leads falsos por revisar.
+  useEffect(() => {
+    if (role !== "superadmin") return;
+    fetch("/api/admin/impugnaciones")
+      .then((r) => r.json())
+      .then((d) => setImpugnaciones(Number(d?.pendientes) || 0))
+      .catch(() => {});
+  }, [role, pathname]);
 
   const enPerfil = pathname === "/admin/perfil";
   useEffect(() => {
@@ -84,6 +94,11 @@ export default function AdminShell({ title, userEmail, role, children }: Props) 
           <div className="admin-msg warn">
             ⚠️ Estás usando una contraseña temporal. Debes cambiarla para seguir usando el panel.
           </div>
+        )}
+        {!usaSemilla && impugnaciones > 0 && pathname !== "/admin/impugnaciones" && (
+          <Link href="/admin/impugnaciones" className="admin-msg warn" style={{ display: "block", textDecoration: "none" }}>
+            🚩 Tienes {impugnaciones} impugnaci{impugnaciones === 1 ? "ón" : "ones"} de leads falsos por revisar →
+          </Link>
         )}
         <div style={{ fontSize: 12, color: "var(--admin-text-soft)", marginBottom: 8 }}>
           Sesión: <strong>{userEmail}</strong> · {role === "superadmin" ? "Superadmin" : "Ejecutivo"}

@@ -66,3 +66,33 @@ export function estadoAsignacion(lead: {
 }): EstadoAsignacion {
   return lead.assignmentStatus ?? (lead.asignadoA ? "asignado" : "sin_asignar");
 }
+
+// Impugnación de un lead falso (lo pide el ejecutivo, lo resuelve el
+// superadmin). Solo vale si el teléfono es falso Y además el nombre o el
+// correo: un teléfono real que no contesta NO es un lead falso.
+export type MotivoImpugnacion = "telefono" | "nombre" | "correo";
+
+export const MOTIVOS_IMPUGNACION: { id: MotivoImpugnacion; label: string }[] = [
+  { id: "telefono", label: "El teléfono es falso (no existe o no tiene WhatsApp)" },
+  { id: "nombre", label: "El nombre es falso (ej. “jajaja”, letras al azar)" },
+  { id: "correo", label: "El correo es falso (ej. aaaa@aaa.cl)" },
+];
+
+export type EstadoImpugnacion = "pendiente" | "aceptada" | "rechazada" | "retirada";
+
+export interface ImpugnacionLead {
+  estado: EstadoImpugnacion;
+  motivos: MotivoImpugnacion[];
+  comentario: string;
+  por: string; // email del ejecutivo que impugnó
+  fecha: string; // ISO
+  resueltaPor?: string;
+  resueltaEn?: string; // ISO
+  respuesta?: string; // motivo del rechazo o nota de la aceptación
+  creditoDevuelto?: boolean;
+}
+
+// Regla del negocio: teléfono falso + (nombre o correo falso).
+export function motivosValidos(motivos: MotivoImpugnacion[]): boolean {
+  return motivos.includes("telefono") && (motivos.includes("nombre") || motivos.includes("correo"));
+}

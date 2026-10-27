@@ -34,7 +34,7 @@ export function construirHojas(d: DatosRespaldo): Hoja[] {
       "Fecha", "Nombre", "RUT", "Teléfono", "Email", "Región", "Edad", "Sueldo líquido",
       "Previsión actual", "Cargas", "Clínicas preferidas", "Isapre", "Plan", "Canal", "Origen",
       "Etapa", "Calidad", "Ejecutivo", "Correo ejecutivo", "Estado reparto", "Crédito cobrado",
-      "Veces que llegó", "Notas", "Recordatorios pendientes", "Última actualización", "ID",
+      "Veces que llegó", "Notas", "Recordatorios pendientes", "Impugnación", "Última actualización", "ID",
     ],
     ...leads.map((l) => {
       const asignado = (l.asignadoA ?? "").toLowerCase();
@@ -49,6 +49,7 @@ export function construirHojas(d: DatosRespaldo): Hoja[] {
         l.contactos,
         (l.notas ?? []).map((n) => `[${fechaCl(n.fecha)} · ${nombreDe.get(n.autor.toLowerCase()) ?? n.autor}] ${n.texto}`).join("\n"),
         pendientes.map((r) => `${fechaCl(r.fecha)}: ${r.mensaje}`).join("\n"),
+        l.falso ? "Lead falso (aceptada)" : l.impugnacion ? `${l.impugnacion.estado}: ${l.impugnacion.comentario}` : "",
         fechaCl(l.actualizado), l.id,
       ];
     }),

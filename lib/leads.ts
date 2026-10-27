@@ -9,8 +9,8 @@ export type CanalLead = "google-ads" | "meta-ads" | "web-organico" | "whatsapp";
 // Tipos/constantes del pipeline viven en lib/pipeline.ts (módulo client-safe,
 // sin dependencias de servidor). Acá los re-exportamos para mantener la API
 // de este módulo hacia el resto del backend.
-import type { EtapaLead, CalidadLead, NotaLead, RecordatorioLead } from "./pipeline";
-export type { EtapaLead, CalidadLead, NotaLead, RecordatorioLead } from "./pipeline";
+import type { EtapaLead, CalidadLead, NotaLead, RecordatorioLead, ImpugnacionLead } from "./pipeline";
+export type { EtapaLead, CalidadLead, NotaLead, RecordatorioLead, ImpugnacionLead } from "./pipeline";
 export { ETAPAS, CALIDADES, estadoAsignacion } from "./pipeline";
 // Estado del reparto del lead (marketplace, Fase 1). Los leads anteriores a
 // la Fase 1 no tienen el campo: se derivan con estadoAsignacion().
@@ -57,6 +57,9 @@ export interface Lead {
   calidad?: CalidadLead;
   // Marca de la última vez que este lead se incluyó en un export offline.
   exportadoOffline?: string; // ISO
+  // Impugnación de lead falso (lib/impugnaciones.ts). falso = impugnación aceptada.
+  impugnacion?: ImpugnacionLead;
+  falso?: boolean;
 }
 
 export const INDEX_KEY = "leads:by-date";

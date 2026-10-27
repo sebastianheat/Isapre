@@ -8,6 +8,7 @@ import AdminShell from "@/components/AdminShell";
 import LeadDetailActions from "@/components/LeadDetailActions";
 import LeadPipeline from "@/components/LeadPipeline";
 import LeadEditForm from "@/components/LeadEditForm";
+import ImpugnarLead from "@/components/ImpugnarLead";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -62,6 +63,15 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
         {tagCanal(lead.canal)}
         {lead.origen && <span className="tag">{lead.origen}</span>}
       </div>
+
+      <ImpugnarLead
+        leadId={lead.id ?? ""}
+        asignadoA={lead.asignadoA}
+        impugnacionInicial={lead.impugnacion}
+        falsoInicial={lead.falso}
+        miEmail={sesion.email}
+        esSuperadmin={sesion.role === "superadmin"}
+      />
 
       <LeadPipeline
         initialLead={lead}
