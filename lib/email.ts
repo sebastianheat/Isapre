@@ -333,12 +333,15 @@ export async function enviarLeadAsignado(
   if (error) throw new Error(`Resend lead asignado: ${error.message ?? JSON.stringify(error)}`);
 }
 
-// Respaldo diario en Excel a info@ (cron /api/cron/respaldo-diario, 2 AM).
+// Respaldo diario en Excel a info@ (cron /api/cron/respaldo-diario, 2 AM) y a
+// las copias de RESPALDO_EMAIL_COPIA (correos separados por coma). Va un correo
+// por destinatario: si un buzón lo bloquea, los demás igual lo reciben. Falla
+// solo si no salió a ninguno. Devuelve el id de Resend de cada envío.
 export async function enviarRespaldoPorEmail(
   archivo: Buffer,
   nombreArchivo: string,
   resumen: { leads: number; sinAsignar: number; ejecutivos: number },
-): Promise<void> {
+): Promise<{ para: string; id?: string; error?: string }[]> {
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) throw new Error("RESEND_API_KEY no configurado; respaldo NO enviado.");
   const resend = new Resend(apiKey);
@@ -357,15 +360,26 @@ export async function enviarRespaldoPorEmail(
       Contiene datos personales de clientes: no lo reenvíes fuera del equipo.
     </p>
   </div>`;
-  const { error } = await resend.emails.send({
-    from: REMITENTE,
-    to: [DESTINO],
-    subject: `🗂️ Respaldo panel Nueva Isapre (${fecha}): ${resumen.leads} leads`,
-    html,
-    text: `Respaldo diario del panel (${fecha}): ${resumen.leads} leads, ${resumen.sinAsignar} sin asignar, ${resumen.ejecutivos} ejecutivos. Excel adjunto.`,
-    attachments: [{ filename: nombreArchivo, content: archivo }],
-  });
-  if (error) throw new Error(`Resend respaldo: ${error.message ?? JSON.stringify(error)}`);
+  const copias = (process.env.RESPALDO_EMAIL_COPIA || "")
+    .split(",")
+    .map((x) => x.trim())
+    .filter((x) => x.includes("@"));
+  const envios: { para: string; id?: string; error?: string }[] = [];
+  for (const para of [DESTINO, ...copias]) {
+    const { data, error } = await resend.emails.send({
+      from: REMITENTE,
+      to: [para],
+      subject: `Respaldo panel Nueva Isapre (${fecha}): ${resumen.leads} leads`,
+      html,
+      text: `Respaldo diario del panel (${fecha}): ${resumen.leads} leads, ${resumen.sinAsignar} sin asignar, ${resumen.ejecutivos} ejecutivos. Excel adjunto.`,
+      attachments: [{ filename: nombreArchivo, content: archivo }],
+    });
+    envios.push(error ? { para, error: error.message ?? JSON.stringify(error) } : { para, id: data?.id });
+  }
+  if (envios.every((e) => e.error)) {
+    throw new Error(`Resend respaldo: ${envios.map((e) => `${e.para}: ${e.error}`).join("; ")}`);
+  }
+  return envios;
 }
 
 const MOTIVO_IMPUGNACION: Record<string, string> = { telefono: "teléfono", nombre: "nombre", correo: "correo" };

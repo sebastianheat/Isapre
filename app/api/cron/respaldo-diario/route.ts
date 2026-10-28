@@ -23,9 +23,10 @@ export async function GET(req: Request) {
       sinAsignar: datos.leads.filter((l) => estadoAsignacion(l) !== "asignado").length,
       ejecutivos: datos.usuarios.filter((u) => u.role === "ejecutivo").length,
     };
-    await enviarRespaldoPorEmail(archivo, nombre, resumen);
-    console.log(`Respaldo diario enviado: ${nombre} (${archivo.length} bytes)`, resumen);
-    return Response.json({ ok: true, archivo: nombre, bytes: archivo.length, ...resumen });
+    const envios = await enviarRespaldoPorEmail(archivo, nombre, resumen);
+    console.log(`Respaldo diario enviado: ${nombre} (${archivo.length} bytes)`, resumen, envios);
+    for (const e of envios.filter((x) => x.error)) console.error(`Respaldo a ${e.para} falló: ${e.error}`);
+    return Response.json({ ok: true, archivo: nombre, bytes: archivo.length, ...resumen, envios });
   } catch (e) {
     console.error("Respaldo diario falló:", e);
     return Response.json({ ok: false, error: e instanceof Error ? e.message : String(e) }, { status: 500 });
