@@ -1,5 +1,6 @@
 import { type Lead } from "@/lib/leads";
 import { guardarLeadSeguro } from "@/lib/guardar-lead-seguro";
+import { camposDeCampana, vieneDeGoogleAds } from "@/lib/campanas";
 
 export const runtime = "nodejs";
 export const maxDuration = 15;
@@ -19,6 +20,7 @@ interface FormPayload {
   origen?: string;
   gclid?: string | null;
   fbclid?: string | null;
+  campana?: unknown; // parámetros de la URL de llegada (gad_campaignid, gbraid, utm_*)
 }
 
 export async function POST(req: Request) {
@@ -47,6 +49,7 @@ export async function POST(req: Request) {
 
   const gclid = body.gclid?.trim() || undefined;
   const fbclid = body.fbclid?.trim() || undefined;
+  const campana = camposDeCampana(body.campana);
   const lead: Lead = {
     nombre,
     rut,
@@ -61,7 +64,8 @@ export async function POST(req: Request) {
     origen: body.origen ?? "landing-form",
     gclid,
     fbclid,
-    canal: gclid ? "google-ads" : fbclid ? "meta-ads" : "web-organico",
+    ...campana,
+    canal: vieneDeGoogleAds(gclid, campana) ? "google-ads" : fbclid ? "meta-ads" : "web-organico",
   };
 
   const { esNuevo } = await guardarLeadSeguro(lead);

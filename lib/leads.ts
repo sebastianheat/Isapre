@@ -37,6 +37,14 @@ export interface Lead {
   gclid?: string;   // Google Ads click ID
   fbclid?: string;  // Meta (Facebook/Instagram) click ID
   metaLeadId?: string; // ID del lead en Meta Lead Ads (formularios instantáneos)
+  gbraid?: string; // Google Ads en iPhone (en vez de gclid)
+  wbraid?: string;
+  campanaId?: string; // ID de la campaña de Google Ads (gad_campaignid); nombre en lib/campanas.ts
+  utmSource?: string;
+  utmMedium?: string;
+  utmCampaign?: string;
+  utmTerm?: string;
+  utmContent?: string;
   // Fecha ISO, seteada al guardar (primera vez).
   fecha?: string;
   // Última actualización (se actualiza en cada upsert).
@@ -85,7 +93,7 @@ function generarId(lead: Lead): string {
 
 function inferirCanal(lead: Lead): CanalLead {
   if (lead.canal) return lead.canal;
-  if (lead.gclid) return "google-ads";
+  if (lead.gclid || lead.gbraid || lead.wbraid || lead.campanaId) return "google-ads";
   if (lead.fbclid || lead.metaLeadId) return "meta-ads";
   if (lead.origen === "whatsapp-chat") return "whatsapp";
   return "web-organico";
@@ -213,6 +221,14 @@ async function mergearLead(existente: Lead, nuevo: Lead): Promise<GuardarLeadRes
     cargasResumen: nuevo.cargasResumen || existente.cargasResumen,
     clinicaPreferida: nuevo.clinicaPreferida || existente.clinicaPreferida,
     gclid: nuevo.gclid || existente.gclid,
+    gbraid: nuevo.gbraid || existente.gbraid,
+    wbraid: nuevo.wbraid || existente.wbraid,
+    campanaId: nuevo.campanaId || existente.campanaId,
+    utmSource: nuevo.utmSource || existente.utmSource,
+    utmMedium: nuevo.utmMedium || existente.utmMedium,
+    utmCampaign: nuevo.utmCampaign || existente.utmCampaign,
+    utmTerm: nuevo.utmTerm || existente.utmTerm,
+    utmContent: nuevo.utmContent || existente.utmContent,
     fbclid: nuevo.fbclid || existente.fbclid,
     metaLeadId: nuevo.metaLeadId || existente.metaLeadId,
     actualizado: new Date().toISOString(),

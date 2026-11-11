@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import type { Lead, CanalLead } from "@/lib/leads";
 import { ETAPAS, CALIDADES } from "@/lib/pipeline";
+import { nombreCampanaCorto } from "@/lib/campanas";
 
 type Filtro = "todos" | CanalLead;
 
@@ -34,8 +35,9 @@ const FILTROS: { id: Filtro; label: string }[] = [
   { id: "whatsapp", label: "WhatsApp" },
 ];
 
-function tagCanal(canal?: string) {
-  if (canal === "google-ads") return <span className="tag green">📢 Google Ads</span>;
+function tagCanal(canal?: string, campana?: string) {
+  if (canal === "google-ads")
+    return <span className="tag green">📢 Google Ads{campana ? ` · ${campana}` : ""}</span>;
   if (canal === "meta-ads")
     return <span className="tag" style={{ background: "#1877F222", color: "#1877F2" }}>📘 Meta Ads</span>;
   if (canal === "whatsapp") return <span className="tag green">💬 WhatsApp</span>;
@@ -140,7 +142,7 @@ export default function LeadsList({
             <div className="lead-card-tags">
               {tagEtapa(lead.etapa)}
               {tagCalidad(lead.calidad)}
-              {tagCanal(lead.canal)}
+              {tagCanal(lead.canal, nombreCampanaCorto(lead))}
               {tagOrigen(lead.origen)}
               {lead.isapre && <span className="tag orange">{lead.isapre}</span>}
               {mostrarAsignado && lead.asignadoA && (

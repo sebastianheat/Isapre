@@ -1,5 +1,6 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { responderTurno, type ChatMessage } from "@/lib/agent";
+import { camposDeCampana } from "@/lib/campanas";
 
 export const runtime = "nodejs";
 // Las respuestas con 3 opciones + detalle por clínica con Opus llegan a
@@ -15,7 +16,7 @@ export async function POST(req: Request) {
     );
   }
 
-  let body: { messages?: ChatMessage[]; gclid?: string | null; fbclid?: string | null };
+  let body: { messages?: ChatMessage[]; gclid?: string | null; fbclid?: string | null; campana?: unknown };
   try {
     body = await req.json();
   } catch {
@@ -34,7 +35,7 @@ export async function POST(req: Request) {
   const fbclid = body.fbclid?.trim() || undefined;
 
   try {
-    const { reply, leadCapturado, leadDatos } = await responderTurno(history, { gclid, fbclid });
+    const { reply, leadCapturado, leadDatos } = await responderTurno(history, { gclid, fbclid, campana: camposDeCampana(body.campana) });
     return Response.json({ reply, leadCapturado, leadDatos });
   } catch (err) {
     if (err instanceof Anthropic.RateLimitError) {

@@ -4,6 +4,7 @@
 
 import { Resend } from "resend";
 import type { Lead, RecordatorioLead } from "./leads";
+import { nombreCampana } from "./campanas";
 
 const DESTINO = process.env.LEAD_EMAIL_TO || "info@nuevaisapre.cl";
 const REMITENTE = process.env.LEAD_EMAIL_FROM || "Romina <leads@nuevaisapre.cl>";
@@ -48,6 +49,7 @@ export async function enviarLeadPorEmail(lead: Lead): Promise<void> {
         ${row("Cargas", esc(lead.cargasResumen))}
         ${row("Clínicas preferidas", esc(lead.clinicaPreferida))}
         ${row("Origen", esc(lead.origen))}
+        ${row("Campaña", esc(nombreCampana(lead) ?? (lead.canal === "google-ads" ? "Google Ads (sin ID de campaña)" : "—")))}
       </tbody>
     </table>
     <p style="color: #475569; font-size: 12px; margin-top: 20px;">

@@ -11,6 +11,7 @@ import { listarLeads, type Lead } from "./leads";
 import { CALIDADES, ETAPAS, estadoAsignacion } from "./pipeline";
 import { getUsuario, listarUsuarios, type Usuario } from "./usuarios";
 import { generarXlsx, type Celda, type Hoja } from "./xlsx";
+import { nombreCampana } from "./campanas";
 
 export interface DatosRespaldo {
   leads: Lead[];
@@ -32,7 +33,7 @@ export function construirHojas(d: DatosRespaldo): Hoja[] {
   const hojaLeads: Celda[][] = [
     [
       "Fecha", "Nombre", "RUT", "Teléfono", "Email", "Región", "Edad", "Sueldo líquido",
-      "Previsión actual", "Cargas", "Clínicas preferidas", "Isapre", "Plan", "Canal", "Origen",
+      "Previsión actual", "Cargas", "Clínicas preferidas", "Isapre", "Plan", "Canal", "Campaña", "Origen",
       "Etapa", "Calidad", "Ejecutivo", "Correo ejecutivo", "Estado reparto", "Crédito cobrado",
       "Veces que llegó", "Notas", "Recordatorios pendientes", "Impugnación", "Última actualización", "ID",
     ],
@@ -41,7 +42,7 @@ export function construirHojas(d: DatosRespaldo): Hoja[] {
       const pendientes = (l.recordatorios ?? []).filter((r) => !r.notificado);
       return [
         fechaCl(l.fecha), l.nombre, l.rut, l.telefono, l.email, l.region, l.edad, l.sueldoLiquido,
-        l.previsionActual, l.cargasResumen, l.clinicaPreferida, l.isapre, l.plan, l.canal, l.origen,
+        l.previsionActual, l.cargasResumen, l.clinicaPreferida, l.isapre, l.plan, l.canal, nombreCampana(l), l.origen,
         etapa.get(l.etapa ?? "nuevo") ?? l.etapa, l.calidad ? calidad.get(l.calidad) ?? l.calidad : "",
         asignado ? nombreDe.get(asignado) ?? asignado : "", l.asignadoA,
         estadoAsignacion(l) === "asignado" ? "Asignado" : "Sin asignar",

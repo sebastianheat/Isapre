@@ -9,6 +9,7 @@ import LeadDetailActions from "@/components/LeadDetailActions";
 import LeadPipeline from "@/components/LeadPipeline";
 import LeadEditForm from "@/components/LeadEditForm";
 import ImpugnarLead from "@/components/ImpugnarLead";
+import { nombreCampana, nombreCampanaCorto } from "@/lib/campanas";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -27,8 +28,9 @@ function clp(n?: number) {
   return "$" + n.toLocaleString("es-CL");
 }
 
-function tagCanal(canal?: string) {
-  if (canal === "google-ads") return <span className="tag green">📢 Google Ads</span>;
+function tagCanal(canal?: string, campana?: string) {
+  if (canal === "google-ads")
+    return <span className="tag green">📢 Google Ads{campana ? ` · ${campana}` : ""}</span>;
   if (canal === "meta-ads")
     return <span className="tag" style={{ background: "#1877F222", color: "#1877F2" }}>📘 Meta Ads</span>;
   if (canal === "whatsapp") return <span className="tag green">💬 WhatsApp</span>;
@@ -60,7 +62,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
 
       <h1 className="admin-h1" style={{ marginBottom: 4 }}>{lead.nombre || "Sin nombre"}</h1>
       <div style={{ marginBottom: 14, display: "flex", flexWrap: "wrap", gap: 6 }}>
-        {tagCanal(lead.canal)}
+        {tagCanal(lead.canal, nombreCampanaCorto(lead))}
         {lead.origen && <span className="tag">{lead.origen}</span>}
       </div>
 
@@ -123,7 +125,11 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
         <div className="lead-detail-grid">
           {row("Canal", lead.canal || "web-organico")}
           {row("Origen", lead.origen)}
-          {row("gclid (Google Ads)", lead.gclid || "—")}
+          {row("Campaña de Google Ads", nombreCampana(lead) || "—")}
+          {lead.campanaId && row("ID de campaña", lead.campanaId)}
+          {(lead.utmSource || lead.utmMedium || lead.utmCampaign) &&
+            row("UTM", [lead.utmSource, lead.utmMedium, lead.utmCampaign, lead.utmTerm, lead.utmContent].filter(Boolean).join(" · "))}
+          {row("gclid (Google Ads)", lead.gclid || (lead.gbraid ? `gbraid: ${lead.gbraid}` : lead.wbraid ? `wbraid: ${lead.wbraid}` : "—"))}
           {row("fbclid (Meta)", lead.fbclid || "—")}
           {row("Meta Lead ID", lead.metaLeadId || "—")}
           {row("Fecha", fechaLegible)}

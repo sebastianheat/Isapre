@@ -2,6 +2,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import { SYSTEM_PROMPT } from "./prompt";
 import { cotizar, obtenerValorUF, type Carga } from "./cotizador";
 import { guardarLeadSeguro } from "./guardar-lead-seguro";
+import { vieneDeGoogleAds, type CamposCampana } from "./campanas";
 
 const MODEL = process.env.CLAUDE_MODEL || "claude-opus-4-7";
 
@@ -128,7 +129,7 @@ export interface TurnoResultado {
 // Procesa un turno: corre el loop de tool-use de Claude y devuelve el texto de respuesta.
 export async function responderTurno(
   history: ChatMessage[],
-  ctx?: { telefono?: string; gclid?: string; fbclid?: string },
+  ctx?: { telefono?: string; gclid?: string; fbclid?: string; campana?: CamposCampana },
 ): Promise<TurnoResultado> {
   const client = new Anthropic();
   const messages: Anthropic.MessageParam[] = history.map((m) => ({
@@ -214,7 +215,7 @@ export async function responderTurno(
           // Canal: WhatsApp > gclid (Google) > fbclid (Meta) > orgánico.
           const canal = ctx?.telefono
             ? ("whatsapp" as const)
-            : ctx?.gclid
+            : vieneDeGoogleAds(ctx?.gclid, ctx?.campana ?? {})
               ? ("google-ads" as const)
               : ctx?.fbclid
                 ? ("meta-ads" as const)
@@ -235,6 +236,7 @@ export async function responderTurno(
             origen: ctx?.telefono ? "whatsapp-chat" : "web-chat",
             gclid: ctx?.gclid,
             fbclid: ctx?.fbclid,
+            ...ctx?.campana,
             canal,
           });
           // Solo contamos como conversión si fue un lead nuevo. Si era un
