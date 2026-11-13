@@ -13,10 +13,12 @@ import { getUsuario, listarUsuarios, type Usuario } from "./usuarios";
 import { generarXlsx, type Celda, type Hoja } from "./xlsx";
 import { nombreCampana } from "./campanas";
 import { NOMBRE_ROL, vende } from "./roles";
+import { estadoCuenta } from "./planes-pagados";
+import { textoEstado, type EstadoCuenta } from "./planes-pagados-tipos";
 
 export interface DatosRespaldo {
   leads: Lead[];
-  usuarios: (Usuario & { saldo: number })[];
+  usuarios: (Usuario & { saldo: number; cuenta?: EstadoCuenta })[];
   movimientos: (MovimientoCredito & { email: string })[];
   generado: Date;
 }
@@ -58,13 +60,14 @@ export function construirHojas(d: DatosRespaldo): Hoja[] {
   ];
 
   const hojaEjecutivos: Celda[][] = [
-    ["Nombre", "Email", "Rol", "RUT", "Teléfono", "Recibe leads", "Saldo de créditos", "Leads asignados", "Último ingreso", "Creado"],
+    ["Nombre", "Email", "Rol", "RUT", "Teléfono", "Recibe leads", "Saldo de créditos", "Leads asignados", "Planes pagados", "Estado de pago", "Último ingreso", "Creado"],
     ...[...d.usuarios]
       .sort((a, b) => (a.nombre || a.email).localeCompare(b.nombre || b.email, "es"))
       .map((u) => [
         u.nombre, u.email, NOMBRE_ROL[u.role], u.rut, u.telefono,
         u.recibiendoLeads !== false, u.saldo,
         leads.filter((l) => (l.asignadoA ?? "").toLowerCase() === u.email.toLowerCase()).length,
+        u.cuenta?.validados, u.cuenta ? textoEstado(u.cuenta) : "",
         fechaCl(u.ultimoIngreso), fechaCl(u.createdAt),
       ]),
   ];
@@ -107,7 +110,12 @@ export async function recolectarDatos(): Promise<DatosRespaldo> {
   for (const p of publicos) {
     const u = (await getUsuario(p.email)) ?? { ...p, passwordHash: "" };
     const email = p.email.toLowerCase();
-    usuarios.push({ ...u, passwordHash: "", saldo: await obtenerSaldo(email) });
+    usuarios.push({
+      ...u,
+      passwordHash: "",
+      saldo: await obtenerSaldo(email),
+      cuenta: vende(u.role) ? await estadoCuenta(email) : undefined,
+    });
     for (const m of await listarMovimientos(email)) movimientos.push({ ...m, email });
   }
   return { leads, usuarios, movimientos, generado: new Date() };

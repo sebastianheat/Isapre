@@ -1,10 +1,12 @@
 import { obtenerSesion } from "@/lib/auth";
 import { deleteUsuario, getUsuario, setRecibiendoLeads } from "@/lib/usuarios";
+import { autorizadoPorToken } from "@/lib/token-operacion";
 
 export const runtime = "nodejs";
 
-export async function DELETE(_req: Request, ctx: { params: Promise<{ email: string }> }) {
-  const sesion = await obtenerSesion();
+export async function DELETE(req: Request, ctx: { params: Promise<{ email: string }> }) {
+  // Superadmin con sesión, o el equipo técnico con token de operación.
+  const sesion = autorizadoPorToken(req) ? { email: "operacion", role: "superadmin" as const } : await obtenerSesion();
   if (!sesion) return Response.json({ error: "No autorizado" }, { status: 401 });
   if (sesion.role !== "superadmin") {
     return Response.json({ error: "Solo el superadmin puede eliminar usuarios." }, { status: 403 });

@@ -18,6 +18,7 @@ const NAV = [
   { href: "/admin/leads", label: "Leads", ico: "📋" },
   { href: "/admin/reparto", label: "Reparto", ico: "🎯", superadminOnly: true },
   { href: "/admin/creditos", label: "Créditos", ico: "🪙", veTodo: true },
+  { href: "/admin/mis-creditos", label: "Mis créditos", ico: "🪙", soloEjecutivo: true },
   { href: "/admin/metricas", label: "Métricas", ico: "📈" },
   { href: "/admin/usuarios", label: "Usuarios", ico: "👥", veTodo: true },
   { href: "/admin/perfil", label: "Perfil", ico: "👤" },
@@ -29,6 +30,7 @@ export default function AdminShell({ title, userEmail, role, children }: Props) 
   const [usaSemilla, setUsaSemilla] = useState(false);
   const [impugnaciones, setImpugnaciones] = useState(0);
   const [solicitudes, setSolicitudes] = useState(0);
+  const [pagos, setPagos] = useState(0);
 
   // Verifica si la password actual sigue siendo la semilla (temporal). Si lo
   // es, el panel queda bloqueado en /admin/perfil hasta que la cambie. Se hace
@@ -53,6 +55,7 @@ export default function AdminShell({ title, userEmail, role, children }: Props) 
         .then((d) => {
           setImpugnaciones(Number(d?.impugnaciones) || 0);
           setSolicitudes(Number(d?.solicitudes) || 0);
+          setPagos(Number(d?.pagos) || 0);
         })
         .catch(() => {});
     cargar();
@@ -111,6 +114,11 @@ export default function AdminShell({ title, userEmail, role, children }: Props) 
             🚩 Tienes {impugnaciones} impugnaci{impugnaciones === 1 ? "ón" : "ones"} de leads falsos por revisar →
           </Link>
         )}
+        {!usaSemilla && pagos > 0 && pathname !== "/admin/creditos" && (
+          <Link href="/admin/creditos" className="admin-msg warn" style={{ display: "block", textDecoration: "none" }}>
+            🧾 Tienes {pagos} plan{pagos === 1 ? "" : "es"} pagado{pagos === 1 ? "" : "s"} por validar →
+          </Link>
+        )}
         {!usaSemilla && solicitudes > 0 && pathname !== "/admin/solicitudes" && (
           <Link href="/admin/solicitudes" className="admin-msg warn" style={{ display: "block", textDecoration: "none" }}>
             📝 Tienes {solicitudes} solicitud{solicitudes === 1 ? "" : "es"} del administrador por aprobar →
@@ -124,7 +132,9 @@ export default function AdminShell({ title, userEmail, role, children }: Props) 
       </main>
 
       {!usaSemilla && <nav className="admin-bottomnav">
-        {NAV.filter((n) => (n.superadminOnly ? role === "superadmin" : n.veTodo ? veTodo(role) : true)).map((n) => {
+        {NAV.filter((n) =>
+          n.superadminOnly ? role === "superadmin" : n.veTodo ? veTodo(role) : n.soloEjecutivo ? !veTodo(role) : true,
+        ).map((n) => {
           const active = pathname === n.href || pathname?.startsWith(n.href + "/");
           return (
             <Link key={n.href} href={n.href} className={active ? "active" : ""}>

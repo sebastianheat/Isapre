@@ -3,12 +3,14 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { textoEstado, type EstadoCuenta } from "@/lib/planes-pagados-tipos";
 
 export interface FilaSaldo {
   email: string;
   nombre: string;
   saldo: number;
   impugnados?: { pendientes: number; total: number };
+  cuenta?: EstadoCuenta; // planes pagados (cada 20 leads = 1 plan)
 }
 
 export default function CreditosPanel({
@@ -105,13 +107,25 @@ export default function CreditosPanel({
       <div className="admin-card">
         <table className="creditos-tabla">
           <thead>
-            <tr><th>Ejecutivo</th><th className="num">Saldo</th><th>Impugnados</th></tr>
+            <tr><th>Ejecutivo</th><th className="num">Saldo</th><th className="num">Planes pagados</th><th>Estado</th><th>Impugnados</th></tr>
           </thead>
           <tbody>
             {filas.map((f) => (
               <tr key={f.email}>
                 <td><Link href={`/admin/creditos/${encodeURIComponent(f.email)}`}>{f.nombre}</Link></td>
                 <td className="num"><strong>{f.saldo}</strong></td>
+                <td className="num">{f.cuenta ? f.cuenta.validados : "—"}</td>
+                <td>
+                  {f.cuenta ? (
+                    <Link href={`/admin/creditos/${encodeURIComponent(f.email)}#planes`}>
+                      <span className={`tag ${f.cuenta.debe > 0 ? "red" : f.cuenta.enRevision > 0 ? "orange" : "green"}`}>
+                        {textoEstado(f.cuenta)}
+                      </span>
+                    </Link>
+                  ) : (
+                    <span style={{ color: "var(--admin-text-soft)" }}>—</span>
+                  )}
+                </td>
                 <td>
                   {f.impugnados && f.impugnados.total > 0 ? (
                     <Link href={`/admin/creditos/${encodeURIComponent(f.email)}#impugnaciones`}>

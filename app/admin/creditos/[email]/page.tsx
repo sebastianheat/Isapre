@@ -4,7 +4,9 @@ import { obtenerSesion } from "@/lib/auth";
 import { getUsuario, listarUsuarios } from "@/lib/usuarios";
 import { listarMovimientos, obtenerSaldo, type TipoMovimiento } from "@/lib/credits-kv";
 import AdminShell from "@/components/AdminShell";
-import { veTodo } from "@/lib/roles";
+import { vende, veTodo } from "@/lib/roles";
+import PlanesPagados from "@/components/PlanesPagados";
+import { estadoCuenta, listarPagosDe } from "@/lib/planes-pagados";
 import ImpugnacionesPanel from "@/components/ImpugnacionesPanel";
 import { listarImpugnacionesDe } from "@/lib/impugnaciones";
 
@@ -35,13 +37,16 @@ export default async function HistorialCreditosPage({
   if (!veTodo(sesion.role)) redirect("/admin/leads");
 
   const email = decodeURIComponent((await params).email).toLowerCase();
-  const [usuario, movimientos, saldoGuardado, usuarios, impugnaciones] = await Promise.all([
+  const [usuario, movimientos, saldoGuardado, usuarios, impugnaciones, pagos, cuenta] = await Promise.all([
     getUsuario(email),
     listarMovimientos(email),
     obtenerSaldo(email),
     listarUsuarios(),
     listarImpugnacionesDe(email),
+    listarPagosDe(email),
+    estadoCuenta(email),
   ]);
+  const esYo = email === sesion.email.toLowerCase();
   if (!usuario && movimientos.length === 0) notFound();
 
   const nombres = Object.fromEntries(usuarios.map((u) => [u.email, u.nombre || u.email]));
@@ -64,6 +69,18 @@ export default async function HistorialCreditosPage({
           </div>
         )}
       </div>
+
+      {usuario && vende(usuario.role) && (
+        <PlanesPagados
+          email={email}
+          saldo={saldoGuardado}
+          estadoInicial={cuenta}
+          pagosIniciales={pagos}
+          puedeRegistrar={esYo}
+          puedeValidar={sesion.role === "superadmin" || !esYo}
+          nombres={Object.fromEntries(usuarios.map((u) => [u.email.toLowerCase(), u.nombre || u.email]))}
+        />
+      )}
 
       {impugnaciones.pendientes.length + impugnaciones.resueltas.length > 0 && (
         <div id="impugnaciones">
