@@ -36,3 +36,12 @@ describe("campaña de Google Ads", () => {
     delete CAMPANAS_GOOGLE_ADS["111"];
   });
 });
+
+describe("nombres de campaña puestos en el panel", () => {
+  it("el nombre del panel manda sobre la tabla y el utm", () => {
+    expect(nombreCampana({ campanaId: "23868580486", utmCampaign: "x" }, { "23868580486": "Isapre Nueva - Search - Chile" })).toBe(
+      "Isapre Nueva - Search - Chile",
+    );
+    expect(nombreCampanaCorto({ campanaId: "23868580486" }, { "23868580486": "Isapre Nueva - Search - Chile" })).toBe("Search - Chile");
+  });
+});

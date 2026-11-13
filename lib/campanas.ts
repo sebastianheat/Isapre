@@ -11,9 +11,11 @@ export interface DatosCampanaLead {
   utmCampaign?: string;
 }
 
-// Nombre para mostrar: el de la tabla; si el ID no está en la tabla, el
-// utm_campaign del anuncio; si tampoco, "Campaña <ID>".
-export function nombreCampana(l: DatosCampanaLead): string | undefined {
+// Nombre para mostrar: el que le puso el superadmin en el panel (`nombres`,
+// lib/campanas-nombres.ts), o el de la tabla fija; si no, el utm_campaign del
+// anuncio; si tampoco, "Campaña <ID>".
+export function nombreCampana(l: DatosCampanaLead, nombres: Record<string, string> = {}): string | undefined {
+  if (l.campanaId && nombres[l.campanaId]) return nombres[l.campanaId];
   if (l.campanaId && CAMPANAS_GOOGLE_ADS[l.campanaId]) return CAMPANAS_GOOGLE_ADS[l.campanaId];
   if (l.utmCampaign) return l.utmCampaign;
   if (l.campanaId) return `Campaña ${l.campanaId}`;
@@ -21,8 +23,8 @@ export function nombreCampana(l: DatosCampanaLead): string | undefined {
 }
 
 // Versión corta para las etiquetas del panel (sin el prefijo común "Isapre Nueva - ").
-export function nombreCampanaCorto(l: DatosCampanaLead): string | undefined {
-  return nombreCampana(l)?.replace(/^Isapre Nueva\s*-\s*/i, "");
+export function nombreCampanaCorto(l: DatosCampanaLead, nombres: Record<string, string> = {}): string | undefined {
+  return nombreCampana(l, nombres)?.replace(/^Isapre Nueva\s*-\s*/i, "");
 }
 
 // Convierte lo que manda el navegador (parámetros de la URL de llegada) en los

@@ -6,6 +6,7 @@ import { getUsuario } from "@/lib/usuarios";
 import { vende } from "@/lib/roles";
 import AdminShell from "@/components/AdminShell";
 import PlanesPagados from "@/components/PlanesPagados";
+import PestanasCreditos from "@/components/PestanasCreditos";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -23,6 +24,7 @@ export default async function MisCreditosPage() {
   ]);
   return (
     <AdminShell title="Mis créditos" userEmail={sesion.email} role={sesion.role}>
+      {sesion.role === "admin" && <PestanasCreditos activa="mios" />}
       <h1 className="admin-h1">Mis créditos</h1>
       <PlanesPagados
         email={sesion.email.toLowerCase()}

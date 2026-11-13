@@ -15,12 +15,14 @@ import { nombreCampana } from "./campanas";
 import { NOMBRE_ROL, vende } from "./roles";
 import { estadoCuenta } from "./planes-pagados";
 import { textoEstado, type EstadoCuenta } from "./planes-pagados-tipos";
+import { leerNombresCampanas } from "./campanas-nombres";
 
 export interface DatosRespaldo {
   leads: Lead[];
   usuarios: (Usuario & { saldo: number; cuenta?: EstadoCuenta })[];
   movimientos: (MovimientoCredito & { email: string })[];
   generado: Date;
+  nombresCampanas?: Record<string, string>;
 }
 
 const fechaCl = (iso?: string) =>
@@ -45,7 +47,7 @@ export function construirHojas(d: DatosRespaldo): Hoja[] {
       const pendientes = (l.recordatorios ?? []).filter((r) => !r.notificado);
       return [
         fechaCl(l.fecha), l.nombre, l.rut, l.telefono, l.email, l.region, l.edad, l.sueldoLiquido,
-        l.previsionActual, l.cargasResumen, l.clinicaPreferida, l.isapre, l.plan, l.canal, nombreCampana(l), l.origen,
+        l.previsionActual, l.cargasResumen, l.clinicaPreferida, l.isapre, l.plan, l.canal, nombreCampana(l, d.nombresCampanas), l.origen,
         etapa.get(l.etapa ?? "nuevo") ?? l.etapa, l.calidad ? calidad.get(l.calidad) ?? l.calidad : "",
         asignado ? nombreDe.get(asignado) ?? asignado : "", l.asignadoA,
         estadoAsignacion(l) === "asignado" ? "Asignado" : "Sin asignar",
@@ -118,7 +120,7 @@ export async function recolectarDatos(): Promise<DatosRespaldo> {
     });
     for (const m of await listarMovimientos(email)) movimientos.push({ ...m, email });
   }
-  return { leads, usuarios, movimientos, generado: new Date() };
+  return { leads, usuarios, movimientos, generado: new Date(), nombresCampanas: await leerNombresCampanas() };
 }
 
 export function nombreArchivoRespaldo(fecha = new Date()): string {

@@ -4,7 +4,7 @@ import { listarUsuarios } from "@/lib/usuarios";
 import { obtenerSaldo } from "@/lib/credits-kv";
 import { resumenPorEjecutivo } from "@/lib/impugnaciones";
 import { estadosDeVendedores } from "@/lib/planes-pagados";
-import Link from "next/link";
+import PestanasCreditos from "@/components/PestanasCreditos";
 import AdminShell from "@/components/AdminShell";
 import { veTodo } from "@/lib/roles";
 import CreditosPanel, { type FilaSaldo } from "@/components/CreditosPanel";
@@ -40,13 +40,7 @@ export default async function CreditosPage({
 
   return (
     <AdminShell title="Créditos" userEmail={sesion.email} role={sesion.role}>
-      {sesion.role === "admin" && (
-        <p style={{ marginTop: 0 }}>
-          <Link href={`/admin/creditos/${encodeURIComponent(sesion.email.toLowerCase())}#planes`}>
-            🧾 Registrar mis planes pagados →
-          </Link>
-        </p>
-      )}
+      {sesion.role === "admin" && <PestanasCreditos activa="equipo" />}
       <CreditosPanel
         filasIniciales={filas}
         ejecutivoInicial={filas.some((f) => f.email === ejecutivo) ? ejecutivo : undefined}

@@ -6,6 +6,7 @@ import { filtrarLeadsVisibles } from "@/lib/acceso";
 import { veTodo } from "@/lib/roles";
 import AdminShell from "@/components/AdminShell";
 import LeadsList from "@/components/LeadsList";
+import { leerNombresCampanas } from "@/lib/campanas-nombres";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -30,6 +31,9 @@ export default async function LeadsPage() {
         leads={leads}
         mostrarAsignado={veTodo(sesion.role)}
         nombresUsuarios={nombres}
+        miEmail={sesion.email}
+        conFiltroMios={sesion.role === "admin"}
+        nombresCampanas={await leerNombresCampanas()}
       />
       {sesion.role === "superadmin" && (
         <div style={{ marginTop: 18, textAlign: "center" }}>

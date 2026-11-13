@@ -71,17 +71,25 @@ export default function LeadsList({
   leads,
   mostrarAsignado = false,
   nombresUsuarios = {},
+  miEmail = "",
+  conFiltroMios = false,
+  nombresCampanas = {},
 }: {
   leads: Lead[];
   mostrarAsignado?: boolean;
   nombresUsuarios?: Record<string, string>;
+  miEmail?: string;
+  conFiltroMios?: boolean; // admin que también vende: "Solo mis leads" / "Todo el equipo"
+  nombresCampanas?: Record<string, string>; // ID de campaña → nombre (Reparto → Campañas)
 }) {
   const [filtro, setFiltro] = useState<Filtro>("todos");
+  const [soloMios, setSoloMios] = useState(false);
   const [query, setQuery] = useState("");
 
   const filtrados = useMemo(() => {
     const q = query.trim().toLowerCase();
     return leads.filter((l) => {
+      if (soloMios && (l.asignadoA ?? "").toLowerCase() !== miEmail.toLowerCase()) return false;
       if (filtro !== "todos" && (l.canal ?? "web-organico") !== filtro) return false;
       if (!q) return true;
       return (
@@ -91,11 +99,21 @@ export default function LeadsList({
         l.telefono?.toLowerCase().includes(q)
       );
     });
-  }, [leads, filtro, query]);
+  }, [leads, filtro, query, soloMios, miEmail]);
 
   return (
     <>
-      <h1 className="admin-h1">{leads.length} lead{leads.length === 1 ? "" : "s"}</h1>
+      <h1 className="admin-h1">{filtrados.length} lead{filtrados.length === 1 ? "" : "s"}</h1>
+      {conFiltroMios && (
+        <div className="admin-filters" style={{ marginBottom: 8 }}>
+          <button className={`pill ${!soloMios ? "active" : ""}`} onClick={() => setSoloMios(false)}>
+            👥 Todo el equipo
+          </button>
+          <button className={`pill ${soloMios ? "active" : ""}`} onClick={() => setSoloMios(true)}>
+            👤 Solo mis leads
+          </button>
+        </div>
+      )}
       <input
         className="admin-search"
         type="search"
@@ -142,7 +160,7 @@ export default function LeadsList({
             <div className="lead-card-tags">
               {tagEtapa(lead.etapa)}
               {tagCalidad(lead.calidad)}
-              {tagCanal(lead.canal, nombreCampanaCorto(lead))}
+              {tagCanal(lead.canal, nombreCampanaCorto(lead, nombresCampanas))}
               {tagOrigen(lead.origen)}
               {lead.isapre && <span className="tag orange">{lead.isapre}</span>}
               {mostrarAsignado && lead.asignadoA && (

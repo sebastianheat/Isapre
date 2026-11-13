@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { obtenerSesion } from "@/lib/auth";
-import { listarLeadsSinAsignar } from "@/lib/leads";
+import { listarLeads, listarLeadsSinAsignar } from "@/lib/leads";
+import { campanasVistas, leerNombresCampanas } from "@/lib/campanas-nombres";
+import CampanasGoogleAds from "@/components/CampanasGoogleAds";
 import { listarUsuarios } from "@/lib/usuarios";
 import { obtenerSaldo } from "@/lib/credits-kv";
 import AdminShell from "@/components/AdminShell";
@@ -57,6 +59,11 @@ export default async function RepartoPage() {
           .sort((a, b) => a.nombre.localeCompare(b.nombre, "es"))}
       />
       <RepartoCola leadsIniciales={cola} ejecutivosIniciales={ejecutivos} />
+      <h2 className="admin-h2">📢 Campañas de Google Ads</h2>
+      <CampanasGoogleAds
+        campanas={campanasVistas(await listarLeads(1000))}
+        nombresIniciales={await leerNombresCampanas()}
+      />
       <p style={{ textAlign: "center", marginTop: 18 }}>
         <Link href="/admin/impugnaciones">🚩 Impugnaciones de leads falsos →</Link>
       </p>

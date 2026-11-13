@@ -11,6 +11,7 @@ import LeadPipeline from "@/components/LeadPipeline";
 import LeadEditForm from "@/components/LeadEditForm";
 import ImpugnarLead from "@/components/ImpugnarLead";
 import { nombreCampana, nombreCampanaCorto } from "@/lib/campanas";
+import { leerNombresCampanas } from "@/lib/campanas-nombres";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -52,6 +53,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
   // (solo el superadmin).
   const usuarios = veTodo(sesion.role) ? await listarUsuarios().catch(() => []) : [];
   const puedeEditar = puedeEditarLead(sesion, lead);
+  const nombresCampanas = await leerNombresCampanas();
   const nombres = Object.fromEntries(usuarios.map((u) => [u.email, u.nombre || u.email]));
 
   const fechaLegible = lead.fecha
@@ -64,7 +66,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
 
       <h1 className="admin-h1" style={{ marginBottom: 4 }}>{lead.nombre || "Sin nombre"}</h1>
       <div style={{ marginBottom: 14, display: "flex", flexWrap: "wrap", gap: 6 }}>
-        {tagCanal(lead.canal, nombreCampanaCorto(lead))}
+        {tagCanal(lead.canal, nombreCampanaCorto(lead, nombresCampanas))}
         {lead.origen && <span className="tag">{lead.origen}</span>}
       </div>
 
@@ -135,7 +137,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
         <div className="lead-detail-grid">
           {row("Canal", lead.canal || "web-organico")}
           {row("Origen", lead.origen)}
-          {row("Campaña de Google Ads", nombreCampana(lead) || "—")}
+          {row("Campaña de Google Ads", nombreCampana(lead, nombresCampanas) || "—")}
           {lead.campanaId && row("ID de campaña", lead.campanaId)}
           {(lead.utmSource || lead.utmMedium || lead.utmCampaign) &&
             row("UTM", [lead.utmSource, lead.utmMedium, lead.utmCampaign, lead.utmTerm, lead.utmContent].filter(Boolean).join(" · "))}

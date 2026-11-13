@@ -198,7 +198,7 @@
   padding: 7px 12px; border-radius: 999px;
   background: #fff; border: 1px solid var(--admin-border);
   color: var(--admin-text-soft); font-size: 13px; font-weight: 600;
-  cursor: pointer; transition: all .15s;
+  cursor: pointer; transition: all .15s; text-decoration: none;
 }
 .admin-filters .pill.active {
   background: var(--admin-blue-dark); color: #fff; border-color: var(--admin-blue-dark);
