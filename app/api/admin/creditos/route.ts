@@ -1,13 +1,15 @@
-// Regala créditos a un ejecutivo (solo superadmin). Body: { email, cantidad, motivo }
+// Regala créditos a un ejecutivo (superadmin, o el equipo técnico con token de
+// operación). Body: { email, cantidad, motivo }
 
 import { obtenerSesion } from "@/lib/auth";
 import { getUsuario } from "@/lib/usuarios";
 import { regalarCreditos } from "@/lib/credits-kv";
+import { autorizadoPorToken } from "@/lib/token-operacion";
 
 export const runtime = "nodejs";
 
 export async function POST(req: Request) {
-  const sesion = await obtenerSesion();
+  const sesion = autorizadoPorToken(req) ? { email: "operacion", role: "superadmin" as const } : await obtenerSesion();
   if (!sesion) return Response.json({ error: "No autorizado" }, { status: 401 });
   if (sesion.role !== "superadmin") {
     return Response.json({ error: "Solo el superadmin puede regalar créditos." }, { status: 403 });
