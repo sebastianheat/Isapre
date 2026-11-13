@@ -15,7 +15,8 @@ export interface PagoPlan {
 }
 
 export interface EstadoCuenta {
-  bloques: number; // bloques de 20 leads recibidos
+  entregados: number; // leads que le llegaron al panel (sin devueltos)
+  bloques: number; // bloques de 20 que debe pagar (1 desde que tiene cupo)
   exigibles: number; // bloques que ya debe pagar
   validados: number; // planes pagados y validados
   enRevision: number; // planes registrados esperando validación

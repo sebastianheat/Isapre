@@ -3,11 +3,12 @@
 // del cliente + foto del plan aceptado) y lo valida el superadmin o el admin
 // ("Validar factura"). El admin no valida los suyos.
 //
-// Deuda: debe el bloque cuando ya lo gastó (saldo 0) o cuando recibió un
-// bloque nuevo sin haber pagado el anterior. El bloque que está usando, con
-// saldo, todavía no se debe.
+// Deuda (regla del dueño): al recibir su cupo ya debe 1 plan; desde el lead 21
+// que le llega al panel debe el 2º, desde el 41 el 3º, etc. Cuentan los leads
+// que de verdad le llegaron (asignaciones cobradas, menos las devueltas por
+// reasignación o impugnación aceptada); los créditos regalados no cuentan.
 
-import { listarMovimientos, obtenerSaldo } from "./credits-kv";
+import { listarMovimientos } from "./credits-kv";
 import { kvDel, kvGet, kvLPush, kvLRange, kvMarcarUnaVez, kvSAdd, kvSMembers, kvSet, kvSRem } from "./store";
 import { getUsuario, listarUsuarios } from "./usuarios";
 import { vende, type Rol } from "./roles";
@@ -50,21 +51,23 @@ export function formatearRut(rut: string): string {
 }
 
 // Cálculo puro de la cuenta del vendedor.
-export function calcularEstado(recibidos: number, saldo: number, validados: number, enRevision: number): EstadoCuenta {
-  // Bloques completos de 20 (un regalo suelto de pocos créditos no suma un
-  // plan entero); quien recibió algo tiene al menos su primer bloque.
-  const bloques = recibidos > 0 ? Math.max(1, Math.floor(recibidos / LEADS_POR_PLAN)) : 0;
-  const exigibles = Math.max(0, bloques - (saldo > 0 ? 1 : 0));
-  const debe = Math.max(0, exigibles - validados);
-  return { bloques, exigibles, validados, enRevision, debe, alDia: debe === 0 };
+export function calcularEstado(entregados: number, tieneCupo: boolean, validados: number, enRevision: number): EstadoCuenta {
+  const leads = Math.max(0, entregados);
+  const bloques = Math.max(Math.ceil(leads / LEADS_POR_PLAN), tieneCupo ? 1 : 0);
+  const debe = Math.max(0, bloques - validados);
+  return { entregados: leads, bloques, exigibles: bloques, validados, enRevision, debe, alDia: debe === 0 };
 }
 
 export async function estadoCuenta(email: string): Promise<EstadoCuenta> {
-  const [movs, saldo, pagos] = await Promise.all([listarMovimientos(email), obtenerSaldo(email), listarPagosDe(email)]);
-  const recibidos = movs.filter((m) => m.tipo === "regalo").reduce((a, m) => a + m.cantidad, 0);
+  const [movs, pagos] = await Promise.all([listarMovimientos(email), listarPagosDe(email)]);
+  // Leads que le llegaron: asignaciones cobradas (-1) menos devoluciones (+1).
+  const entregados = -movs
+    .filter((m) => m.tipo === "asignacion" || m.tipo === "devolucion")
+    .reduce((a, m) => a + m.cantidad, 0);
+  const tieneCupo = movs.some((m) => m.tipo === "regalo" && m.cantidad > 0);
   return calcularEstado(
-    recibidos,
-    saldo,
+    entregados,
+    tieneCupo,
     pagos.filter((p) => p.estado === "validado").length,
     pagos.filter((p) => p.estado === "pendiente").length,
   );

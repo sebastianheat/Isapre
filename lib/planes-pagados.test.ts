@@ -18,7 +18,8 @@ async function cargar() {
     import("./credits-kv"),
     import("./planes-pagados-tipos"),
   ]);
-  return { pp, usuarios, credits, tipos };
+  const [leads, reparto, imp] = await Promise.all([import("./leads"), import("./reparto"), import("./impugnaciones")]);
+  return { pp, usuarios, credits, tipos, leads, reparto, imp };
 }
 
 const FOTO = "data:image/jpeg;base64,/9j/4AAQSkZJRg==";
@@ -26,34 +27,28 @@ const SUPER = "info@x.cl";
 const JEFE = "claudio@x.cl";
 const ANA = "ana@x.cl";
 
-describe("regla de deuda (cada 20 leads = 1 plan)", () => {
-  it("usando su primer bloque está al día; al llegar a 0 debe 1", async () => {
+describe("regla de deuda (cada 20 leads que llegan = 1 plan)", () => {
+  it("al recibir su cupo ya debe 1 plan, aunque no le haya llegado ningún lead", async () => {
     const { pp } = await cargar();
-    expect(pp.calcularEstado(20, 5, 0, 0)).toMatchObject({ bloques: 1, debe: 0, alDia: true });
-    expect(pp.calcularEstado(20, 0, 0, 0)).toMatchObject({ debe: 1, alDia: false });
-    expect(pp.calcularEstado(20, 0, 1, 0)).toMatchObject({ debe: 0, alDia: true });
+    expect(pp.calcularEstado(0, true, 0, 0)).toMatchObject({ bloques: 1, debe: 1, alDia: false });
+    expect(pp.calcularEstado(0, false, 0, 0)).toMatchObject({ bloques: 0, debe: 0, alDia: true });
+    expect(pp.calcularEstado(20, true, 1, 0)).toMatchObject({ debe: 0, alDia: true });
   });
 
-  it("si recibe un bloque nuevo sin pagar el anterior, debe 1 aunque tenga saldo", async () => {
+  it("desde el lead 21 debe el 2º plan, desde el 41 el 3º", async () => {
     const { pp } = await cargar();
-    expect(pp.calcularEstado(40, 23, 0, 0)).toMatchObject({ bloques: 2, exigibles: 1, debe: 1 });
-    expect(pp.calcularEstado(40, 23, 1, 0)).toMatchObject({ debe: 0, alDia: true });
-    expect(pp.calcularEstado(40, 0, 1, 1)).toMatchObject({ exigibles: 2, debe: 1, enRevision: 1 });
-  });
-
-  it("un regalo suelto (pocos créditos) no suma un plan entero", async () => {
-    const { pp } = await cargar();
-    expect(pp.calcularEstado(41, 25, 0, 0)).toMatchObject({ bloques: 2, debe: 1 });
-    expect(pp.calcularEstado(43, 0, 0, 0)).toMatchObject({ bloques: 2, debe: 2 });
-    expect(pp.calcularEstado(60, 44, 0, 0)).toMatchObject({ bloques: 3, debe: 2 });
-    expect(pp.calcularEstado(5, 5, 0, 0)).toMatchObject({ bloques: 1, debe: 0 });
+    expect(pp.calcularEstado(20, true, 0, 0)).toMatchObject({ bloques: 1, debe: 1 });
+    expect(pp.calcularEstado(21, true, 0, 0)).toMatchObject({ bloques: 2, debe: 2 });
+    expect(pp.calcularEstado(21, true, 1, 0)).toMatchObject({ debe: 1 });
+    expect(pp.calcularEstado(40, true, 1, 1)).toMatchObject({ bloques: 2, debe: 1, enRevision: 1 });
+    expect(pp.calcularEstado(41, true, 2, 0)).toMatchObject({ bloques: 3, debe: 1 });
   });
 
   it("texto del estado", async () => {
     const { tipos, pp } = await cargar();
-    expect(tipos.textoEstado(pp.calcularEstado(40, 23, 0, 1))).toBe("Debe 1 plan · 1 en revisión");
-    expect(tipos.textoEstado(pp.calcularEstado(20, 5, 0, 0))).toBe("OK");
-    expect(tipos.textoEstado(pp.calcularEstado(60, 0, 0, 0))).toBe("Debe 3 planes");
+    expect(tipos.textoEstado(pp.calcularEstado(17, true, 0, 1))).toBe("Debe 1 plan · 1 en revisión");
+    expect(tipos.textoEstado(pp.calcularEstado(17, true, 1, 0))).toBe("OK");
+    expect(tipos.textoEstado(pp.calcularEstado(45, true, 0, 0))).toBe("Debe 3 planes");
   });
 
   it("valida el RUT con dígito verificador", async () => {
@@ -106,5 +101,18 @@ describe("registrar y validar un plan pagado", () => {
     expect(await c.pp.validarPago(id, { aprobar: false, por: SUPER, rol: "superadmin" })).toMatchObject({ ok: false, status: 400 });
     expect(await c.pp.validarPago(id, { aprobar: false, motivo: "La foto no se ve", por: SUPER, rol: "superadmin" })).toMatchObject({ ok: true });
     expect(await c.pp.estadoCuenta(JEFE)).toMatchObject({ debe: 1, enRevision: 0 });
+  });
+
+  it("cuenta los leads que le llegan: con 21 debe 2; un falso devuelto no cuenta", async () => {
+    const ids: string[] = [];
+    for (let i = 0; i < 21; i++) {
+      const { lead } = await c.leads.guardarLead({ nombre: `L${i}`, rut: `${i}-1`, telefono: `5698800${String(i).padStart(4, "0")}` });
+      await c.reparto.asignarLead(lead.id!, ANA, SUPER);
+      ids.push(lead.id!);
+    }
+    expect(await c.pp.estadoCuenta(ANA)).toMatchObject({ entregados: 21, bloques: 2, debe: 2 });
+    await c.imp.impugnarLead(ids[0], ANA, { motivos: ["telefono", "nombre"], comentario: "No tiene WhatsApp, nombre falso" });
+    await c.imp.resolverImpugnacion(ids[0], { aceptar: true, por: SUPER });
+    expect(await c.pp.estadoCuenta(ANA)).toMatchObject({ entregados: 20, bloques: 1, debe: 1 });
   });
 });

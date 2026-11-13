@@ -144,12 +144,13 @@ export default function PlanesPagados({
       <h2 className="admin-h2" style={{ marginBottom: 0 }}>🧾 Planes pagados</h2>
       <div className="admin-card" style={{ display: "grid", gap: 6 }}>
         <div style={{ fontSize: 13 }}>
-          Por cada <strong>20 leads</strong> se paga <strong>1 plan vendido</strong>. Se debe el bloque cuando se
-          gastó o cuando llega un bloque nuevo sin haber pagado el anterior.
+          Por cada <strong>20 leads</strong> se paga <strong>1 plan vendido</strong>: al recibir el cupo se debe el
+          1º; desde el lead 21 el 2º, desde el 41 el 3º… Los leads falsos devueltos no cuentan.
         </div>
         <div style={{ display: "flex", gap: 16, flexWrap: "wrap", fontSize: 14 }}>
           <span>Créditos disponibles: <strong>{saldo}</strong></span>
-          <span>Bloques recibidos: <strong>{estado.bloques}</strong></span>
+          <span>Leads recibidos: <strong>{estado.entregados}</strong></span>
+          <span>Planes a pagar: <strong>{estado.bloques}</strong></span>
           <span>Planes pagados: <strong>{estado.validados}</strong></span>
         </div>
         <div className={`admin-msg ${estado.debe > 0 ? "error" : "ok"}`} style={{ margin: 0 }}>
