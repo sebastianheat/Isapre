@@ -6,6 +6,7 @@ import { obtenerSesion } from "@/lib/auth";
 import { getUsuario } from "@/lib/usuarios";
 import { autorizadoPorToken } from "@/lib/token-operacion";
 import { obtenerPrioridad, quitarPrioridad, setPrioridad } from "@/lib/reparto-auto";
+import { vende } from "@/lib/roles";
 
 export const runtime = "nodejs";
 
@@ -37,7 +38,7 @@ export async function POST(req: Request) {
     return Response.json({ error: "Elige un ejecutivo" }, { status: 400 });
   }
   const u = await getUsuario(body.email);
-  if (!u || u.role !== "ejecutivo") {
+  if (!u || !vende(u.role)) {
     return Response.json({ error: "El ejecutivo elegido no existe" }, { status: 400 });
   }
   await setPrioridad(u.email, cantidad);

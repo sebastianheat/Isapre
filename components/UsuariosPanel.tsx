@@ -32,6 +32,7 @@ export default function UsuariosPanel({
   const [nombre, setNombre] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [telefono, setTelefono] = useState("");
   const [role, setRole] = useState<Rol>("ejecutivo");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -46,7 +47,7 @@ export default function UsuariosPanel({
       const res = await fetch("/api/admin/usuarios", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password, role, nombre }),
+        body: JSON.stringify({ email, password, role, nombre, telefono }),
       });
       const data = await res.json();
       if (!res.ok) setError(data.error || "No se pudo crear.");
@@ -54,7 +55,7 @@ export default function UsuariosPanel({
         setUsuarios((prev) => [data.usuario, ...prev]);
         if (vende(data.usuario.role)) setSaldos((prev) => ({ ...prev, [data.usuario.email]: CUPO_REACTIVACION }));
         setOk(`Usuario ${data.usuario.email} creado.`);
-        setEmail(""); setPassword(""); setNombre(""); setRole("ejecutivo");
+        setEmail(""); setPassword(""); setNombre(""); setTelefono(""); setRole("ejecutivo");
         setOpen(false);
       }
     } catch {
@@ -155,6 +156,10 @@ export default function UsuariosPanel({
           <label>
             <span>Email *</span>
             <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required autoComplete="off" />
+          </label>
+          <label>
+            <span>Teléfono</span>
+            <input type="tel" value={telefono} onChange={(e) => setTelefono(e.target.value)} placeholder="+56 9 1234 5678" />
           </label>
           <label>
             <span>Contraseña temporal * (deberá cambiarla al entrar)</span>
