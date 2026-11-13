@@ -4,7 +4,10 @@
 // (gad_campaignid, que agrega el etiquetado automático). Aquí se traduce el ID
 // al nombre que se ve en el panel. Para agregar una campaña nueva: copiar su
 // ID desde Google Ads (columna "ID de campaña") y sumar una línea.
-export const CAMPANAS_GOOGLE_ADS: Record<string, string> = {};
+export const CAMPANAS_GOOGLE_ADS: Record<string, string> = {
+  "24455995585": "Isapre Nueva - PMax - Leads Chile",
+  "23868580486": "Isapre Nueva - Search - Chile",
+};
 
 export interface DatosCampanaLead {
   campanaId?: string;

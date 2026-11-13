@@ -32,6 +32,8 @@ describe("campaña de Google Ads", () => {
     expect(nombreCampanaCorto({ campanaId: "111" })).toBe("PMax - Leads Chile");
     expect(nombreCampana({ campanaId: "999", utmCampaign: "search-hot-buyer" })).toBe("search-hot-buyer");
     expect(nombreCampana({ campanaId: "999" })).toBe("Campaña 999");
+    expect(nombreCampanaCorto({ campanaId: "24455995585" })).toBe("PMax - Leads Chile");
+    expect(nombreCampanaCorto({ campanaId: "23868580486" })).toBe("Search - Chile");
     expect(nombreCampana({})).toBeUndefined();
     delete CAMPANAS_GOOGLE_ADS["111"];
   });
