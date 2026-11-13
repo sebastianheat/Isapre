@@ -4,6 +4,7 @@ import { listarUsuarios } from "@/lib/usuarios";
 import { obtenerSaldo } from "@/lib/credits-kv";
 import { resumenPorEjecutivo } from "@/lib/impugnaciones";
 import AdminShell from "@/components/AdminShell";
+import { veTodo } from "@/lib/roles";
 import CreditosPanel, { type FilaSaldo } from "@/components/CreditosPanel";
 
 export const runtime = "nodejs";
@@ -16,7 +17,7 @@ export default async function CreditosPage({
 }) {
   const sesion = await obtenerSesion();
   if (!sesion) redirect("/admin");
-  if (sesion.role !== "superadmin") redirect("/admin/leads");
+  if (!veTodo(sesion.role)) redirect("/admin/leads");
 
   const { ejecutivo } = await searchParams;
   const [usuarios, impugnados] = await Promise.all([listarUsuarios(), resumenPorEjecutivo()]);
@@ -35,6 +36,7 @@ export default async function CreditosPage({
       <CreditosPanel
         filasIniciales={filas}
         ejecutivoInicial={filas.some((f) => f.email === ejecutivo) ? ejecutivo : undefined}
+        soloLectura={sesion.role !== "superadmin"}
       />
     </AdminShell>
   );

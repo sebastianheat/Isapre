@@ -4,6 +4,8 @@ import { useState } from "react";
 import type { UsuarioPublico } from "@/lib/usuarios";
 import RecibirLeadsToggle from "./RecibirLeadsToggle";
 import ImportarUsuarios from "./ImportarUsuarios";
+import { NOMBRE_ROL, vende, type Rol } from "@/lib/roles";
+import type { Solicitud } from "@/lib/solicitudes-tipos";
 
 // Cupo que suma el botón "Reactivar cupo" (mismo que el cupo inicial).
 const CUPO_REACTIVACION = 20;
@@ -12,11 +14,17 @@ export default function UsuariosPanel({
   initialUsuarios,
   saldosIniciales,
   miEmail,
+  miRol = "superadmin",
+  solicitudesPendientes = [],
 }: {
   initialUsuarios: UsuarioPublico[];
   saldosIniciales: Record<string, number>;
   miEmail: string;
+  miRol?: Rol;
+  solicitudesPendientes?: Solicitud[]; // para el admin: lo que ya pidió
 }) {
+  const esSuperadmin = miRol === "superadmin";
+  const [pendientes, setPendientes] = useState<Solicitud[]>(solicitudesPendientes);
   const [usuarios, setUsuarios] = useState<UsuarioPublico[]>(initialUsuarios);
   const [saldos, setSaldos] = useState<Record<string, number>>(saldosIniciales);
   const [reactivando, setReactivando] = useState("");
@@ -24,7 +32,7 @@ export default function UsuariosPanel({
   const [nombre, setNombre] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState<"ejecutivo" | "superadmin">("ejecutivo");
+  const [role, setRole] = useState<Rol>("ejecutivo");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [ok, setOk] = useState("");
@@ -44,7 +52,7 @@ export default function UsuariosPanel({
       if (!res.ok) setError(data.error || "No se pudo crear.");
       else {
         setUsuarios((prev) => [data.usuario, ...prev]);
-        if (data.usuario.role === "ejecutivo") setSaldos((prev) => ({ ...prev, [data.usuario.email]: CUPO_REACTIVACION }));
+        if (vende(data.usuario.role)) setSaldos((prev) => ({ ...prev, [data.usuario.email]: CUPO_REACTIVACION }));
         setOk(`Usuario ${data.usuario.email} creado.`);
         setEmail(""); setPassword(""); setNombre(""); setRole("ejecutivo");
         setOpen(false);
@@ -85,6 +93,28 @@ export default function UsuariosPanel({
     }
   }
 
+  // Admin: pide al superadmin pausar o reactivar a un vendedor.
+  async function solicitar(u: UsuarioPublico) {
+    const tipo = u.recibiendoLeads ? "pausar" : "reactivar";
+    const motivo = prompt(
+      `¿Por qué quieres ${tipo === "pausar" ? "pausar" : "reactivar"} a ${u.nombre || u.email}? (lo ve el superadmin)`,
+    );
+    if (motivo === null) return;
+    setError("");
+    setOk("");
+    const res = await fetch("/api/admin/solicitudes", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ tipo, email: u.email, motivo }),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) setError(data.error || "No se pudo enviar la solicitud.");
+    else {
+      setPendientes((ps) => [...ps, data.solicitud]);
+      setOk("Solicitud enviada. Queda pendiente hasta que el superadmin la apruebe.");
+    }
+  }
+
   async function eliminar(emailObjetivo: string) {
     if (!confirm(`¿Eliminar al usuario ${emailObjetivo}?`)) return;
     const res = await fetch(`/api/admin/usuarios/${encodeURIComponent(emailObjetivo)}`, {
@@ -104,14 +134,19 @@ export default function UsuariosPanel({
       {ok && <div className="admin-msg ok">{ok}</div>}
       {error && <div className="admin-msg error">{error}</div>}
 
-      <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 12 }}>
+      {!esSuperadmin && (
+        <p style={{ marginTop: 0, fontSize: 14 }}>
+          Ves a todo el equipo. Para pausar o reactivar a alguien, envías una solicitud y el superadmin la aprueba.
+        </p>
+      )}
+      {esSuperadmin && <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 12 }}>
         <button onClick={() => setOpen((o) => !o)} className="admin-btn">
           {open ? "Cancelar" : "+ Nuevo usuario"}
         </button>
         <ImportarUsuarios onImportado={() => window.location.reload()} />
-      </div>
+      </div>}
 
-      {open && (
+      {esSuperadmin && open && (
         <form className="admin-form" onSubmit={crear} style={{ marginBottom: 18 }}>
           <label>
             <span>Nombre</span>
@@ -135,9 +170,10 @@ export default function UsuariosPanel({
           </label>
           <label>
             <span>Rol</span>
-            <select value={role} onChange={(e) => setRole(e.target.value as "ejecutivo" | "superadmin")}>
-              <option value="ejecutivo">Ejecutivo (solo ver leads)</option>
-              <option value="superadmin">Superadmin (puede crear/eliminar usuarios y leads)</option>
+            <select value={role} onChange={(e) => setRole(e.target.value as Rol)}>
+              <option value="ejecutivo">Ejecutivo (vende; ve solo sus leads)</option>
+              <option value="admin">Administrador / jefe de equipo (vende; ve todo; pide y da 1ª aprobación)</option>
+              <option value="superadmin">Superadmin (hace y aprueba todo)</option>
             </select>
           </label>
           <button type="submit" className="admin-btn" disabled={loading}>
@@ -152,10 +188,10 @@ export default function UsuariosPanel({
             <div className="info">
               <div className="email">{u.nombre ? `${u.nombre} · ` : ""}{u.email}</div>
               <div className="role">
-                {u.role === "superadmin" ? "👑 Superadmin" : "👤 Ejecutivo"}
+                {u.role === "superadmin" ? "👑" : u.role === "admin" ? "🧭" : "👤"} {NOMBRE_ROL[u.role]}
                 {u.passwordEsSemilla && " · ⚠️ clave temporal sin cambiar"}
               </div>
-              {u.role === "ejecutivo" && (
+              {vende(u.role) && (
                 <div className="role">
                   Cupo: {saldos[u.email] ?? 0} lead{(saldos[u.email] ?? 0) === 1 ? "" : "s"} disponible
                   {(saldos[u.email] ?? 0) === 1 ? "" : "s"}
@@ -164,7 +200,7 @@ export default function UsuariosPanel({
               )}
             </div>
             <div style={{ display: "flex", gap: 6, flexWrap: "wrap", justifyContent: "flex-end" }}>
-              {u.role === "ejecutivo" && (
+              {esSuperadmin && vende(u.role) && (
                 <button
                   onClick={() => reactivarCupo(u)}
                   className="admin-btn small"
@@ -173,7 +209,16 @@ export default function UsuariosPanel({
                   {reactivando === u.email ? "Reactivando…" : `Reactivar cupo (+${CUPO_REACTIVACION})`}
                 </button>
               )}
-              {u.email !== miEmail && (
+              {!esSuperadmin && vende(u.role) && u.email !== miEmail && (
+                pendientes.some((s) => s.email === u.email.toLowerCase()) ? (
+                  <span className="tag orange">Solicitud pendiente</span>
+                ) : (
+                  <button onClick={() => solicitar(u)} className="admin-btn small secondary">
+                    {u.recibiendoLeads ? "Pedir pausa" : "Pedir reactivar"}
+                  </button>
+                )
+              )}
+              {esSuperadmin && u.email !== miEmail && (
                 <button onClick={() => eliminar(u.email)} className="admin-btn danger small">
                   Eliminar
                 </button>
@@ -181,7 +226,13 @@ export default function UsuariosPanel({
             </div>
           </div>
           <div style={{ marginTop: 8 }}>
-            <RecibirLeadsToggle email={u.email} inicial={u.recibiendoLeads} />
+            {esSuperadmin || u.email === miEmail ? (
+              <RecibirLeadsToggle email={u.email} inicial={u.recibiendoLeads} />
+            ) : (
+              vende(u.role) && (
+                <span className="role">{u.recibiendoLeads ? "🟢 Recibiendo leads" : "⏸️ En pausa"}</span>
+              )
+            )}
           </div>
         </div>
       ))}

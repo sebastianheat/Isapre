@@ -3,11 +3,12 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState, type ReactNode } from "react";
+import { NOMBRE_ROL, veTodo, type Rol } from "@/lib/roles";
 
 interface Props {
   title: string;
   userEmail: string;
-  role: "superadmin" | "ejecutivo";
+  role: Rol;
   children: ReactNode;
 }
 
@@ -15,9 +16,9 @@ const NAV = [
   { href: "/admin/pipeline", label: "Pipeline", ico: "📊" },
   { href: "/admin/leads", label: "Leads", ico: "📋" },
   { href: "/admin/reparto", label: "Reparto", ico: "🎯", superadminOnly: true },
-  { href: "/admin/creditos", label: "Créditos", ico: "🪙", superadminOnly: true },
+  { href: "/admin/creditos", label: "Créditos", ico: "🪙", veTodo: true },
   { href: "/admin/metricas", label: "Métricas", ico: "📈" },
-  { href: "/admin/usuarios", label: "Usuarios", ico: "👥", superadminOnly: true },
+  { href: "/admin/usuarios", label: "Usuarios", ico: "👥", veTodo: true },
   { href: "/admin/perfil", label: "Perfil", ico: "👤" },
 ];
 
@@ -26,6 +27,7 @@ export default function AdminShell({ title, userEmail, role, children }: Props) 
   const router = useRouter();
   const [usaSemilla, setUsaSemilla] = useState(false);
   const [impugnaciones, setImpugnaciones] = useState(0);
+  const [solicitudes, setSolicitudes] = useState(0);
 
   // Verifica si la password actual sigue siendo la semilla (temporal). Si lo
   // es, el panel queda bloqueado en /admin/perfil hasta que la cambie. Se hace
@@ -40,13 +42,17 @@ export default function AdminShell({ title, userEmail, role, children }: Props) 
     return () => window.removeEventListener("admin:password-cambiada", alCambiar);
   }, []);
 
-  // Aviso al superadmin de impugnaciones de leads falsos por revisar.
+  // Aviso de lo que hay por revisar: impugnaciones (superadmin: decisión
+  // final; admin: primera aprobación) y solicitudes del admin (superadmin).
   useEffect(() => {
-    if (role !== "superadmin") return;
+    if (!veTodo(role)) return;
     const cargar = () =>
-      fetch("/api/admin/impugnaciones")
+      fetch("/api/admin/pendientes")
         .then((r) => r.json())
-        .then((d) => setImpugnaciones(Number(d?.pendientes) || 0))
+        .then((d) => {
+          setImpugnaciones(Number(d?.impugnaciones) || 0);
+          setSolicitudes(Number(d?.solicitudes) || 0);
+        })
         .catch(() => {});
     cargar();
     window.addEventListener("admin:impugnaciones", cargar);
@@ -104,14 +110,19 @@ export default function AdminShell({ title, userEmail, role, children }: Props) 
             🚩 Tienes {impugnaciones} impugnaci{impugnaciones === 1 ? "ón" : "ones"} de leads falsos por revisar →
           </Link>
         )}
+        {!usaSemilla && solicitudes > 0 && pathname !== "/admin/solicitudes" && (
+          <Link href="/admin/solicitudes" className="admin-msg warn" style={{ display: "block", textDecoration: "none" }}>
+            📝 Tienes {solicitudes} solicitud{solicitudes === 1 ? "" : "es"} del administrador por aprobar →
+          </Link>
+        )}
         <div style={{ fontSize: 12, color: "var(--admin-text-soft)", marginBottom: 8 }}>
-          Sesión: <strong>{userEmail}</strong> · {role === "superadmin" ? "Superadmin" : "Ejecutivo"}
+          Sesión: <strong>{userEmail}</strong> · {NOMBRE_ROL[role]}
         </div>
         {(!usaSemilla || enPerfil) && children}
       </main>
 
       {!usaSemilla && <nav className="admin-bottomnav">
-        {NAV.filter((n) => !n.superadminOnly || role === "superadmin").map((n) => {
+        {NAV.filter((n) => (n.superadminOnly ? role === "superadmin" : n.veTodo ? veTodo(role) : true)).map((n) => {
           const active = pathname === n.href || pathname?.startsWith(n.href + "/");
           return (
             <Link key={n.href} href={n.href} className={active ? "active" : ""}>

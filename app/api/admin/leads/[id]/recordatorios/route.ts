@@ -1,12 +1,12 @@
 import { obtenerSesion } from "@/lib/auth";
 import { agregarRecordatorio, eliminarRecordatorio, obtenerLead } from "@/lib/leads";
-import { puedeVerLead } from "@/lib/acceso";
+import { puedeEditarLead } from "@/lib/acceso";
 
 export const runtime = "nodejs";
 
 async function accesoDenegado(sesion: NonNullable<Awaited<ReturnType<typeof obtenerSesion>>>, id: string) {
   const lead = await obtenerLead(decodeURIComponent(id));
-  return !lead || !puedeVerLead(sesion, lead);
+  return !lead || !puedeEditarLead(sesion, lead);
 }
 
 export async function POST(req: Request, ctx: { params: Promise<{ id: string }> }) {

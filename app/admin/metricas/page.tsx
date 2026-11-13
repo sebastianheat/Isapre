@@ -4,6 +4,10 @@ import { listarLeads, type Lead } from "@/lib/leads";
 import { filtrarLeadsVisibles } from "@/lib/acceso";
 import { ETAPAS, CALIDADES, type EtapaLead, type CalidadLead } from "@/lib/pipeline";
 import AdminShell from "@/components/AdminShell";
+import { getUsuario, listarUsuarios } from "@/lib/usuarios";
+import { obtenerSaldo } from "@/lib/credits-kv";
+import { resumenEquipo, type FilaEquipo } from "@/lib/equipo";
+import { vende, veTodo } from "@/lib/roles";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -46,11 +50,26 @@ export default async function MetricasPage() {
   const sesion = await obtenerSesion();
   if (!sesion) redirect("/admin");
 
-  // El ejecutivo ve las métricas de SU cartera; el superadmin, las globales.
-  const leads = filtrarLeadsVisibles(sesion, await listarLeads(500));
+  // El ejecutivo ve las métricas de SU cartera; superadmin y admin, las globales
+  // y la tabla de su equipo.
+  const leads = filtrarLeadsVisibles(sesion, await listarLeads(1000));
   const ahora = Date.now();
   const hace14 = ahora - 14 * DIA_MS;
   const hace28 = ahora - 28 * DIA_MS;
+
+  let equipo: FilaEquipo[] = [];
+  if (veTodo(sesion.role)) {
+    const vendedores = (await listarUsuarios()).filter((u) => vende(u.role));
+    const datos = await Promise.all(
+      vendedores.map(async (u) => ({
+        email: u.email,
+        nombre: u.nombre,
+        saldo: await obtenerSaldo(u.email),
+        ultimoIngreso: (await getUsuario(u.email))?.ultimoIngreso,
+      })),
+    );
+    equipo = resumenEquipo(datos, leads, ahora);
+  }
 
   const en14 = leads.filter((l) => l.fecha && Date.parse(l.fecha) >= hace14);
   const en14a28 = leads.filter(
@@ -199,6 +218,53 @@ export default async function MetricasPage() {
           </div>
         ))}
       </div>
+
+      {equipo.length > 0 && (
+        <>
+          <h2 className="admin-h2">Equipo</h2>
+          <div className="admin-card" style={{ overflowX: "auto" }}>
+            <table className="creditos-tabla">
+              <thead>
+                <tr>
+                  <th>Vendedor</th>
+                  <th className="num">Asignados</th>
+                  <th className="num">Últ. 7 días</th>
+                  <th className="num">Sin contactar</th>
+                  <th className="num">En gestión</th>
+                  <th className="num">Ganados</th>
+                  <th className="num">Perdidos</th>
+                  <th className="num">Recordat. vencidos</th>
+                  <th className="num">Cupo</th>
+                  <th>Último ingreso</th>
+                </tr>
+              </thead>
+              <tbody>
+                {equipo.map((f) => (
+                  <tr key={f.email}>
+                    <td>{f.nombre}</td>
+                    <td className="num"><strong>{f.asignados}</strong></td>
+                    <td className="num">{f.ultimos7}</td>
+                    <td className="num" style={{ color: f.sinContactar > 0 ? "#B45309" : undefined }}>{f.sinContactar}</td>
+                    <td className="num">{f.enGestion}</td>
+                    <td className="num">{f.ganados}</td>
+                    <td className="num">{f.perdidos}</td>
+                    <td className="num" style={{ color: f.recordatoriosVencidos > 0 ? "#DC2626" : undefined }}>{f.recordatoriosVencidos}</td>
+                    <td className="num">{f.saldo}</td>
+                    <td style={{ fontSize: 12 }}>
+                      {f.ultimoIngreso
+                        ? new Date(f.ultimoIngreso).toLocaleString("es-CL", { timeZone: "America/Santiago", dateStyle: "short", timeStyle: "short" })
+                        : "nunca"}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <p style={{ fontSize: 12, color: "var(--admin-text-soft)", marginTop: 10, marginBottom: 0 }}>
+              Sin contar leads falsos. &ldquo;Sin contactar&rdquo; = siguen en etapa Nuevo.
+            </p>
+          </div>
+        </>
+      )}
 
       <h2 className="admin-h2">Por calidad (alimenta Google Ads)</h2>
       <div className="admin-card">

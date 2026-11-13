@@ -3,7 +3,8 @@ import { notFound, redirect } from "next/navigation";
 import { obtenerSesion } from "@/lib/auth";
 import { obtenerLead } from "@/lib/leads";
 import { listarUsuarios } from "@/lib/usuarios";
-import { puedeVerLead } from "@/lib/acceso";
+import { puedeEditarLead, puedeVerLead } from "@/lib/acceso";
+import { veTodo } from "@/lib/roles";
 import AdminShell from "@/components/AdminShell";
 import LeadDetailActions from "@/components/LeadDetailActions";
 import LeadPipeline from "@/components/LeadPipeline";
@@ -47,9 +48,10 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
   // no existe (ni por URL directa).
   if (!lead || !puedeVerLead(sesion, lead)) notFound();
 
-  // Usuarios para el bloque "asignado a" / "Reasignar" (solo el superadmin).
-  const usuarios =
-    sesion.role === "superadmin" ? await listarUsuarios().catch(() => []) : [];
+  // Usuarios para el bloque "asignado a" (superadmin y admin) y "Reasignar"
+  // (solo el superadmin).
+  const usuarios = veTodo(sesion.role) ? await listarUsuarios().catch(() => []) : [];
+  const puedeEditar = puedeEditarLead(sesion, lead);
   const nombres = Object.fromEntries(usuarios.map((u) => [u.email, u.nombre || u.email]));
 
   const fechaLegible = lead.fecha
@@ -75,15 +77,23 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
         esSuperadmin={sesion.role === "superadmin"}
       />
 
+      {!puedeEditar && (
+        <div className="admin-msg warn">
+          👁️ Lead de {nombres[(lead.asignadoA ?? "").toLowerCase()] ?? lead.asignadoA ?? "otro ejecutivo"}: lo
+          ves en modo supervisión. Puedes dejar notas; los cambios los hace quien lo tiene asignado.
+        </div>
+      )}
+
       <LeadPipeline
         initialLead={lead}
         nombres={nombres}
         ejecutivos={usuarios.filter((u) => u.recibiendoLeads)}
         miEmail={sesion.email}
         puedeAsignar={sesion.role === "superadmin"}
+        soloLectura={!puedeEditar}
       />
 
-      <LeadEditForm initialLead={lead} />
+      {puedeEditar && <LeadEditForm initialLead={lead} />}
 
       <div className="lead-detail-section">
         <h3>Contacto</h3>

@@ -215,3 +215,35 @@ export async function listarImpugnacionesDe(email: string): Promise<{ pendientes
   const suyo = (l: Lead) => mismo(l.impugnacion?.por, email);
   return { pendientes: pendientes.filter(suyo), resueltas: resueltas.filter(suyo) };
 }
+
+// Primera aprobación (admin / jefe de equipo): deja su opinión en la
+// impugnación pendiente; la decisión final sigue siendo del superadmin.
+export async function revisarImpugnacion(
+  leadId: string,
+  input: { aprueba: boolean; comentario?: string; por: string },
+): Promise<Resultado> {
+  const comentario = (input.comentario ?? "").trim();
+  if (!input.aprueba && comentario.length < 5) return falla(400, "Escribe por qué crees que no es falso.");
+  return await conLock(leadId, async () => {
+    const lead = await obtenerLead(leadId);
+    if (!lead) return falla(404, "Lead no encontrado");
+    const imp = lead.impugnacion;
+    if (!imp || imp.estado !== "pendiente") return falla(409, "Esta impugnación ya no está pendiente.");
+    if (imp.revisionAdmin) return falla(409, "Ya diste tu revisión de esta impugnación.");
+    if (mismo(imp.por, input.por)) return falla(403, "No puedes revisar tu propia impugnación.");
+    const guardado = await guardar({
+      ...lead,
+      impugnacion: {
+        ...imp,
+        revisionAdmin: { aprueba: input.aprueba, por: input.por, fecha: new Date().toISOString(), comentario: comentario || undefined },
+      },
+    });
+    return { ok: true, lead: guardado };
+  });
+}
+
+// Pendientes que esperan la primera revisión del admin.
+export async function contarSinRevisar(): Promise<number> {
+  const { pendientes } = await listarImpugnaciones();
+  return pendientes.filter((l) => !l.impugnacion?.revisionAdmin).length;
+}

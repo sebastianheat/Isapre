@@ -1,20 +1,26 @@
-// Reglas de visibilidad de leads por rol.
-//
-// superadmin: ve y administra todos los leads, y es el único que asigna.
-// ejecutivo: SOLO ve los leads que el superadmin le asignó (asignadoA = su
-// email). El filtro se aplica en el servidor (páginas y API), nunca solo en
-// el cliente, para que un ejecutivo no pueda ver leads ajenos ni por URL
-// directa ni llamando a la API.
+// Permisos sobre los leads.
+// superadmin y admin: ven todos los leads (lib/roles.ts → veTodo).
+// ejecutivo: SOLO ve los leads asignados a él (asignadoA = su email). Un lead
+// ajeno, para él, no existe.
+// Editar un lead (etapa, calidad, datos, recordatorios): el superadmin o quien
+// lo tiene asignado. El admin, en leads ajenos, solo deja notas.
 
-import type { Lead } from "./leads";
 import type { SessionPayload } from "./auth";
+import type { Lead } from "./leads";
+import { veTodo } from "./roles";
+
+const suyo = (sesion: SessionPayload, lead: Lead) =>
+  (lead.asignadoA ?? "").trim().toLowerCase() === sesion.email.trim().toLowerCase();
 
 export function puedeVerLead(sesion: SessionPayload, lead: Lead): boolean {
-  if (sesion.role === "superadmin") return true;
-  return (lead.asignadoA ?? "").trim().toLowerCase() === sesion.email.trim().toLowerCase();
+  return veTodo(sesion.role) || suyo(sesion, lead);
+}
+
+export function puedeEditarLead(sesion: SessionPayload, lead: Lead): boolean {
+  return sesion.role === "superadmin" || suyo(sesion, lead);
 }
 
 export function filtrarLeadsVisibles(sesion: SessionPayload, leads: Lead[]): Lead[] {
-  if (sesion.role === "superadmin") return leads;
-  return leads.filter((l) => puedeVerLead(sesion, l));
+  if (veTodo(sesion.role)) return leads;
+  return leads.filter((l) => suyo(sesion, l));
 }

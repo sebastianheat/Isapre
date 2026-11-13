@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { obtenerSesion } from "@/lib/auth";
 import { listarLeads } from "@/lib/leads";
 import { filtrarLeadsVisibles } from "@/lib/acceso";
+import { veTodo } from "@/lib/roles";
 import AdminShell from "@/components/AdminShell";
 import PipelineBoard from "@/components/PipelineBoard";
 
@@ -12,7 +13,7 @@ export default async function PipelinePage() {
   const sesion = await obtenerSesion();
   if (!sesion) redirect("/admin");
 
-  const leads = filtrarLeadsVisibles(sesion, await listarLeads(500));
+  const leads = filtrarLeadsVisibles(sesion, await listarLeads(1000));
 
   return (
     <AdminShell title="Pipeline" userEmail={sesion.email} role={sesion.role}>
@@ -20,6 +21,7 @@ export default async function PipelinePage() {
         initialLeads={leads}
         miEmail={sesion.email}
         esSuperadmin={sesion.role === "superadmin"}
+        veTodo={veTodo(sesion.role)}
       />
     </AdminShell>
   );

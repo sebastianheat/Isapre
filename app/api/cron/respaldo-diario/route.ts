@@ -4,6 +4,7 @@
 import { enviarRespaldoPorEmail } from "@/lib/email";
 import { generarRespaldo } from "@/lib/respaldo";
 import { estadoAsignacion } from "@/lib/pipeline";
+import { vende } from "@/lib/roles";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
@@ -21,7 +22,7 @@ export async function GET(req: Request) {
     const resumen = {
       leads: datos.leads.length,
       sinAsignar: datos.leads.filter((l) => estadoAsignacion(l) !== "asignado").length,
-      ejecutivos: datos.usuarios.filter((u) => u.role === "ejecutivo").length,
+      ejecutivos: datos.usuarios.filter((u) => vende(u.role)).length,
     };
     const envios = await enviarRespaldoPorEmail(archivo, nombre, resumen);
     console.log(`Respaldo diario enviado: ${nombre} (${archivo.length} bytes)`, resumen, envios);

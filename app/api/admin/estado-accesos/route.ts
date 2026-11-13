@@ -6,13 +6,14 @@ import { getUsuario, listarUsuarios } from "@/lib/usuarios";
 import { obtenerSaldo } from "@/lib/credits-kv";
 import { autorizadoPorToken } from "@/lib/token-operacion";
 import { obtenerPrioridad } from "@/lib/reparto-auto";
+import { vende } from "@/lib/roles";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export async function GET(req: Request) {
   if (!autorizadoPorToken(req)) return Response.json({ error: "No autorizado" }, { status: 401 });
-  const ejecutivos = (await listarUsuarios()).filter((u) => u.role === "ejecutivo");
+  const ejecutivos = (await listarUsuarios()).filter((u) => vende(u.role));
   const estado = await Promise.all(
     ejecutivos.map(async (p) => {
       const u = await getUsuario(p.email);

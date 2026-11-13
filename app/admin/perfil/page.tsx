@@ -5,6 +5,7 @@ import AdminShell from "@/components/AdminShell";
 import CambiarPassword from "@/components/CambiarPassword";
 import RecibirLeadsToggle from "@/components/RecibirLeadsToggle";
 import { recibeLeads } from "@/lib/usuarios";
+import { NOMBRE_ROL } from "@/lib/roles";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -31,7 +32,7 @@ export default async function PerfilPage() {
         </div>
         <div style={{ marginTop: 10 }}>
           <span style={{ color: "var(--admin-text-soft)", fontSize: 13 }}>Rol</span>
-          <div style={{ fontWeight: 600 }}>{sesion.role === "superadmin" ? "Superadmin" : "Ejecutivo"}</div>
+          <div style={{ fontWeight: 600 }}>{NOMBRE_ROL[sesion.role]}</div>
         </div>
       </div>
 

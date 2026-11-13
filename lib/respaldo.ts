@@ -12,6 +12,7 @@ import { CALIDADES, ETAPAS, estadoAsignacion } from "./pipeline";
 import { getUsuario, listarUsuarios, type Usuario } from "./usuarios";
 import { generarXlsx, type Celda, type Hoja } from "./xlsx";
 import { nombreCampana } from "./campanas";
+import { NOMBRE_ROL, vende } from "./roles";
 
 export interface DatosRespaldo {
   leads: Lead[];
@@ -28,7 +29,7 @@ export function construirHojas(d: DatosRespaldo): Hoja[] {
   const etapa = new Map(ETAPAS.map((e) => [e.id, e.label]));
   const calidad = new Map(CALIDADES.map((c) => [c.id, c.label]));
   const leads = [...d.leads].sort((a, b) => (b.fecha ?? "").localeCompare(a.fecha ?? ""));
-  const ejecutivos = d.usuarios.filter((u) => u.role === "ejecutivo");
+  const ejecutivos = d.usuarios.filter((u) => vende(u.role));
 
   const hojaLeads: Celda[][] = [
     [
@@ -61,7 +62,7 @@ export function construirHojas(d: DatosRespaldo): Hoja[] {
     ...[...d.usuarios]
       .sort((a, b) => (a.nombre || a.email).localeCompare(b.nombre || b.email, "es"))
       .map((u) => [
-        u.nombre, u.email, u.role === "superadmin" ? "Superadmin" : "Ejecutivo", u.rut, u.telefono,
+        u.nombre, u.email, NOMBRE_ROL[u.role], u.rut, u.telefono,
         u.recibiendoLeads !== false, u.saldo,
         leads.filter((l) => (l.asignadoA ?? "").toLowerCase() === u.email.toLowerCase()).length,
         fechaCl(u.ultimoIngreso), fechaCl(u.createdAt),

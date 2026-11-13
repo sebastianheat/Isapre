@@ -2,6 +2,7 @@ import { obtenerSesion } from "@/lib/auth";
 import { listarUsuarios, crearUsuario } from "@/lib/usuarios";
 import { regalarCreditos } from "@/lib/credits-kv";
 import { CUPO_INICIAL } from "@/lib/importar-usuarios";
+import { normalizarRol, vende } from "@/lib/roles";
 
 export const runtime = "nodejs";
 
@@ -29,14 +30,14 @@ export async function POST(req: Request) {
   }
   const email = (body.email || "").trim();
   const password = body.password || "";
-  const role = body.role === "superadmin" ? "superadmin" : "ejecutivo";
+  const role = normalizarRol(body.role);
   if (!email || !password) {
     return Response.json({ error: "Email y contraseña son obligatorios." }, { status: 400 });
   }
   try {
     const u = await crearUsuario({ email, password, role, nombre: body.nombre });
     // Mismo cupo que la importación en lote: sin créditos no entra a la rueda.
-    if (role === "ejecutivo") {
+    if (vende(role)) {
       await regalarCreditos({
         email: u.email, cantidad: CUPO_INICIAL, motivo: `Cupo inicial de ${CUPO_INICIAL} leads`, por: sesion.email,
       });

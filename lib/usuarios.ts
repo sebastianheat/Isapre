@@ -7,11 +7,12 @@
 
 import { kvGet, kvSet, kvDel, kvSAdd, kvSRem, kvSMembers } from "./store";
 import { hashPassword, verifyPassword } from "./auth";
+import type { Rol } from "./roles";
 
 export interface Usuario {
   email: string;
   passwordHash: string;
-  role: "superadmin" | "ejecutivo";
+  role: Rol;
   nombre?: string;
   createdAt: string;
   passwordEsSemilla?: boolean;
@@ -26,7 +27,7 @@ export interface Usuario {
 
 export interface UsuarioPublico {
   email: string;
-  role: "superadmin" | "ejecutivo";
+  role: Rol;
   nombre?: string;
   createdAt: string;
   passwordEsSemilla?: boolean;
@@ -152,7 +153,7 @@ export const CLAVE_TEMPORAL = "123456";
 export async function crearUsuario(input: {
   email: string;
   password: string;
-  role: "superadmin" | "ejecutivo";
+  role: Rol;
   nombre?: string;
   rut?: string;
   telefono?: string;

@@ -6,7 +6,7 @@ import {
   type EtapaLead,
   type CalidadLead,
 } from "@/lib/leads";
-import { puedeVerLead } from "@/lib/acceso";
+import { puedeEditarLead, puedeVerLead } from "@/lib/acceso";
 
 export const runtime = "nodejs";
 
@@ -55,6 +55,9 @@ export async function PATCH(req: Request, ctx: { params: Promise<{ id: string }>
   const existente = await obtenerLead(decodeURIComponent(id));
   if (!existente || !puedeVerLead(sesion, existente)) {
     return Response.json({ error: "Lead no encontrado" }, { status: 404 });
+  }
+  if (!puedeEditarLead(sesion, existente)) {
+    return Response.json({ error: "Este lead es de otro ejecutivo: solo puedes dejar notas." }, { status: 403 });
   }
   if (typeof body.asignadoA !== "undefined") {
     return Response.json(

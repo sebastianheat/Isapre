@@ -38,12 +38,16 @@ export default function LeadPipeline({
   ejecutivos,
   miEmail,
   puedeAsignar = true,
+  soloLectura = false,
 }: {
   initialLead: Lead;
   nombres: Record<string, string>;
   ejecutivos: EjecutivoElegible[];
   miEmail: string;
   puedeAsignar?: boolean;
+  // Admin mirando el lead de otro: ve todo y deja notas, pero no cambia
+  // etapa, calidad ni recordatorios (el servidor también lo bloquea).
+  soloLectura?: boolean;
 }) {
   const router = useRouter();
   const [lead, setLead] = useState<Lead>(initialLead);
@@ -188,7 +192,7 @@ export default function LeadPipeline({
               <select
                 value={lead.etapa ?? "nuevo"}
                 onChange={(e) => cambiarEtapa(e.target.value as EtapaLead)}
-                disabled={guardando}
+                disabled={guardando || soloLectura}
                 style={{
                   flex: 1, padding: "8px 10px", fontSize: 15,
                   border: "1px solid var(--admin-border)", borderRadius: 8,
@@ -220,7 +224,7 @@ export default function LeadPipeline({
                   <button
                     key={c.id}
                     type="button"
-                    disabled={guardando}
+                    disabled={guardando || soloLectura}
                     onClick={() => cambiarCalidad(c.id)}
                     style={{
                       padding: "7px 12px",
@@ -245,7 +249,7 @@ export default function LeadPipeline({
 
       <div className="lead-detail-section">
         <h3>Recordatorios ({recordatorios.filter((r) => !r.notificado).length} pendientes)</h3>
-        <form onSubmit={agregarRecordatorio} className="admin-card" style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+        {!soloLectura && <form onSubmit={agregarRecordatorio} className="admin-card" style={{ display: "flex", flexDirection: "column", gap: 10 }}>
           <input
             type="datetime-local"
             value={recFecha}
@@ -270,11 +274,11 @@ export default function LeadPipeline({
           <button type="submit" className="admin-btn small" disabled={guardando}>
             + Agregar recordatorio
           </button>
-        </form>
+        </form>}
         {recordatorios.length > 0 && (
           <div style={{ marginTop: 10 }}>
             {recordatorios.map((r) => (
-              <RecordatorioItem key={r.id} rec={r} onEliminar={() => eliminarRecordatorio(r.id)} />
+              <RecordatorioItem key={r.id} rec={r} onEliminar={soloLectura ? undefined : () => eliminarRecordatorio(r.id)} />
             ))}
           </div>
         )}
@@ -301,7 +305,15 @@ export default function LeadPipeline({
         {notas.length > 0 && (
           <div style={{ marginTop: 10 }}>
             {notas.map((n) => (
-              <NotaItem key={n.id} nota={n} onEliminar={() => eliminarNota(n.id)} />
+              <NotaItem
+                key={n.id}
+                nota={n}
+                onEliminar={
+                  !soloLectura || n.autor.toLowerCase() === miEmail.toLowerCase()
+                    ? () => eliminarNota(n.id)
+                    : undefined
+                }
+              />
             ))}
           </div>
         )}
@@ -310,7 +322,7 @@ export default function LeadPipeline({
   );
 }
 
-function NotaItem({ nota, onEliminar }: { nota: NotaLead; onEliminar: () => void }) {
+function NotaItem({ nota, onEliminar }: { nota: NotaLead; onEliminar?: () => void }) {
   return (
     <div className="admin-card" style={{ padding: "12px 14px", background: "#FAFBFD" }}>
       <div style={{ whiteSpace: "pre-wrap" }}>{nota.texto}</div>
@@ -318,7 +330,7 @@ function NotaItem({ nota, onEliminar }: { nota: NotaLead; onEliminar: () => void
         <span style={{ fontSize: 11, color: "var(--admin-text-soft)" }}>
           {nota.autor} · {formatearFecha(nota.fecha)}
         </span>
-        <button
+        {onEliminar && (<button
           onClick={onEliminar}
           style={{
             background: "transparent", border: "none", color: "var(--admin-red)",
@@ -326,13 +338,13 @@ function NotaItem({ nota, onEliminar }: { nota: NotaLead; onEliminar: () => void
           }}
         >
           Eliminar
-        </button>
+        </button>)}
       </div>
     </div>
   );
 }
 
-function RecordatorioItem({ rec, onEliminar }: { rec: RecordatorioLead; onEliminar: () => void }) {
+function RecordatorioItem({ rec, onEliminar }: { rec: RecordatorioLead; onEliminar?: () => void }) {
   const vencido = new Date(rec.fecha) < new Date() && !rec.notificado;
   const notificado = rec.notificado;
   return (
@@ -351,7 +363,7 @@ function RecordatorioItem({ rec, onEliminar }: { rec: RecordatorioLead; onElimin
           </div>
           <div style={{ marginTop: 4 }}>{rec.mensaje}</div>
         </div>
-        <button
+        {onEliminar && (<button
           onClick={onEliminar}
           style={{
             background: "transparent", border: "none", color: "var(--admin-red)",
@@ -359,7 +371,7 @@ function RecordatorioItem({ rec, onEliminar }: { rec: RecordatorioLead; onElimin
           }}
         >
           Eliminar
-        </button>
+        </button>)}
       </div>
       <div style={{ fontSize: 11, color: "var(--admin-text-soft)", marginTop: 6 }}>
         Creado por {rec.creadoPor}

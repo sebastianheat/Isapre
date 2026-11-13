@@ -4,6 +4,7 @@ import { obtenerSesion } from "@/lib/auth";
 import { getUsuario, listarUsuarios } from "@/lib/usuarios";
 import { listarMovimientos, obtenerSaldo, type TipoMovimiento } from "@/lib/credits-kv";
 import AdminShell from "@/components/AdminShell";
+import { veTodo } from "@/lib/roles";
 import ImpugnacionesPanel from "@/components/ImpugnacionesPanel";
 import { listarImpugnacionesDe } from "@/lib/impugnaciones";
 
@@ -31,7 +32,7 @@ export default async function HistorialCreditosPage({
 }) {
   const sesion = await obtenerSesion();
   if (!sesion) redirect("/admin");
-  if (sesion.role !== "superadmin") redirect("/admin/leads");
+  if (!veTodo(sesion.role)) redirect("/admin/leads");
 
   const email = decodeURIComponent((await params).email).toLowerCase();
   const [usuario, movimientos, saldoGuardado, usuarios, impugnaciones] = await Promise.all([
@@ -71,6 +72,8 @@ export default async function HistorialCreditosPage({
             resueltasIniciales={impugnaciones.resueltas}
             nombres={Object.fromEntries(usuarios.map((u) => [u.email.toLowerCase(), u.nombre || u.email]))}
             encabezado={false}
+            modo={sesion.role === "superadmin" ? "superadmin" : "admin"}
+            miEmail={sesion.email}
           />
         </div>
       )}
@@ -78,9 +81,11 @@ export default async function HistorialCreditosPage({
       {movimientos.length === 0 ? (
         <div className="admin-card reparto-vacio">
           <p style={{ marginBottom: 12 }}>Sin créditos registrados todavía</p>
-          <Link href={`/admin/creditos?ejecutivo=${encodeURIComponent(email)}`} className="admin-btn small">
-            Regalar créditos
-          </Link>
+          {sesion.role === "superadmin" && (
+            <Link href={`/admin/creditos?ejecutivo=${encodeURIComponent(email)}`} className="admin-btn small">
+              Regalar créditos
+            </Link>
+          )}
         </div>
       ) : (
         <>

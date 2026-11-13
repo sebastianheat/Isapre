@@ -3,6 +3,7 @@ import { obtenerSesion } from "@/lib/auth";
 import { listarLeads } from "@/lib/leads";
 import { listarUsuarios } from "@/lib/usuarios";
 import { filtrarLeadsVisibles } from "@/lib/acceso";
+import { veTodo } from "@/lib/roles";
 import AdminShell from "@/components/AdminShell";
 import LeadsList from "@/components/LeadsList";
 
@@ -13,12 +14,12 @@ export default async function LeadsPage() {
   const sesion = await obtenerSesion();
   if (!sesion) redirect("/admin");
 
-  const leads = filtrarLeadsVisibles(sesion, await listarLeads(300));
+  const leads = filtrarLeadsVisibles(sesion, await listarLeads(1000));
 
   // Mapa email -> nombre para la etiqueta "asignado a" (solo la ve el
-  // superadmin: al ejecutivo todos sus leads son suyos, sería ruido).
+  // superadmin y el admin: al ejecutivo todos sus leads son suyos, sería ruido).
   let nombres: Record<string, string> = {};
-  if (sesion.role === "superadmin") {
+  if (veTodo(sesion.role)) {
     const usuarios = await listarUsuarios().catch(() => []);
     nombres = Object.fromEntries(usuarios.map((u) => [u.email, u.nombre || u.email]));
   }
@@ -27,7 +28,7 @@ export default async function LeadsPage() {
     <AdminShell title="Leads" userEmail={sesion.email} role={sesion.role}>
       <LeadsList
         leads={leads}
-        mostrarAsignado={sesion.role === "superadmin"}
+        mostrarAsignado={veTodo(sesion.role)}
         nombresUsuarios={nombres}
       />
       {sesion.role === "superadmin" && (

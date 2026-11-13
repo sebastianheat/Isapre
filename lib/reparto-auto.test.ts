@@ -149,4 +149,49 @@ describe("reparto automático round robin", () => {
     expect((await nuevoLead(c)).asignadoA).toBe("a@x.cl");
     expect(await c.auto.obtenerPrioridad()).toBeNull();
   });
+  it("si alguien sale de la rueda, el siguiente NO pierde su turno (antes saltaba)", async () => {
+    await importar(c, 20, "a@x.cl", "b@x.cl", "c@x.cl", "d@x.cl");
+    await c.auto.setRepartoAutomatico(true);
+    expect((await nuevoLead(c)).asignadoA).toBe("a@x.cl");
+    expect((await nuevoLead(c)).asignadoA).toBe("b@x.cl");
+    await c.usuarios.setRecibiendoLeads("b@x.cl", false); // b sale de la rueda
+    const dueños = [];
+    for (let i = 0; i < 4; i++) dueños.push((await nuevoLead(c)).asignadoA);
+    expect(dueños).toEqual(["c@x.cl", "d@x.cl", "a@x.cl", "c@x.cl"]);
+  });
+
+  it("un vendedor nuevo entra en su lugar del orden sin saltar a nadie", async () => {
+    await importar(c, 20, "a@x.cl", "b@x.cl", "c@x.cl");
+    await c.auto.setRepartoAutomatico(true);
+    await nuevoLead(c);
+    await nuevoLead(c);
+    await importar(c, 20, "d@x.cl");
+    const dueños = [];
+    for (let i = 0; i < 4; i++) dueños.push((await nuevoLead(c)).asignadoA);
+    expect(dueños).toEqual(["c@x.cl", "d@x.cl", "a@x.cl", "b@x.cl"]);
+  });
+
+  it("con gente entrando y saliendo, los que siempre están reciben lo mismo (±1)", async () => {
+    await importar(c, 200, "a@x.cl", "b@x.cl", "c@x.cl", "d@x.cl", "e@x.cl");
+    await c.auto.setRepartoAutomatico(true);
+    const cuenta: Record<string, number> = {};
+    for (let i = 0; i < 60; i++) {
+      // d y e entran y salen todo el rato (pausas, cupo agotado)
+      await c.usuarios.setRecibiendoLeads("d@x.cl", i % 3 !== 0);
+      await c.usuarios.setRecibiendoLeads("e@x.cl", i % 4 < 2);
+      const a = (await nuevoLead(c)).asignadoA!;
+      cuenta[a] = (cuenta[a] ?? 0) + 1;
+    }
+    const fijos = ["a@x.cl", "b@x.cl", "c@x.cl"].map((e) => cuenta[e] ?? 0);
+    expect(Math.max(...fijos) - Math.min(...fijos)).toBeLessThanOrEqual(1);
+  });
+
+  it("el administrador (jefe de equipo) también vende: entra a la rueda con su cupo", async () => {
+    await importar(c, 20, "a@x.cl");
+    await c.usuarios.crearUsuario({ email: "jefe@x.cl", password: "clave123", role: "admin", nombre: "Jefe" });
+    await c.credits.regalarCreditos({ email: "jefe@x.cl", cantidad: 20, motivo: "cupo", por: ADMIN });
+    await c.auto.setRepartoAutomatico(true);
+    const dueños = [(await nuevoLead(c)).asignadoA, (await nuevoLead(c)).asignadoA];
+    expect(dueños.sort()).toEqual(["a@x.cl", "jefe@x.cl"]);
+  });
 });

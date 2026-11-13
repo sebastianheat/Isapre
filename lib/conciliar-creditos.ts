@@ -8,6 +8,7 @@
 import { listarMovimientos, obtenerSaldo } from "./credits-kv";
 import { listarLeads, type Lead } from "./leads";
 import { listarUsuarios } from "./usuarios";
+import { vende } from "./roles";
 
 export interface FilaConciliacion {
   email: string;
@@ -54,7 +55,7 @@ export function calcularFila(
 
 export async function conciliarCreditos(): Promise<FilaConciliacion[]> {
   const [usuarios, leads] = await Promise.all([listarUsuarios(), listarLeads(1000)]);
-  const ejecutivos = usuarios.filter((u) => u.role === "ejecutivo");
+  const ejecutivos = usuarios.filter((u) => vende(u.role));
   const filas = await Promise.all(
     ejecutivos.map(async (u) =>
       calcularFila(u, await obtenerSaldo(u.email), await listarMovimientos(u.email), leads),

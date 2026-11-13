@@ -18,11 +18,16 @@ export default function ImpugnacionesPanel({
   resueltasIniciales,
   nombres,
   encabezado = true,
+  modo = "superadmin",
+  miEmail = "",
 }: {
   pendientesIniciales: Lead[];
   resueltasIniciales: Lead[];
   nombres: Record<string, string>;
   encabezado?: boolean; // false dentro del historial de un ejecutivo
+  // superadmin: decisión final. admin: primera aprobación (visto bueno).
+  modo?: "superadmin" | "admin";
+  miEmail?: string;
 }) {
   const router = useRouter();
   const [pendientes, setPendientes] = useState(pendientesIniciales);
@@ -31,6 +36,32 @@ export default function ImpugnacionesPanel({
   const [enCurso, setEnCurso] = useState("");
   const [msg, setMsg] = useState<{ tipo: "ok" | "error"; texto: string } | null>(null);
   const nombre = (email?: string) => (email ? nombres[email.toLowerCase()] ?? email : "");
+
+  // Primera aprobación del admin: el lead sigue pendiente hasta la decisión final.
+  async function revisar(lead: Lead, aprueba: boolean) {
+    const id = lead.id ?? "";
+    setEnCurso(id);
+    setMsg(null);
+    try {
+      const res = await fetch("/api/admin/impugnaciones", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ leadId: id, revision: true, aprueba, comentario: respuesta[id] ?? "" }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setMsg({ tipo: "error", texto: data.error || "No se pudo guardar tu revisión." });
+        return;
+      }
+      setPendientes((ps) => ps.map((p) => (p.id === id ? (data.lead as Lead) : p)));
+      window.dispatchEvent(new Event("admin:impugnaciones"));
+      setMsg({ tipo: "ok", texto: `${lead.nombre}: revisión enviada. Falta la aprobación final del superadmin.` });
+    } catch {
+      setMsg({ tipo: "error", texto: "Error de red." });
+    } finally {
+      setEnCurso("");
+    }
+  }
 
   async function resolver(lead: Lead, aceptar: boolean) {
     const id = lead.id ?? "";
@@ -71,9 +102,16 @@ export default function ImpugnacionesPanel({
         <>
           <h1 className="admin-h1">Impugnaciones de leads falsos</h1>
           <p style={{ margin: 0, fontSize: 13 }}>
-            Un ejecutivo puede impugnar un lead solo si el teléfono es falso y además el nombre o el correo.
-            Al <strong>aceptar</strong>, el lead queda como falso (perdido) y se le devuelve el crédito. Al{" "}
-            <strong>rechazar</strong>, el lead sigue igual y el ejecutivo ve tu motivo.
+            Un ejecutivo puede impugnar un lead solo si el teléfono es falso y además el nombre o el correo.{" "}
+            {modo === "admin" ? (
+              <>Tú das la <strong>primera aprobación</strong>; la decisión final es del superadmin.</>
+            ) : (
+              <>
+                Al <strong>aceptar</strong>, el lead queda como falso (perdido) y se le devuelve el crédito. Al{" "}
+                <strong>rechazar</strong>, el lead sigue igual y el ejecutivo ve tu motivo. Si el administrador ya lo
+                revisó, ves su opinión.
+              </>
+            )}
           </p>
         </>
       )}
@@ -105,7 +143,41 @@ export default function ImpugnacionesPanel({
                 Dice que es falso: <strong>{imp.motivos.map((m) => MOTIVO[m] ?? m).join(", ")}</strong>
               </div>
               <div>Comentario: {imp.comentario}</div>
+              {imp.revisionAdmin && (
+                <div className={`admin-msg ${imp.revisionAdmin.aprueba ? "ok" : "warn"}`} style={{ margin: "6px 0 0" }}>
+                  1ª aprobación de {nombre(imp.revisionAdmin.por)}:{" "}
+                  <strong>{imp.revisionAdmin.aprueba ? "es falso ✅" : "no es falso ❌"}</strong>
+                  {imp.revisionAdmin.comentario ? ` — ${imp.revisionAdmin.comentario}` : ""}
+                </div>
+              )}
             </div>
+            {modo === "admin" ? (
+              imp.revisionAdmin ? (
+                <div style={{ fontSize: 13 }}>Esperando la aprobación final del superadmin.</div>
+              ) : imp.por.toLowerCase() === miEmail.toLowerCase() ? (
+                <div style={{ fontSize: 13 }}>Es tu impugnación: la revisa directamente el superadmin.</div>
+              ) : (
+                <>
+                  <label style={{ display: "grid", gap: 4, fontSize: 13 }}>
+                    Comentario (obligatorio si crees que no es falso)
+                    <textarea
+                      rows={2}
+                      value={respuesta[id] ?? ""}
+                      onChange={(e) => setRespuesta((r) => ({ ...r, [id]: e.target.value }))}
+                    />
+                  </label>
+                  <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                    <button className="admin-btn small" onClick={() => revisar(l, true)} disabled={enCurso !== ""}>
+                      {enCurso === id ? "…" : "Visto bueno: es falso"}
+                    </button>
+                    <button className="admin-btn small secondary" onClick={() => revisar(l, false)} disabled={enCurso !== ""}>
+                      No es falso
+                    </button>
+                  </div>
+                </>
+              )
+            ) : (
+            <>
             <label style={{ display: "grid", gap: 4, fontSize: 13 }}>
               Detalle (obligatorio si rechazas; el ejecutivo lo va a ver)
               <textarea
@@ -123,6 +195,8 @@ export default function ImpugnacionesPanel({
                 Rechazar
               </button>
             </div>
+            </>
+            )}
           </div>
         );
       })}

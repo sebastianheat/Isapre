@@ -14,9 +14,11 @@ export interface FilaSaldo {
 export default function CreditosPanel({
   filasIniciales,
   ejecutivoInicial,
+  soloLectura = false,
 }: {
   filasIniciales: FilaSaldo[];
   ejecutivoInicial?: string;
+  soloLectura?: boolean; // admin: ve saldos e historial, no regala
 }) {
   const router = useRouter();
   const [filas, setFilas] = useState(filasIniciales);
@@ -63,7 +65,7 @@ export default function CreditosPanel({
     <>
       <h1 className="admin-h1">Créditos</h1>
 
-      <form className="admin-card creditos-form" onSubmit={regalar} noValidate>
+      {!soloLectura && <form className="admin-card creditos-form" onSubmit={regalar} noValidate>
         <h2 className="admin-h2" style={{ margin: 0 }}>Regalar créditos</h2>
         {error && <div className="admin-msg error" role="alert" style={{ margin: 0 }}>{error}</div>}
         <label>
@@ -94,12 +96,12 @@ export default function CreditosPanel({
         <button type="submit" className="admin-btn" disabled={enCurso}>
           {enCurso ? "Regalando…" : "Regalar"}
         </button>
-      </form>
+      </form>}
 
       <h2 className="admin-h2">Saldos</h2>
-      <p style={{ marginTop: 0 }}>
+      {!soloLectura && <p style={{ marginTop: 0 }}>
         <Link href="/admin/creditos/conciliar">Revisar si los saldos cuadran con los leads entregados →</Link>
-      </p>
+      </p>}
       <div className="admin-card">
         <table className="creditos-tabla">
           <thead>

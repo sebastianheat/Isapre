@@ -1,6 +1,6 @@
 import { obtenerSesion } from "@/lib/auth";
 import { agregarNota, eliminarNota, obtenerLead } from "@/lib/leads";
-import { puedeVerLead } from "@/lib/acceso";
+import { puedeEditarLead, puedeVerLead } from "@/lib/acceso";
 
 export const runtime = "nodejs";
 
@@ -39,6 +39,12 @@ export async function DELETE(req: Request, ctx: { params: Promise<{ id: string }
   const url = new URL(req.url);
   const notaId = url.searchParams.get("notaId");
   if (!notaId) return Response.json({ error: "Falta notaId" }, { status: 400 });
+  // En un lead ajeno (admin supervisando) solo se borran las notas propias.
+  const actual = await obtenerLead(decodeURIComponent(id));
+  const nota = actual?.notas?.find((n) => n.id === notaId);
+  if (actual && !puedeEditarLead(sesion, actual) && nota && nota.autor.toLowerCase() !== sesion.email.toLowerCase()) {
+    return Response.json({ error: "Solo puedes borrar tus propias notas." }, { status: 403 });
+  }
   const lead = await eliminarNota(decodeURIComponent(id), notaId);
   if (!lead) return Response.json({ error: "Lead no encontrado" }, { status: 404 });
   return Response.json({ lead });

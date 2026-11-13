@@ -5,6 +5,7 @@ import bcrypt from "bcryptjs";
 import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
 import type { NextRequest } from "next/server";
+import { normalizarRol, type Rol } from "./roles";
 
 export const COOKIE_NAME = "isapre_admin_session";
 const SESSION_DAYS = 7;
@@ -22,7 +23,7 @@ function secret(): Uint8Array {
 
 export interface SessionPayload {
   email: string;
-  role: "superadmin" | "ejecutivo";
+  role: Rol;
 }
 
 export async function signSession(payload: SessionPayload): Promise<string> {
@@ -37,7 +38,7 @@ export async function verifySession(token: string): Promise<SessionPayload | nul
   try {
     const { payload } = await jwtVerify(token, secret());
     if (typeof payload.email !== "string") return null;
-    const role = payload.role === "superadmin" ? "superadmin" : "ejecutivo";
+    const role = normalizarRol(payload.role);
     return { email: payload.email, role };
   } catch {
     return null;

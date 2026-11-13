@@ -8,6 +8,6 @@ export const maxDuration = 30;
 export async function GET() {
   const sesion = await obtenerSesion();
   if (!sesion) return Response.json({ error: "No autorizado" }, { status: 401 });
-  const leads = filtrarLeadsVisibles(sesion, await listarLeads(300));
+  const leads = filtrarLeadsVisibles(sesion, await listarLeads(1000));
   return Response.json({ leads });
 }

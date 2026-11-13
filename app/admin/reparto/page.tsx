@@ -8,6 +8,7 @@ import AdminShell from "@/components/AdminShell";
 import RepartoCola, { type EjecutivoOpcion, type LeadCola } from "@/components/RepartoCola";
 import RepartoAutomaticoToggle from "@/components/RepartoAutomaticoToggle";
 import { ejecutivosEnRueda, obtenerPrioridad, repartoAutomaticoActivo } from "@/lib/reparto-auto";
+import { vende } from "@/lib/roles";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -51,7 +52,7 @@ export default async function RepartoPage() {
         enRueda={enRueda}
         prioridadInicial={prioridad}
         ejecutivos={usuarios
-          .filter((u) => u.role === "ejecutivo")
+          .filter((u) => vende(u.role))
           .map((u) => ({ email: u.email, nombre: u.nombre || u.email }))
           .sort((a, b) => a.nombre.localeCompare(b.nombre, "es"))}
       />

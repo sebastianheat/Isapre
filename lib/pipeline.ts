@@ -90,6 +90,8 @@ export interface ImpugnacionLead {
   resueltaEn?: string; // ISO
   respuesta?: string; // motivo del rechazo o nota de la aceptación
   creditoDevuelto?: boolean;
+  // Primera aprobación del admin (jefe de equipo); la final es del superadmin.
+  revisionAdmin?: { aprueba: boolean; por: string; fecha: string; comentario?: string };
 }
 
 // Regla del negocio: teléfono falso + (nombre o correo falso).

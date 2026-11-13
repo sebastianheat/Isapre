@@ -33,13 +33,18 @@ function proximoRecordatorio(lead: Lead): string | null {
 
 export default function PipelineBoard({
   initialLeads,
-  miEmail: _miEmail,
+  miEmail,
   esSuperadmin = true,
+  veTodo: veTodoProp,
 }: {
   initialLeads: Lead[];
   miEmail: string;
   esSuperadmin?: boolean;
+  veTodo?: boolean; // admin: ve todos los leads, pero solo mueve los suyos
 }) {
+  const veTodo = veTodoProp ?? esSuperadmin;
+  const puedeMover = (l: Lead) =>
+    esSuperadmin || (l.asignadoA ?? "").toLowerCase() === miEmail.toLowerCase();
   const router = useRouter();
   const [leads, setLeads] = useState<Lead[]>(initialLeads);
   const [filtroMios, setFiltroMios] = useState(false);
@@ -61,7 +66,7 @@ export default function PipelineBoard({
   const filtrados = useMemo(() => {
     const q = busqueda.trim().toLowerCase();
     return leads.filter((l) => {
-      if (filtroMios && l.asignadoA !== _miEmail) return false;
+      if (filtroMios && l.asignadoA !== miEmail) return false;
       if (!q) return true;
       return (
         (l.nombre ?? "").toLowerCase().includes(q) ||
@@ -69,7 +74,7 @@ export default function PipelineBoard({
         (l.email ?? "").toLowerCase().includes(q)
       );
     });
-  }, [leads, filtroMios, busqueda, _miEmail]);
+  }, [leads, filtroMios, busqueda, miEmail]);
 
   // Agrupar por etapa. Los que no tienen etapa caen en "nuevo".
   const porEtapa = useMemo(() => {
@@ -117,7 +122,7 @@ export default function PipelineBoard({
         onChange={(e) => setBusqueda(e.target.value)}
       />
       <div className="admin-filters" style={{ marginBottom: 10 }}>
-        {esSuperadmin && (
+        {veTodo && (
           <button
             className={`pill ${filtroMios ? "active" : ""}`}
             onClick={() => setFiltroMios((v) => !v)}
@@ -184,8 +189,8 @@ export default function PipelineBoard({
                   <PipelineCard
                     key={lead.id}
                     lead={lead}
-                    mostrarAsignado={esSuperadmin}
-                    onMover={(nueva) => lead.id && moverLead(lead.id, nueva)}
+                    mostrarAsignado={veTodo}
+                    onMover={puedeMover(lead) ? (nueva) => lead.id && moverLead(lead.id, nueva) : undefined}
                   />
                 ))}
               </div>
@@ -208,7 +213,7 @@ function PipelineCard({
   mostrarAsignado = true,
 }: {
   lead: Lead;
-  onMover: (nueva: EtapaLead) => void;
+  onMover?: (nueva: EtapaLead) => void; // sin onMover: solo lectura
   mostrarAsignado?: boolean;
 }) {
   const vencido = tieneVencido(lead);
@@ -267,7 +272,8 @@ function PipelineCard({
       <select
         className="pipeline-card-select"
         value={lead.etapa ?? "nuevo"}
-        onChange={(e) => onMover(e.target.value as EtapaLead)}
+        onChange={(e) => onMover?.(e.target.value as EtapaLead)}
+        disabled={!onMover}
         aria-label="Mover a etapa"
       >
         {ETAPAS.map((e) => (

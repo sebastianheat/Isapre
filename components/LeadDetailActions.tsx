@@ -2,13 +2,14 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import type { Rol } from "@/lib/roles";
 
 export default function LeadDetailActions({
   leadId,
   role,
 }: {
   leadId: string;
-  role: "superadmin" | "ejecutivo";
+  role: Rol;
 }) {
   const router = useRouter();
   const [eliminando, setEliminando] = useState(false);
