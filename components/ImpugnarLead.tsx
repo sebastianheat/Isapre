@@ -72,7 +72,7 @@ export default function ImpugnarLead({
   if (imp?.estado === "pendiente") {
     return (
       <div className="admin-msg warn" style={{ display: "grid", gap: 8 }}>
-        <div>🚩 <strong>Impugnación enviada</strong>: está esperando que el administrador la revise.</div>
+        <div>🚩 <strong>Impugnación enviada</strong>: está esperando revisión (jefe de equipo y superadmin).</div>
         <div style={{ fontSize: 13 }}>Comentario: {imp.comentario}</div>
         {esSuperadmin && <Link href="/admin/impugnaciones">Revisar impugnaciones →</Link>}
         {esMio && (

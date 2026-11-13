@@ -6,6 +6,7 @@ import CambiarPassword from "@/components/CambiarPassword";
 import RecibirLeadsToggle from "@/components/RecibirLeadsToggle";
 import { recibeLeads } from "@/lib/usuarios";
 import { NOMBRE_ROL } from "@/lib/roles";
+import ActivarNotificaciones from "@/components/ActivarNotificaciones";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -35,6 +36,9 @@ export default async function PerfilPage() {
           <div style={{ fontWeight: 600 }}>{NOMBRE_ROL[sesion.role]}</div>
         </div>
       </div>
+
+      <h2 className="admin-h2">Notificaciones</h2>
+      <ActivarNotificaciones />
 
       {u && (
         <>

@@ -7,6 +7,7 @@
 
 import { listarLeads, marcarRecordatorioNotificado } from "@/lib/leads";
 import { enviarRecordatorioPorEmail } from "@/lib/email";
+import { pushRecordatorio } from "@/lib/avisos-push";
 
 export const runtime = "nodejs";
 export const maxDuration = 30;
@@ -33,6 +34,7 @@ export async function GET(req: Request) {
       // Vencido y no notificado — mandamos email.
       try {
         await enviarRecordatorioPorEmail(lead, rec);
+        if (lead.asignadoA) await pushRecordatorio(lead, rec, lead.asignadoA).catch(() => {});
         await marcarRecordatorioNotificado(lead.id ?? "", rec.id);
         disparados.push({ leadId: lead.id ?? "", recId: rec.id });
         ok++;

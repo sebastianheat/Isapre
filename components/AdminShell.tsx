@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState, type ReactNode } from "react";
 import { NOMBRE_ROL, veTodo, type Rol } from "@/lib/roles";
+import ActivarNotificaciones from "./ActivarNotificaciones";
 
 interface Props {
   title: string;
@@ -115,6 +116,7 @@ export default function AdminShell({ title, userEmail, role, children }: Props) 
             📝 Tienes {solicitudes} solicitud{solicitudes === 1 ? "" : "es"} del administrador por aprobar →
           </Link>
         )}
+        {!usaSemilla && pathname !== "/admin/perfil" && <ActivarNotificaciones compacto />}
         <div style={{ fontSize: 12, color: "var(--admin-text-soft)", marginBottom: 8 }}>
           Sesión: <strong>{userEmail}</strong> · {NOMBRE_ROL[role]}
         </div>

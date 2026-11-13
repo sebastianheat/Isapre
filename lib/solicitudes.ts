@@ -7,6 +7,7 @@ import { getUsuario, setRecibiendoLeads } from "./usuarios";
 import { vende } from "./roles";
 
 import type { Solicitud, TipoSolicitud } from "./solicitudes-tipos";
+import { pushSolicitudNueva } from "./avisos-push";
 export type { Solicitud, TipoSolicitud, EstadoSolicitud } from "./solicitudes-tipos";
 export { NOMBRE_TIPO } from "./solicitudes-tipos";
 
@@ -52,6 +53,11 @@ export async function crearSolicitud(
   };
   await guardar(s);
   await kvSAdd(KEY_PENDIENTES, s.id);
+  const admin = await getUsuario(por).catch(() => null);
+  await pushSolicitudNueva(
+    admin?.nombre || por,
+    `${tipo === "pausar" ? "pausar" : "reactivar"} a ${u.nombre || email}`,
+  ).catch(() => {});
   return { ok: true, solicitud: s };
 }
 

@@ -11,6 +11,7 @@ import { actualizarLead, estadoAsignacion, obtenerLead, type Lead } from "./lead
 import { getUsuario, recibeLeads } from "./usuarios";
 import { descontarCredito, devolverCredito, registrarMovimiento } from "./credits-kv";
 import { enviarLeadAsignado } from "./email";
+import { pushLeadAsignado } from "./avisos-push";
 
 const LOCK_TTL_SECONDS = 15;
 const keyLock = (leadId: string) => `lock:asignacion:${leadId}`;
@@ -41,13 +42,15 @@ function rechazo(code: CodigoRechazo, mensaje: string, asignadoA?: string): Resu
   return { ok: false, code, mensaje, asignadoA };
 }
 
-// El correo es un aviso: si falla, la asignación ya quedó hecha y no se revierte.
+// El correo y el push son avisos: si fallan, la asignación ya quedó hecha y
+// no se revierte.
 async function avisarEjecutivo(lead: Lead, ejecutivo: { email: string; nombre?: string }): Promise<void> {
   try {
     await enviarLeadAsignado(lead, ejecutivo);
   } catch (e) {
     console.error("Email de lead asignado falló:", ejecutivo.email, lead.id, e);
   }
+  await pushLeadAsignado(lead, ejecutivo.email).catch((e) => console.error("Push de lead asignado falló:", e));
 }
 
 async function nombreDe(email: string): Promise<string> {

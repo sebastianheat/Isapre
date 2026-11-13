@@ -19,6 +19,7 @@ import { LEAD_TTL_SECONDS, obtenerLead, type Lead } from "./leads";
 import { motivosValidos, type ImpugnacionLead, type MotivoImpugnacion, type NotaLead } from "./pipeline";
 import { kvDel, kvLPush, kvLRange, kvMarcarUnaVez, kvSAdd, kvSMembers, kvSet, kvSRem } from "./store";
 import { getUsuario } from "./usuarios";
+import { pushImpugnacionNueva, pushRevisionAdmin } from "./avisos-push";
 
 const KEY_PENDIENTES = "impugnaciones:pendientes";
 const KEY_HISTORIAL = "impugnaciones:historial";
@@ -87,6 +88,7 @@ export async function impugnarLead(
     await enviarImpugnacionNueva(resultado.lead, u?.nombre || ejecutivoEmail).catch((e) =>
       console.error("Aviso de impugnación falló:", leadId, e),
     );
+    await pushImpugnacionNueva(resultado.lead, u?.nombre || ejecutivoEmail, ejecutivoEmail).catch(() => {});
   }
   return resultado;
 }
@@ -224,7 +226,7 @@ export async function revisarImpugnacion(
 ): Promise<Resultado> {
   const comentario = (input.comentario ?? "").trim();
   if (!input.aprueba && comentario.length < 5) return falla(400, "Escribe por qué crees que no es falso.");
-  return await conLock(leadId, async () => {
+  const resultado = await conLock(leadId, async () => {
     const lead = await obtenerLead(leadId);
     if (!lead) return falla(404, "Lead no encontrado");
     const imp = lead.impugnacion;
@@ -240,6 +242,11 @@ export async function revisarImpugnacion(
     });
     return { ok: true, lead: guardado };
   });
+  if (resultado.ok) {
+    const u = await getUsuario(input.por).catch(() => null);
+    await pushRevisionAdmin(resultado.lead, u?.nombre || input.por, input.aprueba).catch(() => {});
+  }
+  return resultado;
 }
 
 // Pendientes que esperan la primera revisión del admin.
