@@ -41,6 +41,14 @@ describe("regla de deuda (cada 20 leads = 1 plan)", () => {
     expect(pp.calcularEstado(40, 0, 1, 1)).toMatchObject({ exigibles: 2, debe: 1, enRevision: 1 });
   });
 
+  it("un regalo suelto (pocos créditos) no suma un plan entero", async () => {
+    const { pp } = await cargar();
+    expect(pp.calcularEstado(41, 25, 0, 0)).toMatchObject({ bloques: 2, debe: 1 });
+    expect(pp.calcularEstado(43, 0, 0, 0)).toMatchObject({ bloques: 2, debe: 2 });
+    expect(pp.calcularEstado(60, 44, 0, 0)).toMatchObject({ bloques: 3, debe: 2 });
+    expect(pp.calcularEstado(5, 5, 0, 0)).toMatchObject({ bloques: 1, debe: 0 });
+  });
+
   it("texto del estado", async () => {
     const { tipos, pp } = await cargar();
     expect(tipos.textoEstado(pp.calcularEstado(40, 23, 0, 1))).toBe("Debe 1 plan · 1 en revisión");

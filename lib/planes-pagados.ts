@@ -51,7 +51,9 @@ export function formatearRut(rut: string): string {
 
 // Cálculo puro de la cuenta del vendedor.
 export function calcularEstado(recibidos: number, saldo: number, validados: number, enRevision: number): EstadoCuenta {
-  const bloques = Math.ceil(Math.max(0, recibidos) / LEADS_POR_PLAN);
+  // Bloques completos de 20 (un regalo suelto de pocos créditos no suma un
+  // plan entero); quien recibió algo tiene al menos su primer bloque.
+  const bloques = recibidos > 0 ? Math.max(1, Math.floor(recibidos / LEADS_POR_PLAN)) : 0;
   const exigibles = Math.max(0, bloques - (saldo > 0 ? 1 : 0));
   const debe = Math.max(0, exigibles - validados);
   return { bloques, exigibles, validados, enRevision, debe, alDia: debe === 0 };
