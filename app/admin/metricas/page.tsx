@@ -8,6 +8,8 @@ import { getUsuario, listarUsuarios } from "@/lib/usuarios";
 import { obtenerSaldo } from "@/lib/credits-kv";
 import { resumenEquipo, type FilaEquipo } from "@/lib/equipo";
 import { vende, veTodo } from "@/lib/roles";
+import { leadsPorCampana, type FilaCampana } from "@/lib/metricas-campanas";
+import { leerNombresCampanas } from "@/lib/campanas-nombres";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -56,6 +58,10 @@ export default async function MetricasPage() {
   const ahora = Date.now();
   const hace14 = ahora - 14 * DIA_MS;
   const hace28 = ahora - 28 * DIA_MS;
+
+  // Leads por campaña: SOLO el superadmin (ni el admin ni los ejecutivos).
+  const campanas: FilaCampana[] =
+    sesion.role === "superadmin" ? leadsPorCampana(leads, await leerNombresCampanas(), ahora) : [];
 
   let equipo: FilaEquipo[] = [];
   if (veTodo(sesion.role)) {
@@ -218,6 +224,45 @@ export default async function MetricasPage() {
           </div>
         ))}
       </div>
+
+      {campanas.length > 0 && (
+        <>
+          <h2 className="admin-h2">📢 Leads por campaña</h2>
+          <div className="admin-card" style={{ overflowX: "auto" }}>
+            <table className="creditos-tabla">
+              <thead>
+                <tr>
+                  <th>Campaña / canal</th>
+                  <th className="num">Últ. 7 días</th>
+                  <th className="num">Últ. 30 días</th>
+                  <th className="num">Total</th>
+                  <th className="num">Calificados</th>
+                  <th className="num">Ganados</th>
+                  <th className="num">Falsos</th>
+                </tr>
+              </thead>
+              <tbody>
+                {campanas.map((c) => (
+                  <tr key={c.nombre} style={c.esCampana ? undefined : { color: "var(--admin-text-soft)" }}>
+                    <td>{c.esCampana ? <strong>{c.nombre}</strong> : c.nombre}</td>
+                    <td className="num">{c.ultimos7}</td>
+                    <td className="num">{c.ultimos30}</td>
+                    <td className="num">{c.total}</td>
+                    <td className="num">{c.calificados}</td>
+                    <td className="num">{c.ganados}</td>
+                    <td className="num">{c.falsos}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <p style={{ fontSize: 12, color: "var(--admin-text-soft)", marginTop: 10, marginBottom: 0 }}>
+              Solo lo ves tú. La campaña se registra desde el 13-11-2026: los leads de Google Ads anteriores
+              aparecen como &ldquo;sin campaña registrada&rdquo;. Para el costo por lead, compara con el gasto de cada
+              campaña en Google Ads.
+            </p>
+          </div>
+        </>
+      )}
 
       {equipo.length > 0 && (
         <>
