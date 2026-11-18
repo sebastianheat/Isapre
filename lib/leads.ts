@@ -315,7 +315,7 @@ export async function listarLeadsSinAsignar(limit = 500): Promise<Lead[]> {
   return leads
     .filter(
       (l) =>
-        estadoAsignacion(l) === "sin_asignar" && l.etapa !== "ganado" && l.etapa !== "perdido",
+        estadoAsignacion(l) === "sin_asignar" && l.etapa !== "ganado" && l.etapa !== "perdido" && l.etapa !== "impugnado",
     )
     .sort((a, b) => (a.fecha ?? "").localeCompare(b.fecha ?? ""));
 }

@@ -4,6 +4,8 @@ import { obtenerSesion } from "@/lib/auth";
 import { listarLeads, listarLeadsSinAsignar } from "@/lib/leads";
 import { campanasVistas, leerNombresCampanas } from "@/lib/campanas-nombres";
 import CampanasGoogleAds from "@/components/CampanasGoogleAds";
+import TraspasoJefe from "@/components/TraspasoJefe";
+import { candidatosTraspaso, jefeDeEquipo } from "@/lib/traspaso";
 import { listarUsuarios } from "@/lib/usuarios";
 import { obtenerSaldo } from "@/lib/credits-kv";
 import AdminShell from "@/components/AdminShell";
@@ -59,6 +61,15 @@ export default async function RepartoPage() {
           .sort((a, b) => a.nombre.localeCompare(b.nombre, "es"))}
       />
       <RepartoCola leadsIniciales={cola} ejecutivosIniciales={ejecutivos} />
+      <h2 className="admin-h2">📥 Traspaso al jefe de equipo</h2>
+      {await (async () => {
+        const jefe = await jefeDeEquipo();
+        const c = jefe ? await candidatosTraspaso(jefe.email) : { sinDueno: [], impugnados: [] };
+        const fila = (l: { id?: string; nombre: string; fecha?: string; asignadoA?: string; etapa?: string }) => ({
+          id: l.id, nombre: l.nombre, fecha: l.fecha, asignadoA: l.asignadoA ?? null, etapa: l.etapa ?? "nuevo",
+        });
+        return <TraspasoJefe jefe={jefe} sinDueno={c.sinDueno.map(fila)} impugnados={c.impugnados.map(fila)} />;
+      })()}
       <h2 className="admin-h2">📢 Campañas de Google Ads</h2>
       <CampanasGoogleAds
         campanas={campanasVistas(await listarLeads(1000))}

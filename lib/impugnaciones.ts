@@ -20,6 +20,7 @@ import { motivosValidos, type ImpugnacionLead, type MotivoImpugnacion, type Nota
 import { kvDel, kvLPush, kvLRange, kvMarcarUnaVez, kvSAdd, kvSMembers, kvSet, kvSRem } from "./store";
 import { getUsuario } from "./usuarios";
 import { pushImpugnacionNueva, pushRevisionAdmin } from "./avisos-push";
+import { jefeDeEquipo, traspasarLead } from "./traspaso";
 
 const KEY_PENDIENTES = "impugnaciones:pendientes";
 const KEY_HISTORIAL = "impugnaciones:historial";
@@ -142,7 +143,7 @@ export async function resolverImpugnacion(
     const guardado = await guardar({
       ...lead,
       falso: true,
-      etapa: "perdido",
+      etapa: "impugnado",
       calidad: "no_calificado",
       asignacionCobrada: devolver ? false : lead.asignacionCobrada,
       impugnacion: {
@@ -168,6 +169,15 @@ export async function resolverImpugnacion(
     await enviarImpugnacionResuelta(resultado.lead, { email: imp.por, nombre: u?.nombre }).catch((e) =>
       console.error("Aviso de impugnación resuelta falló:", leadId, e),
     );
+    // Aceptada: el lead pasa al jefe de equipo (etapa Impugnado) para que
+    // intente recuperarlo, sin costo para él.
+    if (imp.estado === "aceptada") {
+      const jefe = await jefeDeEquipo().catch(() => null);
+      if (jefe) {
+        const t = await traspasarLead(leadId, jefe.email, "Lead impugnado: traspasado al jefe de equipo para recuperarlo", input.por);
+        if (t) resultado.lead = t;
+      }
+    }
   }
   return resultado;
 }

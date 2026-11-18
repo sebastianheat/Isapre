@@ -10,7 +10,8 @@ export type EtapaLead =
   | "pendiente"
   | "agendado"
   | "ganado"
-  | "perdido";
+  | "perdido"
+  | "impugnado"; // lead falso: lo toma el jefe de equipo para intentar recuperarlo
 
 export const ETAPAS: { id: EtapaLead; label: string; icon: string; color: string }[] = [
   { id: "nuevo",       label: "Nuevo",               icon: "🆕", color: "#3B82F6" },
@@ -20,6 +21,7 @@ export const ETAPAS: { id: EtapaLead; label: string; icon: string; color: string
   { id: "agendado",    label: "Agendado",            icon: "📅", color: "#06B6D4" },
   { id: "ganado",      label: "Ganado ✓",            icon: "🏆", color: "#10B981" },
   { id: "perdido",     label: "Perdido",             icon: "✕",  color: "#EF4444" },
+  { id: "impugnado",   label: "Impugnado",           icon: "🚩", color: "#9333EA" },
 ];
 
 // Calificación manual del lead. Alimenta el export de conversiones offline a

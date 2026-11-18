@@ -77,7 +77,7 @@ describe("impugnación de leads falsos", () => {
     expect(await c.credits.obtenerSaldo(ROCIO)).toBe(3);
     expect(await c.credits.recalcularSaldo(ROCIO)).toBe(3);
     const lead = await c.leads.obtenerLead(id);
-    expect(lead).toMatchObject({ falso: true, etapa: "perdido", calidad: "no_calificado", asignacionCobrada: false });
+    expect(lead).toMatchObject({ falso: true, etapa: "impugnado", calidad: "no_calificado", asignacionCobrada: false });
     expect(lead?.impugnacion).toMatchObject({ estado: "aceptada", creditoDevuelto: true, resueltaPor: ADMIN });
     expect(await c.imp.contarPendientes()).toBe(0);
     // No se puede resolver dos veces (no devuelve dos créditos).

@@ -25,6 +25,7 @@ const CHART_ETAPA: Record<EtapaLead, string> = {
   agendado: "#0891B2",
   ganado: "#059669",
   perdido: "#DC2626",
+  impugnado: "#9333EA",
 };
 const CHART_CALIDAD: Record<CalidadLead, string> = {
   calificado: "#059669",
@@ -92,7 +93,7 @@ export default async function MetricasPage() {
   const pctAds = leads.length > 0 ? Math.round((deAds / leads.length) * 100) : 0;
   // Valor potencial: 7% × 24 meses de los leads que siguen vivos.
   const valorCartera = leads
-    .filter((l) => l.etapa !== "perdido")
+    .filter((l) => l.etapa !== "perdido" && l.etapa !== "impugnado")
     .reduce((s, l) => s + (l.sueldoLiquido ? (l.sueldoLiquido / 0.8) * 0.07 * 24 : 0), 0);
 
   // Serie diaria (14 días, Santiago)

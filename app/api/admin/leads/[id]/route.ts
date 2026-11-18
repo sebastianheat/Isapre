@@ -67,7 +67,7 @@ export async function PATCH(req: Request, ctx: { params: Promise<{ id: string }>
   }
   const cambios: Parameters<typeof actualizarLead>[1] = {};
   const etapasValidas: EtapaLead[] = [
-    "nuevo", "contactando", "cotizado", "pendiente", "agendado", "ganado", "perdido",
+    "nuevo", "contactando", "cotizado", "pendiente", "agendado", "ganado", "perdido", "impugnado",
   ];
   if (body.etapa && etapasValidas.includes(body.etapa as EtapaLead)) {
     cambios.etapa = body.etapa as EtapaLead;
