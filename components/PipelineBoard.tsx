@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import type { Lead } from "@/lib/leads";
 import type { EtapaLead } from "@/lib/pipeline";
 import { ETAPAS, CALIDADES } from "@/lib/pipeline";
+import EtiquetasTraspaso from "@/components/EtiquetasTraspaso";
 
 function formatearFechaCorta(iso?: string) {
   if (!iso) return "";
@@ -246,6 +247,7 @@ function PipelineCard({
           {lead.nombre || "Sin nombre"}
           {vencido && <span className="pipeline-card-badge">⚠️</span>}
         </div>
+        <div style={{ display: "flex", gap: 4, flexWrap: "wrap" }}><EtiquetasTraspaso lead={lead} /></div>
         <div className="pipeline-card-meta">📞 {lead.telefono || "sin teléfono"}</div>
         {(lead.region || lead.edad) && (
           <div className="pipeline-card-meta">

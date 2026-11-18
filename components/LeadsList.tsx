@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import EtiquetasTraspaso from "@/components/EtiquetasTraspaso";
 import Link from "next/link";
 import type { Lead, CanalLead } from "@/lib/leads";
 import { ETAPAS, CALIDADES } from "@/lib/pipeline";
@@ -158,6 +159,7 @@ export default function LeadsList({
               <div className="lead-card-date">{formatearFecha(lead.fecha)}</div>
             </div>
             <div className="lead-card-tags">
+              <EtiquetasTraspaso lead={lead} />
               {tagEtapa(lead.etapa)}
               {tagCalidad(lead.calidad)}
               {tagCanal(lead.canal, nombreCampanaCorto(lead, nombresCampanas))}
